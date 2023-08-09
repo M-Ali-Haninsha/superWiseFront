@@ -1,18 +1,17 @@
 <div class="flex items-center justify-center h-screen">
-    <div class="container">
-      <div class="heading">Sign In</div>
-      <form class="form" [formGroup]="adminLoginForm">
-        <input class="input" type="email" formControlName="email"  placeholder="E-mail" style="margin-left: 1rem; width: 95%;">
-        <small *ngIf="adminLoginForm.controls['email'].touched && adminLoginForm.hasError('required', 'email')" class="text-red-600 ml-4">*User Email required</small>
-        <mat-form-field>
-          <input class="input" matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password" style="width: 16rem;">
-          <small *ngIf="adminLoginForm.controls['password'].touched && adminLoginForm.hasError('required', 'password')" class="text-red-600">*password required</small>
-          <button mat-icon-button matSuffix (click)="togglePasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" style="margin-left: 2rem;">
-            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-        </mat-form-field>
-        <input class="login-button" type="submit" value="Sign In">
-      </form>
-    </div>
+  <div class="container">
+    <div class="heading">Sign In</div>
+    <form class="form" [formGroup]="adminLoginForm">
+      <input class="input" type="email" formControlName="email" placeholder="E-mail">
+      <small *ngIf="adminLoginForm.controls['email'].touched && adminLoginForm.hasError('required', 'email')" class="text-red-600 ">*User Email required</small>
+      <div class="input-container">
+        <input class="input" matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password">
+        <button mat-icon-button matSuffix (click)="togglePasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </div>
+      <small *ngIf="adminLoginForm.controls['password'].touched && adminLoginForm.hasError('required', 'password')" class="text-red-600">*password required</small>
+      <button class="login-button" type="submit">Sign In</button>
+    </form>
   </div>
-  
+</div>

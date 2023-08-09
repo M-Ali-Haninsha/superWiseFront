@@ -136,3 +136,15 @@
     color: #0099ff;
     font-size: 9px;
   }
+
+  
+  .input-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-container .input {
+    flex: 1;
+    margin-right: 8px; 
+  }
+  
