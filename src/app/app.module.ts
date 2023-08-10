@@ -10,11 +10,19 @@ import { WorkerSignupComponent } from './workerComponents/worker-signup/worker-s
 import { WorkerLoginComponent } from './workerComponents/worker-login/worker-login.component';
 import { HomeComponent } from './userComponents/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms'
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AdminDashboardComponent } from './adminComponents/admin-dashboard/admin-dashboard.component';
+import { WorkerDashboardComponent } from './workerComponents/worker-dashboard/worker-dashboard.component'
+import { HttpClientModule } from '@angular/common/http';
+import { AdminHeaderComponent } from './adminComponents/admin-header/admin-header.component';
+import { AdminSideNavComponent } from './adminComponents/admin-side-nav/admin-side-nav.component';
+import { AdminChartAreaComponent } from './adminComponents/admin-chart-area/admin-chart-area.component';
+import { AdminCategoryComponent } from './adminComponents/admin-category/admin-category.component';
+import { AdminVerificationComponent } from './adminComponents/admin-verification/admin-verification.component';
 
 
 @NgModule({
@@ -25,17 +33,25 @@ import { ReactiveFormsModule } from '@angular/forms'
     UserLoginComponent,
     WorkerSignupComponent,
     WorkerLoginComponent,
-    HomeComponent
+    HomeComponent,
+    AdminDashboardComponent,
+    WorkerDashboardComponent,
+    AdminHeaderComponent,
+    AdminSideNavComponent,
+    AdminChartAreaComponent,
+    AdminCategoryComponent,
+    AdminVerificationComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatIconModule,
     MatButtonModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    AppRoutingModule,
     ],
   providers: [],
   bootstrap: [AppComponent]

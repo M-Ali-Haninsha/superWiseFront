@@ -1,1 +1,49 @@
-<p>worker-signup works!</p>
+<div class="flex items-center justify-center h-screen">
+    <form class="form">
+    <p class="title">Register </p>
+    <p class="message">Signup now and get full access to our app. </p>
+        <div class="flex">
+        <label>
+            <input formControlName="firstName" required="" type="text" class="input">
+            <span>Firstname</span>
+        </label>
+
+        <label>
+            <input formControlName="lastName" required=""  type="text" class="input">
+            <span>Lastname</span>
+        </label>
+    </div>  
+            
+    <label>
+        <input formControlName="email" required="" type="email" class="input">
+        <span>Email</span>
+    </label> 
+        
+    <label>
+        <input formContolName="password" required="" type="password" class="input">
+        <span>Password</span>
+    </label>
+    <label class="block">
+        <span class="text-gray-700">Upload Proof</span>
+        <input required="" type="file" formContolName="file" class="mt-1">
+      </label>
+      <label class="block">
+        <span class="text-gray-700">Service Type</span>
+        <select formContolName="department" class="mt-1">
+          <option value="finance">Electrician</option>
+          <option value="hr">carpentry & Framing</option>
+          <option value="it"> painting </option>
+        </select>
+      </label>
+      <label>
+        <input formControlName="phoneNo" required="" type="text" class="input">
+        <span> Phone no</span>
+    </label>
+      <label>
+        <input formControlName="district" required="" type="text" class="input">
+        <span> District </span>
+    </label>
+    <button class="submit">Submit</button>
+    <p class="signin">Already have an acount ? <a href="#">Signin</a> </p>
+</form>
+</div>
