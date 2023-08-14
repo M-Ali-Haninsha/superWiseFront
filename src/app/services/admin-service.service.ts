@@ -82,4 +82,8 @@ export class AdminServiceService {
     const requestOptions = { headers: headers };
     return this.http.post<any> (this.url+'adminUnblockWorker', data, requestOptions)
   }
+
+  fetchUser(): Observable<any> {
+    return this.http.get<any> (this.url+'adminFetchUsers')
+  }
 }

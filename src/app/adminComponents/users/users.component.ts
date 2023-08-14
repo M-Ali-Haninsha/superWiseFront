@@ -3,49 +3,34 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminServiceService } from 'src/app/services/admin-service.service';
-import {MatDialog} from '@angular/material/dialog';
-import { AdminDialogComponent } from '../admin-dialog/admin-dialog.component';
-
 
 @Component({
-  selector: 'app-admin-category',
-  templateUrl: './admin-category.component.html',
-  styleUrls: ['./admin-category.component.css']
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.css']
 })
-export class AdminCategoryComponent implements OnInit {
-  displayedColumns: string[] = ['rowNumber', 'name', 'image','description', 'action'];
+export class UsersComponent implements OnInit{
+  displayedColumns: string[] = ['rowNumber', 'firstName', 'lastName', 'email','action'];
   dataSource: MatTableDataSource<any>;
   delete: boolean  = false
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(public dialog: MatDialog, private service: AdminServiceService) {
+  constructor(private service: AdminServiceService) {
     this.dataSource = new MatTableDataSource<any>;
   }
 
   ngOnInit(): void {
-      this.getCategory()
+      this.getUsers()
   }
 
-  openDialog(){
-    const dialogRef = this.dialog.open(AdminDialogComponent, {
-      width:'22%'
-    })
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result == 'add'){
-        this.getCategory()
-      }
-    });
-  }
-
-  getCategory() {
-    this.service.fetchCategory().subscribe((value) => {
-      console.log(value);
-      this.dataSource = new MatTableDataSource(value.recievedCat)
+  getUsers() {
+    this.service.fetchUser().subscribe((value)=>{
+      this.dataSource = new MatTableDataSource(value.user)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
+      
     })
   }
 

@@ -18,6 +18,7 @@ import { WorkerGuard } from './routguard/worker-guard.service';
 import { UserGuardService } from './routguard/user-guard.service';
 import { VerifiedWorkersComponent } from './adminComponents/verified-workers/verified-workers.component';
 import { UserOtpComponent } from './userComponents/user-otp/user-otp.component';
+import { UsersComponent } from './adminComponents/users/users.component';
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
@@ -34,7 +35,8 @@ const routes: Routes = [
     {path: 'adminChartArea', component:AdminChartAreaComponent, canActivate: [AdminAuthGuard]},
     {path: 'category', component:AdminCategoryComponent},
     {path: 'verification', component:AdminVerificationComponent},
-    {path: 'verifiedWorkers', component:VerifiedWorkersComponent}
+    {path: 'verifiedWorkers', component:VerifiedWorkersComponent},
+    {path: 'usersList', component: UsersComponent}
 ]},
 
 

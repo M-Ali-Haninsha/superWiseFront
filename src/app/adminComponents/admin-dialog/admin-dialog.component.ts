@@ -11,7 +11,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class AdminDialogComponent implements OnInit {
 
   categoryForm!: FormGroup
-  constructor( private formBuilder: FormBuilder, private service: AdminServiceService) {}
+  constructor( private formBuilder: FormBuilder, private service: AdminServiceService, private ref: MatDialogRef<AdminDialogComponent>) {}
 
   ngOnInit(): void {
       this.categoryForm = this.formBuilder.group({
@@ -28,14 +28,12 @@ export class AdminDialogComponent implements OnInit {
 
   addCategory() {
     const fileC = this.categoryForm.get('file')
-    console.log('aaaaaaaaaaaaaaaaaa',fileC?.value);
     const formData = new FormData();
-  formData.append('categoryName', this.categoryForm.value.categoryName)
-  formData.append('file', fileC?.value);
-  formData.append('description', this.categoryForm.value.description)
+    formData.append('categoryName', this.categoryForm.value.categoryName)
+    formData.append('file', fileC?.value);
+    formData.append('description', this.categoryForm.value.description)
     this.service.addCategory(formData).subscribe((value) => {
-      console.log(value);
-      
+      this.ref.close('add')
     } )
   }
 

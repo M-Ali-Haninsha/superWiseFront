@@ -40,6 +40,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { VerifiedWorkersComponent } from './adminComponents/verified-workers/verified-workers.component';
 import { UserOtpComponent } from './userComponents/user-otp/user-otp.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { UsersComponent } from './adminComponents/users/users.component';
 
 
 
@@ -66,7 +67,8 @@ import { MatMenuModule } from '@angular/material/menu';
     UserProfileComponent,
     AdminDialogComponent,
     VerifiedWorkersComponent,
-    UserOtpComponent
+    UserOtpComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
