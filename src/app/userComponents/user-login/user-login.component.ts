@@ -13,15 +13,15 @@ export class UserLoginComponent implements OnInit{
   userSigninForm!: FormGroup
   formData:any
 
-  passCheckErr:any
-  wrongEmail:any
+  passCheckErr:boolean = false
+  wrongEmail:boolean = false
 
   constructor(private formBuilder: FormBuilder, private service: UserService, private route: Router) {}
 
   ngOnInit(): void {
       this.userSigninForm = this.formBuilder.group({
-        email:['', Validators.required],
-        password:['', Validators.required]
+        email:['', [Validators.required, Validators.email]],
+        password:['', [Validators.required, Validators.minLength(8)]]
       })
   }
 

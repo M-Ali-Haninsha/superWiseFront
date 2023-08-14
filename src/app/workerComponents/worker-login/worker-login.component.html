@@ -44,6 +44,10 @@
                   class="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:shadow-lg"
                 />
               </div>
+              <small *ngIf="workerLoginForm.controls['email'].touched && workerLoginForm.hasError('required', 'email')" class="text-red-500">*Email is Required</small>
+              <small class="text-red-500" *ngIf="workerLoginForm.controls['email'].errors?.['email']">* invalid email</small>
+              <small *ngIf="wrongEmail" class="text-red-500">wrong email</small>
+
               <div id="input" class="flex flex-col w-full my-5">
                 <label for="password" class="text-gray-500 mb-2"
                   >Password</label
@@ -56,6 +60,10 @@
                   class="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:shadow-lg"
                 />
               </div>
+              <small *ngIf="workerLoginForm.controls['password'].touched && workerLoginForm.hasError('required', 'password')" class="text-red-500">*Password is Required</small>
+              <small class="text-red-500" *ngIf="workerLoginForm.controls['password'].errors?.['minlength']">* minimum 8 characters required</small>
+              <small *ngIf="passCheckErr" class="text-red-500">wrong password</small>
+
               <div id="button" class="flex flex-col w-full my-5">
                 <button
                 (click)="workerLogin()"

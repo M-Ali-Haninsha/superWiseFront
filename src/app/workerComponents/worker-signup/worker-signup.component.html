@@ -23,6 +23,7 @@
       </label>
       <small *ngIf="thirdFormGroup.controls['email'].touched && thirdFormGroup.hasError('required', 'email')" class="text-red-500">*Email is Required</small>
       <small class="text-red-500" *ngIf="thirdFormGroup.controls['email'].errors?.['email']">* invalid email</small>
+      <small *ngIf="workerExists" class="text-red-500">! account already exists</small>
       <label>
         <input formControlName="password" required type="password" class="input">
         <span>Password</span>

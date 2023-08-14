@@ -20,6 +20,7 @@ export class WorkerSignupComponent implements OnInit {
   formData: any;
   formData2: any;
   isEditable: boolean = false;
+  workerExists: boolean = false;
 
   public receivedCat: any[] = [];
 
@@ -79,8 +80,12 @@ export class WorkerSignupComponent implements OnInit {
       formDatas.append('district', this.thirdFormGroup.value.district);
       console.log('x', formDatas);
       this.service.workerSignup(formDatas).subscribe((value:any)=> {
-        this.stepper.next();
-        value
+        if(value.otpGen){
+          this.stepper.next();
+        }
+        if(value.checked){
+          this.workerExists = true
+        }
       });       
     } else {
       Swal.fire({

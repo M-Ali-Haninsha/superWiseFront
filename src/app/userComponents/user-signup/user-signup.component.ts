@@ -12,24 +12,32 @@ export class UserSignupComponent implements OnInit{
 
   userSignupForm!: FormGroup
   formData:any
+  userExists:boolean = false
+
   constructor(private formBuilder:FormBuilder, private service: UserService, private route: Router) {}
 
   ngOnInit(): void {
       this.userSignupForm = this.formBuilder.group({
-        firstName:['', Validators.required],
+        firstName:['', [Validators.required, Validators.minLength(3)]],
         lastName:['', Validators.required],
         email:['', Validators.required],
-        password:['', Validators.required]
+        password:['', [Validators.required, Validators.minLength(8)]]
       })
   }
 
   onSignup() {
     if(this.userSignupForm.valid) {
       this.formData= this.userSignupForm.value;
-      this.service.userSignupPost(this.formData).subscribe((value:any)=>{        
+      this.service.userSignupPost(this.formData).subscribe((value:any)=>{      
         if(value.otpGen){          
           this.route.navigate(['/userOtp'])
         }
+        if(value.checked){
+          this.userExists = true
+        }
+        
+          
+        
       })      
     }
   }

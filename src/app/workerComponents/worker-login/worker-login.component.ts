@@ -10,8 +10,8 @@ import { WorkerService } from 'src/app/services/worker.service';
 })
 export class WorkerLoginComponent implements OnInit{
 
-  passCheckErr: any
-  wrongEmail: any
+  passCheckErr: boolean = false
+  wrongEmail: boolean = false
 
 
   workerLoginForm!: FormGroup
@@ -20,8 +20,8 @@ export class WorkerLoginComponent implements OnInit{
 
   ngOnInit(): void {
       this.workerLoginForm = this.formBuilder.group({
-        email: ['', Validators.required],
-        password: ['', Validators.required]
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]]
   })
   }
 
