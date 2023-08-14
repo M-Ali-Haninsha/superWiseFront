@@ -34,6 +34,28 @@ export class UsersComponent implements OnInit{
     })
   }
 
+  block(data:any) {
+    const requestData = { id: data };
+    console.log(requestData);
+    this.service.blockUser(requestData).subscribe((value)=>{
+      console.log(value);
+      if(value == 'done'){
+        this.getUsers()
+      }
+    })
+  }
+
+  unBlock(data:any) {
+    const requestData = { id: data };
+    console.log(requestData);
+    this.service.unBlockUser(requestData).subscribe((value)=>{
+      console.log(value);
+      if(value == 'done'){
+        this.getUsers()
+      }
+    })
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

@@ -86,4 +86,12 @@ export class AdminServiceService {
   fetchUser(): Observable<any> {
     return this.http.get<any> (this.url+'adminFetchUsers')
   }
+
+  blockUser(data:any):Observable<any> {
+    return this.http.post<any> (this.url+'adminBlockUser', data)
+  }
+
+  unBlockUser(data:any): Observable<any> {
+    return this.http.post<any> (this.url+'adminUnblockUser', data)
+  }
 }
