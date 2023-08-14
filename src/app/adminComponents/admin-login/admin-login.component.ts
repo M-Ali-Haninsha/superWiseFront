@@ -29,10 +29,10 @@ export class AdminLoginComponent implements OnInit {
       })
   }
 
-  togglePasswordVisibility(event: Event) {
-    event.preventDefault();
-    this.hide = !this.hide;
-  }
+  // togglePasswordVisibility(event: Event) {
+  //   event.preventDefault();
+  //   this.hide = !this.hide;
+  // }
 
   onSubmit(){
     if(this.adminLoginForm.valid) {
@@ -50,7 +50,6 @@ export class AdminLoginComponent implements OnInit {
           sessionStorage.setItem('adminValue', strValue)
           console.log("logged");
           this.route.navigate(['/adminHome'])
-
         }
       })
     }

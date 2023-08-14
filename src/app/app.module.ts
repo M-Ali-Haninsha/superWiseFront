@@ -14,7 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminDashboardComponent } from './adminComponents/admin-dashboard/admin-dashboard.component';
 import { WorkerDashboardComponent } from './workerComponents/worker-dashboard/worker-dashboard.component'
 import { HttpClientModule } from '@angular/common/http';
@@ -23,6 +23,24 @@ import { AdminSideNavComponent } from './adminComponents/admin-side-nav/admin-si
 import { AdminChartAreaComponent } from './adminComponents/admin-chart-area/admin-chart-area.component';
 import { AdminCategoryComponent } from './adminComponents/admin-category/admin-category.component';
 import { AdminVerificationComponent } from './adminComponents/admin-verification/admin-verification.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
+import {MatTableModule} from '@angular/material/table';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ListWorkersComponent } from './userComponents/list-workers/list-workers.component';
+import { ListCategoryComponent } from './userComponents/list-category/list-category.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { UserHeaderComponent } from './userComponents/user-header/user-header.component';
+import { UserFooterComponent } from './userComponents/user-footer/user-footer.component';
+import { UserProfileComponent } from './userComponents/user-profile/user-profile.component';
+import { AdminDialogComponent } from './adminComponents/admin-dialog/admin-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { VerifiedWorkersComponent } from './adminComponents/verified-workers/verified-workers.component';
+import { UserOtpComponent } from './userComponents/user-otp/user-otp.component';
+import { MatMenuModule } from '@angular/material/menu';
+
 
 
 @NgModule({
@@ -30,8 +48,8 @@ import { AdminVerificationComponent } from './adminComponents/admin-verification
     AppComponent,
     AdminLoginComponent,
     UserSignupComponent,
-    UserLoginComponent,
     WorkerSignupComponent,
+    UserLoginComponent,
     WorkerLoginComponent,
     HomeComponent,
     AdminDashboardComponent,
@@ -40,7 +58,15 @@ import { AdminVerificationComponent } from './adminComponents/admin-verification
     AdminSideNavComponent,
     AdminChartAreaComponent,
     AdminCategoryComponent,
-    AdminVerificationComponent
+    AdminVerificationComponent,
+    ListWorkersComponent,
+    ListCategoryComponent,
+    UserHeaderComponent,
+    UserFooterComponent,
+    UserProfileComponent,
+    AdminDialogComponent,
+    VerifiedWorkersComponent,
+    UserOtpComponent
   ],
   imports: [
     BrowserModule,
@@ -52,8 +78,23 @@ import { AdminVerificationComponent } from './adminComponents/admin-verification
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    MatStepperModule,
+    MatStepperModule,
+    FormsModule,
+    MatTableModule,
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
+    MatPaginatorModule,
+    MatToolbarModule,
+    MatDialogModule,
+    MatMenuModule
     ],
-  providers: [],
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: {showError: true},
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,18 +9,38 @@ import { WorkerSignupComponent } from './workerComponents/worker-signup/worker-s
 import { AdminChartAreaComponent } from './adminComponents/admin-chart-area/admin-chart-area.component';
 import { AdminCategoryComponent } from './adminComponents/admin-category/admin-category.component';
 import { AdminVerificationComponent } from './adminComponents/admin-verification/admin-verification.component';
+import { UserSignupComponent } from './userComponents/user-signup/user-signup.component';
+import { ListCategoryComponent } from './userComponents/list-category/list-category.component';
+import { UserProfileComponent } from './userComponents/user-profile/user-profile.component';
+import { AdminAuthGuard } from './routguard/admin-guard.service'
+import { WorkerDashboardComponent } from './workerComponents/worker-dashboard/worker-dashboard.component';
+import { WorkerGuard } from './routguard/worker-guard.service';
+import { UserGuardService } from './routguard/user-guard.service';
+import { VerifiedWorkersComponent } from './adminComponents/verified-workers/verified-workers.component';
+import { UserOtpComponent } from './userComponents/user-otp/user-otp.component';
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
   {path:'userLogin', component: UserLoginComponent},
+  {path:'userSignup', component: UserSignupComponent},
+  {path:'category', component:ListCategoryComponent},
+  {path:'userProfile', component:UserProfileComponent, canActivate: [UserGuardService]},
+  {path:'userOtp', component:UserOtpComponent},
+
+
   {path:'admin', component: AdminLoginComponent},
-  {path:'adminHome', component: AdminDashboardComponent, children:[
+  {path:'adminHome', component: AdminDashboardComponent, canActivate: [AdminAuthGuard], children:[
     {path:'', redirectTo: 'adminChartArea', pathMatch:'full'},
-    {path: 'adminChartArea', component:AdminChartAreaComponent},
+    {path: 'adminChartArea', component:AdminChartAreaComponent, canActivate: [AdminAuthGuard]},
     {path: 'category', component:AdminCategoryComponent},
-    {path: 'verification', component:AdminVerificationComponent}
+    {path: 'verification', component:AdminVerificationComponent},
+    {path: 'verifiedWorkers', component:VerifiedWorkersComponent}
 ]},
-  {path:'workerSignup', component: WorkerSignupComponent}
+
+
+  {path:'workerSignup', component: WorkerSignupComponent},
+  {path:'workerLogin', component:WorkerLoginComponent},
+  {path:'workerHome', component:WorkerDashboardComponent, canActivate: [WorkerGuard]}
 ];
 
 @NgModule({

@@ -1,49 +1,95 @@
-<div class="flex items-center justify-center h-screen">
-    <form class="form">
-    <p class="title">Register </p>
-    <p class="message">Signup now and get full access to our app. </p>
-        <div class="flex">
+<mat-stepper #stepper>
+  <mat-step [stepControl]="thirdFormGroup" >
+    <ng-template matStepLabel>Fill out the form</ng-template>
+    <div class="flex items-center justify-center h-screen">
+    <form [formGroup]="thirdFormGroup" class="form"  enctype="multipart/form-data">
+      <p class="title">Register</p>
+      <p class="message">Signup now and get full access to our app.</p>
+      <div class="flex">
         <label>
-            <input formControlName="firstName" required="" type="text" class="input">
-            <span>Firstname</span>
+          <input formControlName="firstName" required type="text" class="input">
+          <span>Firstname</span>
         </label>
-
         <label>
-            <input formControlName="lastName" required=""  type="text" class="input">
-            <span>Lastname</span>
+          <input formControlName="lastName" required type="text" class="input">
+          <span>Lastname</span>
         </label>
-    </div>  
-            
-    <label>
-        <input formControlName="email" required="" type="email" class="input">
+      </div>
+      <small *ngIf="thirdFormGroup.controls['firstName'].touched && thirdFormGroup.hasError('required', 'firstName')" class="text-red-500">*Firstname is Required</small>
+      <small class="text-red-500" *ngIf="thirdFormGroup.controls['firstName'].errors?.['minlength']">* minimum 3 characters required</small>     
+      <label>
+        <input formControlName="email" required type="email" class="input">
         <span>Email</span>
-    </label> 
-        
-    <label>
-        <input formContolName="password" required="" type="password" class="input">
-        <span>Password</span>
-    </label>
-    <label class="block">
-        <span class="text-gray-700">Upload Proof</span>
-        <input required="" type="file" formContolName="file" class="mt-1">
       </label>
+      <small *ngIf="thirdFormGroup.controls['email'].touched && thirdFormGroup.hasError('required', 'email')" class="text-red-500">*Email is Required</small>
+      <small class="text-red-500" *ngIf="thirdFormGroup.controls['email'].errors?.['email']">* invalid email</small>
+      <label>
+        <input formControlName="password" required type="password" class="input">
+        <span>Password</span>
+      </label>
+      <small *ngIf="thirdFormGroup.controls['password'].touched && thirdFormGroup.hasError('required', 'password')" class="text-red-500">*Password is Required</small>
+      <small class="text-red-500" *ngIf="thirdFormGroup.controls['password'].errors?.['minlength']">* minimum 8 characters required</small>
+      <label class="block">
+        <span class="text-gray-700">Upload Proof</span>
+        <input required type="file" formControlName="file" (change)="fileChange($event)" class="mt-1">
+      </label>
+      <small *ngIf="thirdFormGroup.controls['file'].touched && thirdFormGroup.hasError('required', 'file')" class="text-red-500">*Select a file</small>
       <label class="block">
         <span class="text-gray-700">Service Type</span>
-        <select formContolName="department" class="mt-1">
-          <option value="finance">Electrician</option>
-          <option value="hr">carpentry & Framing</option>
-          <option value="it"> painting </option>
+        <select formControlName="department" class="mt-1">
+          <option *ngFor="let category of receivedCat" [value]="category.name">{{ category.name }}</option>
         </select>
       </label>
+      <small *ngIf="thirdFormGroup.controls['department'].touched && thirdFormGroup.hasError('required', 'department')" class="text-red-500">*Select a service type</small>
       <label>
-        <input formControlName="phoneNo" required="" type="text" class="input">
-        <span> Phone no</span>
-    </label>
+        <input formControlName="phoneNo" required type="text" class="input">
+        <span>Phone no</span>
+      </label>
+      <small *ngIf="thirdFormGroup.controls['phoneNo'].touched && thirdFormGroup.hasError('required', 'phoneNo')" class="text-red-500">*Phone number is Required</small>
+      <small class="text-red-500" *ngIf="thirdFormGroup.controls['phoneNo'].errors?.['minlength']">* minimum 10 characters required</small>
       <label>
-        <input formControlName="district" required="" type="text" class="input">
-        <span> District </span>
-    </label>
-    <button class="submit">Submit</button>
-    <p class="signin">Already have an acount ? <a href="#">Signin</a> </p>
-</form>
-</div>
+        <input formControlName="district" required type="text" class="input">
+        <span>District</span>
+      </label>
+      <small *ngIf="thirdFormGroup.controls['district'].touched && thirdFormGroup.hasError('required', 'district')" class="text-red-500">*District is Required</small>
+      <small class="text-red-500" *ngIf="thirdFormGroup.controls['district'].errors?.['minlength']">* minimum 4 letters required</small>
+      <button class="submit" (click)="sendOtp()">Submit</button>
+      <p class="signin">Already have an account? <a routerLink="/workerLogin">Sign in</a></p>
+    </form>
+  </div>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <ng-template matStepLabel>Enter Your OTP</ng-template>
+    <div class="flex items-center justify-center" style="height: 28rem;">
+       <form class="otp-Form" [formGroup]="secondFormGroup" enctype="multipart/form-data">
+      <span class="mainHeading">Enter OTP</span>
+      <p class="otpSubheading">We have sent a verification code to your mobile number</p>
+      <div class="inputContainer">
+       <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input1" formControlName="otp1">
+       <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input2" formControlName="otp2">
+       <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input3" formControlName="otp3">
+       <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input4" formControlName="otp4"> 
+      </div>
+       <button class="verifyButton" type="submit" (click)="verify()">Verify</button>
+         <!-- <button class="exitBtn">×</button> -->
+         <p class="resendNote">Didn't receive the code? <button class="resendBtn">Resend Code</button></p> 
+    </form>    
+    </div>
+    <div class="flex justify-center ">
+      <p>After filling the details, click next</p>
+      </div>
+      <div class="flex justify-center ">
+      <button mat-button matStepperPrevious>Back</button>
+      <button *ngIf="next" mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step >
+    <ng-template matStepLabel>Done</ng-template>
+    <p class="flex items-center justify-center">Your Registration is complete, please click login.</p>
+      <div>
+      <button mat-button color="primary" class="flex items-center justify-center" (click)="toLogin()">Login</button>
+      </div>
+  </mat-step>
+</mat-stepper>
+
+

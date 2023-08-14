@@ -10,9 +10,7 @@ export class AdminHeaderComponent {
 
   constructor(private route: Router) {}
 
-  signout() {
-    console.log("keriiiiiiiiiii");
-    
+  signout() {    
     if(sessionStorage.getItem('adminValue')){
       sessionStorage.removeItem('adminValue')
       this.route.navigate(['/admin'])

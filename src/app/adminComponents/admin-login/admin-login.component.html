@@ -6,9 +6,9 @@
       <small *ngIf="adminLoginForm.controls['email'].touched && adminLoginForm.hasError('required', 'email')" class="text-red-600 ">*User Email required</small>
       <div class="input-container">
         <input class="input" matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password">
-        <button mat-icon-button matSuffix (click)="togglePasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <!-- <button mat-icon-button matSuffix (click)="togglePasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
+        </button> -->
       </div>
       <small *ngIf="adminLoginForm.controls['password'].touched && adminLoginForm.hasError('required', 'password')" class="text-red-600">*password required</small>
       <button class="login-button" >Sign In</button>

@@ -1,0 +1,16 @@
+<mat-toolbar>
+    <button routerLink="/" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <img src="https://demo.themesberg.com/windster/images/logo.svg" class="h-6 mr-2" alt="Windster Logo">
+    </button>
+    <span>SuperWise</span>
+    <span class="example-spacer"></span>
+    <span *ngIf="login">login</span>
+    <button *ngIf="login" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" routerLink="userLogin">
+      <mat-icon>login</mat-icon>
+    </button>
+    <button *ngIf="logged" mat-button [matMenuTriggerFor]="menu"> user </button>
+    <mat-menu #menu="matMenu">
+      <button (click)="profile()" mat-menu-item >profile</button>
+      <button (click)="signout()" mat-menu-item >signout</button>
+    </mat-menu>
+  </mat-toolbar>

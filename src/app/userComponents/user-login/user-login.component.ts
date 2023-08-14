@@ -1,10 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
   styleUrls: ['./user-login.component.css']
 })
-export class UserLoginComponent {
+export class UserLoginComponent implements OnInit{
 
+  userSigninForm!: FormGroup
+  formData:any
+
+  passCheckErr:any
+  wrongEmail:any
+
+  constructor(private formBuilder: FormBuilder, private service: UserService, private route: Router) {}
+
+  ngOnInit(): void {
+      this.userSigninForm = this.formBuilder.group({
+        email:['', Validators.required],
+        password:['', Validators.required]
+      })
+  }
+
+  onSubmit(){
+    if(this.userSigninForm.valid) {
+      this.formData= this.userSigninForm.value;
+      console.log('this is data', this.formData);
+      
+      this.service.userLogin(this.formData).subscribe((value:any)=>{
+        console.log('login',value);
+        if(value.msg == 'passwordWrong') {
+          this.passCheckErr = true
+
+        } else if(value.msg == 'wrongEmail') {
+          this.wrongEmail = true
+        } 
+        else {
+          const strValue = JSON.stringify(value)
+          sessionStorage.setItem('userValue', strValue)
+          console.log("logged");
+          this.route.navigate(['/'])
+        }
+      })
+    }
+  }
 }

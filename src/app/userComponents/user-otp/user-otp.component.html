@@ -1,0 +1,33 @@
+
+
+
+<div class="bg-white dark:bg-gray-900">
+    <div class="flex justify-center h-screen">
+        <div class="hidden bg-cover lg:block " style="background-image: url(https://tailwindcomponents.com/svg/queue-animate.svg)">
+            <div class="flex items-center h-full px-20 bg-gray-900 bg-opacity-40" style="width: 45rem;">
+  
+            </div>
+        </div>
+        
+        <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+            <div class="flex-1">
+                <div class="mt-8">
+                    <form class="form" [formGroup]="otpForm">                      
+                        <div class="info">
+                        <span class="title">OTP Verification</span>
+                      <p class="description">Please enter the code we have sent you. </p>
+                         </div>
+                          <div class="inputs">
+                          <input formControlName="otp1"  type="tel" maxlength="1">
+                          <input formControlName="otp2"  type="tel" maxlength="1">
+                          <input formControlName="otp3"  type="tel" maxlength="1">
+                          <input formControlName="otp4"  type="tel" maxlength="1">
+                        </div>
+                             <button (click)="verify()"><a  class="validate">Verify</a></button> 
+                      <p class="resend">You don't receive the code ?<a class="resend-action">resend</a></p>
+                      </form>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
