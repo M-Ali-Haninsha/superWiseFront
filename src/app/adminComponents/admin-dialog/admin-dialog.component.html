@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>add category</h1>
+<h1 mat-dialog-title>{{tittle}}</h1>
 <div mat-dialog-content>
   <form [formGroup]="categoryForm">
     <mat-form-field appearance="fill">
@@ -6,11 +6,15 @@
         <input formControlName="categoryName" matInput placeholder="Placeholder">
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
+      <div *ngIf="editData?.Image">
+        <!-- <p>Existing File: {{ editData.Image }}</p> -->
+        <img [src]="editData.Image" alt="Existing Image">
+      </div>
     <div>
         <label>image</label>
     </div>
     <div>
-        <input type="file" formControlName="file" (change)="onFileSelected($event)" accept=".jpg, .jpeg, .png">
+        <input type="file"  formControlName="file" (change)="onFileSelected($event)" accept=".jpg, .jpeg, .png">
     </div>
     <div class="mt-5">
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
@@ -21,7 +25,7 @@
     </div>
     <mat-dialog-actions >
       <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button (click)="addCategory()" cdkFocusInitial>add</button>
+      <button mat-button (click)="addCategory()" cdkFocusInitial>{{buttonName}}</button>
     </mat-dialog-actions>
   </form>
 </div>

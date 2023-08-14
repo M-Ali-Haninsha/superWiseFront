@@ -17,7 +17,8 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminDashboardComponent } from './adminComponents/admin-dashboard/admin-dashboard.component';
 import { WorkerDashboardComponent } from './workerComponents/worker-dashboard/worker-dashboard.component'
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MyInterceptor } from '../app/interceptor/interceptor'
 import { AdminHeaderComponent } from './adminComponents/admin-header/admin-header.component';
 import { AdminSideNavComponent } from './adminComponents/admin-side-nav/admin-side-nav.component';
 import { AdminChartAreaComponent } from './adminComponents/admin-chart-area/admin-chart-area.component';
@@ -95,6 +96,11 @@ import { UsersComponent } from './adminComponents/users/users.component';
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {showError: true},
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MyInterceptor,
+      multi: true,
     },
   ],
   bootstrap: [AppComponent]

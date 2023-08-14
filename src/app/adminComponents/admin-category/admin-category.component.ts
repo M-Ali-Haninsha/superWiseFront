@@ -40,6 +40,18 @@ export class AdminCategoryComponent implements OnInit {
     });
   }
 
+  edit(row:any) {
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      width:'30%',
+      data: row
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == 'edit'){
+        this.getCategory()
+      }
+    });
+  }
+
   getCategory() {
     this.service.fetchCategory().subscribe((value) => {
       console.log(value);
