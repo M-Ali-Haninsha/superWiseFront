@@ -19,16 +19,21 @@ import { UserGuardService } from './routguard/user-guard.service';
 import { VerifiedWorkersComponent } from './adminComponents/verified-workers/verified-workers.component';
 import { UserOtpComponent } from './userComponents/user-otp/user-otp.component';
 import { UsersComponent } from './adminComponents/users/users.component';
+import { ListWorkersComponent } from './userComponents/list-workers/list-workers.component';
+import { WorkerInboxComponent } from './workerComponents/worker-inbox/worker-inbox.component';
+import { LandingPageComponent } from './workerComponents/landing-page/landing-page.component';
 
 const routes: Routes = [
+//recruiter routing  
   {path:'', component: HomeComponent},
   {path:'userLogin', component: UserLoginComponent},
   {path:'userSignup', component: UserSignupComponent},
   {path:'category', component:ListCategoryComponent},
   {path:'userProfile', component:UserProfileComponent, canActivate: [UserGuardService]},
   {path:'userOtp', component:UserOtpComponent},
+  {path:'listWorkers', component: ListWorkersComponent},
 
-
+//admin routing
   {path:'admin', component: AdminLoginComponent},
   {path:'adminHome', component: AdminDashboardComponent, canActivate: [AdminAuthGuard], children:[
     {path:'', redirectTo: 'adminChartArea', pathMatch:'full'},
@@ -39,10 +44,14 @@ const routes: Routes = [
     {path: 'usersList', component: UsersComponent}
 ]},
 
-
+//worker routing
   {path:'workerSignup', component: WorkerSignupComponent},
   {path:'workerLogin', component:WorkerLoginComponent},
-  {path:'workerHome', component:WorkerDashboardComponent, canActivate: [WorkerGuard]}
+  {path:'workerHome', component:WorkerDashboardComponent, canActivate: [WorkerGuard], children:[
+    {path:'', redirectTo: 'workerLandingPage', pathMatch:'full'},
+    {path:'workerLandingPage', component:LandingPageComponent},
+    {path: 'inbox', component: WorkerInboxComponent}
+  ]}
 ];
 
 @NgModule({

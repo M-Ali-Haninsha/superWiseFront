@@ -19,7 +19,6 @@ export class ListCategoryComponent implements OnInit {
   listCategory() {
     this.service.fetchCategory().subscribe((value)=>{
       this.category = value.result
-      console.log(this.category);
     })
   }
 }

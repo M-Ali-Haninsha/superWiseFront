@@ -42,6 +42,8 @@ import { VerifiedWorkersComponent } from './adminComponents/verified-workers/ver
 import { UserOtpComponent } from './userComponents/user-otp/user-otp.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { UsersComponent } from './adminComponents/users/users.component';
+import { LandingPageComponent } from './workerComponents/landing-page/landing-page.component';
+import { WorkerInboxComponent } from './workerComponents/worker-inbox/worker-inbox.component';
 
 
 
@@ -69,7 +71,9 @@ import { UsersComponent } from './adminComponents/users/users.component';
     AdminDialogComponent,
     VerifiedWorkersComponent,
     UserOtpComponent,
-    UsersComponent
+    UsersComponent,
+    LandingPageComponent,
+    WorkerInboxComponent
   ],
   imports: [
     BrowserModule,
