@@ -22,6 +22,8 @@ import { UsersComponent } from './adminComponents/users/users.component';
 import { ListWorkersComponent } from './userComponents/list-workers/list-workers.component';
 import { WorkerInboxComponent } from './workerComponents/worker-inbox/worker-inbox.component';
 import { LandingPageComponent } from './workerComponents/landing-page/landing-page.component';
+import { WorkerProfileComponent } from './workerComponents/worker-profile/worker-profile.component';
+import { ViewWorkerComponent } from './userComponents/view-worker/view-worker.component';
 
 const routes: Routes = [
 //recruiter routing  
@@ -31,7 +33,8 @@ const routes: Routes = [
   {path:'category', component:ListCategoryComponent},
   {path:'userProfile', component:UserProfileComponent, canActivate: [UserGuardService]},
   {path:'userOtp', component:UserOtpComponent},
-  {path:'listWorkers', component: ListWorkersComponent},
+  {path:'listWorkers/:id', component: ListWorkersComponent},
+  {path:'viewWorker/:id', component: ViewWorkerComponent},
 
 //admin routing
   {path:'admin', component: AdminLoginComponent},
@@ -50,7 +53,8 @@ const routes: Routes = [
   {path:'workerHome', component:WorkerDashboardComponent, canActivate: [WorkerGuard], children:[
     {path:'', redirectTo: 'workerLandingPage', pathMatch:'full'},
     {path:'workerLandingPage', component:LandingPageComponent},
-    {path: 'inbox', component: WorkerInboxComponent}
+    {path: 'inbox', component: WorkerInboxComponent},
+    {path: 'workerProfile', component: WorkerProfileComponent}
   ]}
 ];
 

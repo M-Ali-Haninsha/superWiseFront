@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { WorkerService } from 'src/app/services/worker.service';
 
 @Component({
   selector: 'app-worker-dashboard',
@@ -9,16 +10,13 @@ import { Router } from '@angular/router';
 export class WorkerDashboardComponent implements OnInit{
 
 
-  constructor(private route: Router) {}
+  constructor(private route: Router, private service: WorkerService) {}
 
   ngOnInit(): void {
       
   }
 
-  logout(){
-    if(sessionStorage.getItem('workerValue')){
-      sessionStorage.removeItem('workerValue')
-      this.route.navigate(['/workerLogin'])
-    }
-  }
+  
+
+  
 }

@@ -44,8 +44,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { UsersComponent } from './adminComponents/users/users.component';
 import { LandingPageComponent } from './workerComponents/landing-page/landing-page.component';
 import { WorkerInboxComponent } from './workerComponents/worker-inbox/worker-inbox.component';
+import { WorkerProfileComponent } from './workerComponents/worker-profile/worker-profile.component';
+import { ViewWorkerComponent } from './userComponents/view-worker/view-worker.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import { WokerDialogComponent } from './workerComponents/woker-dialog/woker-dialog.component';
+import { WokerSidenavComponent } from './workerComponents/woker-sidenav/woker-sidenav.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +79,11 @@ import { WorkerInboxComponent } from './workerComponents/worker-inbox/worker-inb
     UserOtpComponent,
     UsersComponent,
     LandingPageComponent,
-    WorkerInboxComponent
+    WorkerInboxComponent,
+    WorkerProfileComponent,
+    ViewWorkerComponent,
+    WokerDialogComponent,
+    WokerSidenavComponent
   ],
   imports: [
     BrowserModule,
@@ -94,7 +104,10 @@ import { WorkerInboxComponent } from './workerComponents/worker-inbox/worker-inb
     MatPaginatorModule,
     MatToolbarModule,
     MatDialogModule,
-    MatMenuModule
+    MatMenuModule,
+    MatExpansionModule,
+    MatNativeDateModule,
+    MatDatepickerModule
     ],
   providers: [
     {

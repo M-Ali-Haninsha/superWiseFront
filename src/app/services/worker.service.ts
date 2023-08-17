@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs'
 @Injectable({
@@ -26,6 +26,20 @@ export class WorkerService {
     console.log('lgon data', loginData);
     
     return this.http.post<any>(this.url+'workerLogin', loginData)
+  }
+
+  fetchWorkerData(): Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any>(this.url+'fetchWorkerData', requestOptions)
+  }
+
+  editPhoto(data:FormData): Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.put<any>(this.url+'workerEditProfilePhoto', data, requestOptions)
   }
 
 }

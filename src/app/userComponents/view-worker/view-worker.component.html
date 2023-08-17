@@ -1,0 +1,204 @@
+<body class="bg-white dark:bg-gray-900 ">
+  <div class="flex justify-center gap-2 items-center h-screen">
+    <div class="w-1/3">
+        <div class="max-w-lg mx-auto my-10 bg-white rounded-lg shadow-md p-5">
+          <img
+            class="w-32 h-32 rounded-full mx-auto"
+            [src]="workerData?.image"
+            alt="Profile picture"
+          />
+          <h2 class="text-center text-2xl font-semibold mt-3">{{workerData?.firstName}}</h2>
+          <p class="text-center text-gray-600 mt-1">{{workerData?.department.name}}</p>
+  
+          <div class="mt-5">
+            <h3 class="text-xl font-semibold">Details</h3>
+            <div class="grid grid-cols-10">
+              <p class="mt-2 col-span-5"> name: <span class="text-gray-600 ">{{workerData?.firstName}} {{workerData?.lastName}}</span></p>
+            <p class="mt-2 col-span-5"> mobile no: <span class="text-gray-600 ">{{workerData?.phoneNo}}</span></p>
+
+              <p class="mt-2 col-span-5"> location: <span class="text-gray-600">{{workerData?.district}}</span> </p>
+              <p class="mt-2 col-span-5"> email: <span class="text-gray-600">{{workerData?.email}}</span> </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div >
+        <div class="max-w-lg my-10 bg-black rounded-lg shadow-md p-5">
+          <mat-accordion class="example-headers-align">
+            <mat-expansion-panel
+              [expanded]="step === 0"
+              (opened)="setStep(0)"
+              hideToggle
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title> Description </mat-panel-title>
+                <mat-panel-description>
+                  Service provided
+                  <mat-icon>account_circle</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+    
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quos
+                provident doloribus quae laborum voluptate voluptates earum, aperiam
+                accusantium necessitatibus corrupti veritatis vel iste aliquam,
+                molestiae esse et sit repudiandae?
+              </p>
+    
+              <mat-action-row>
+                <button mat-button color="primary" (click)="nextStep()">
+                  Next
+                </button>
+              </mat-action-row>
+            </mat-expansion-panel>
+    
+            <mat-expansion-panel
+              [expanded]="step === 1"
+              (opened)="setStep(1)"
+              hideToggle
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title> Reviews </mat-panel-title>
+                <mat-panel-description>
+                  Rating and reviews
+                  <mat-icon>map</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+    
+              <div class="h-[300px] overflow-y-auto">
+                <div class="bg-green-50 mt-4">
+                  <div class="flex justify justify-between">
+                    <div class="flex gap-2">
+                      <div class="w-7 h-7 text-center rounded-full bg-red-500">
+                        J
+                      </div>
+                      <span>Jess Hopkins</span>
+                    </div>
+                    <div class="flex p-1 gap-1 text-orange-300">
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                    </div>
+                  </div>
+                  <div>
+                    Gorgeous design! Even more responsive than the previous version.
+                    A pleasure to use!
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Feb 13, 2021</span>
+                    <button
+                      class="p-1 px-2 bg-gray-900 hover:bg-gray-950 border border-gray-950 bg-opacity-60"
+                    >
+                      Share
+                    </button>
+                  </div>
+                </div>
+                <div class="bg-green-50 mt-4">
+                  <div class="flex justify justify-between">
+                    <div class="flex gap-2">
+                      <div class="w-7 h-7 text-center rounded-full bg-red-500">
+                        J
+                      </div>
+                      <span>Jess Hopkins</span>
+                    </div>
+                    <div class="flex p-1 gap-1 text-orange-300">
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                    </div>
+                  </div>
+                  <div>
+                    Gorgeous design! Even more responsive than the previous version.
+                    A pleasure to use!
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Feb 13, 2021</span>
+                    <button
+                      class="p-1 px-2 bg-gray-900 hover:bg-gray-950 border border-gray-950 bg-opacity-60"
+                    >
+                      Share
+                    </button>
+                  </div>
+                </div>
+                <div class="bg-green-50 mt-4">
+                  <div class="flex justify justify-between">
+                    <div class="flex gap-2">
+                      <div class="w-7 h-7 text-center rounded-full bg-red-500">
+                        J
+                      </div>
+                      <span>Jess Hopkins</span>
+                    </div>
+                    <div class="flex p-1 gap-1 text-orange-300">
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                    </div>
+                  </div>
+                  <div>
+                    Gorgeous design! Even more responsive than the previous version.
+                    A pleasure to use!
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Feb 13, 2021</span>
+                    <button
+                      class="p-1 px-2 bg-gray-900 hover:bg-gray-950 border border-gray-950 bg-opacity-60"
+                    >
+                      Share
+                    </button>
+                  </div>
+                </div>
+              </div>
+    
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">
+                  Previous
+                </button>
+                <button mat-button color="primary" (click)="nextStep()">
+                  Next
+                </button>
+              </mat-action-row>
+            </mat-expansion-panel>
+    
+            <mat-expansion-panel
+              [expanded]="step === 2"
+              (opened)="setStep(2)"
+              hideToggle
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title> Hire </mat-panel-title>
+                <mat-panel-description>
+                  want to hire?
+                  <mat-icon>date_range</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+    
+              <mat-form-field>
+                <mat-label>Date</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  (focus)="picker.open()"
+                  readonly
+                />
+              </mat-form-field>
+              <mat-datepicker #picker></mat-datepicker>
+    
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">
+                  Previous
+                </button>
+                <button mat-button color="primary" (click)="nextStep()">End</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+  </div>
+</body>

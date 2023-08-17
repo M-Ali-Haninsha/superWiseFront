@@ -27,11 +27,8 @@ export class AdminDialogComponent implements OnInit {
         this.tittle = 'edit category'
         this.buttonName = 'update'
         this.categoryForm.controls['categoryName'].setValue(this.editData.name)
-        // this.categoryForm.controls['file'].setValue(this.editData.Image)
         this.categoryForm.controls['description'].setValue(this.editData.description)
-      }
-      console.log('daaaaaaaaaaaaaata',this.editData);
-      
+      }      
   }
 
   onFileSelected(event: any) {

@@ -5,7 +5,7 @@
         <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white">Available Services</h1>
 
         <div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
-            <div class="lg:flex" *ngFor="let cat of category">
+            <div class="lg:flex" *ngFor="let cat of category" (click)="view(cat._id)">
                 <img class="object-cover w-full h-56 rounded-lg lg:w-64" [src]="cat.Image" alt="{{ cat.name }}">
                 <div class="flex flex-col justify-between py-6 lg:mx-6">
                     <a class="text-xl font-semibold text-gray-800 hover:underline dark:text-white ">

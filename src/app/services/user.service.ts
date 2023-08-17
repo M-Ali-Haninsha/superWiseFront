@@ -29,4 +29,14 @@ export class UserService {
     
     return this.http.post<any> (this.url+'userLogin', data)
   }
+
+  fetchWorkers(id:any):Observable<any> {
+    return this.http.get<any> (this.url+ 'fetchWorkers/'+ id)
+  }
+
+  userViewWorkerDetails(id:string): Observable<any> {
+    console.log('serviccccccccccc', id);
+    
+    return this.http.get<any> (this.url+ 'fetchWorkerDetails/'+ id)
+  }
 }
