@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs'
 
@@ -34,9 +34,14 @@ export class UserService {
     return this.http.get<any> (this.url+ 'fetchWorkers/'+ id)
   }
 
-  userViewWorkerDetails(id:string): Observable<any> {
-    console.log('serviccccccccccc', id);
-    
+  userViewWorkerDetails(id:string): Observable<any> {    
     return this.http.get<any> (this.url+ 'fetchWorkerDetails/'+ id)
+  }
+
+  workerHire(data: any, id:string): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.post<any> (this.url+ 'hireWorker/'+id, data, requestOptions)
   }
 }

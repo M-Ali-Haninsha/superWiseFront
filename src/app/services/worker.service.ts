@@ -42,4 +42,11 @@ export class WorkerService {
     return this.http.put<any>(this.url+'workerEditProfilePhoto', data, requestOptions)
   }
 
+  fetchRequests(): Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'fetchUserRequest', requestOptions)
+  }
+
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
@@ -11,6 +12,7 @@ export class ViewWorkerComponent implements OnInit{
 
   workerData:any
   id:string
+  hireForm!: FormGroup
 
   step = 0;
 
@@ -26,21 +28,41 @@ export class ViewWorkerComponent implements OnInit{
     this.step--;
   }
 
-  constructor(private activateRoute: ActivatedRoute, private service: UserService) {
-    this.id = this.activateRoute.snapshot.paramMap.get('id') || ''  
-    console.log('tessssssssssssssssss', this.id);
-          
+  constructor(private activateRoute: ActivatedRoute, private service: UserService, private formBuilder: FormBuilder) {
+    this.id = this.activateRoute.snapshot.paramMap.get('id') || ''            
   }
 
   ngOnInit(): void {
       this.viewWorkerDetails(this.id)
+      this.hireForm = this.formBuilder.group({
+        description:['', Validators.required]
+      })
   }
 
   viewWorkerDetails(id:string){
     this.service.userViewWorkerDetails(id).subscribe((value)=> {
-      console.log(value.data);
       this.workerData = value.data
     })
+  }
+
+  hire(id:string) {
+    if(this.hireForm.valid) {
+    let formData = new FormData()
+    formData = this.hireForm.value
+    console.log(formData);
+    this.service.workerHire(formData, id).subscribe((value)=>{
+      console.log(value);
+      if(value.error){
+        console.log('error');
+        
+      }
+      if(value.done) {
+        console.log('doneeeee');
+        
+      }
+      
+    })
+    }
   }
 }
 
