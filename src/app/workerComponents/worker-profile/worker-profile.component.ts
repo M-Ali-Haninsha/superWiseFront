@@ -26,11 +26,30 @@ export class WorkerProfileComponent implements OnInit{
   }
   editButton(){
     const dialogRef = this.dialog.open(WokerDialogComponent, {
-      width:'30%'
+      width:'30%',
+      data: {mode: 'photo'}
     })
 
     dialogRef.afterClosed().subscribe(result => {
+      if(result == 'photoUpdated'){
+        this.getWorkerDetails()
+      }
+    });
+  }
 
+  editDetails(){
+    const dialogRef = this.dialog.open(WokerDialogComponent, {
+      width:'30%',
+      data: {
+        mode: 'details',
+        workerData: this.workerData 
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == 'detailsUpdated') {
+        this.getWorkerDetails()
+      }
     });
   }
 }

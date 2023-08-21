@@ -11,7 +11,10 @@ import { WorkerService } from 'src/app/services/worker.service';
 })
 export class WokerDialogComponent implements OnInit{
 
+  hide = true;
+  formData2:any
   workerProfileForm!: FormGroup
+  workerDetailsForm!: FormGroup
 
   constructor( private formBuilder: FormBuilder,private service: WorkerService ,private ref: MatDialogRef<WokerDialogComponent>, @Inject(MAT_DIALOG_DATA) public editData:any) {
 
@@ -21,6 +24,19 @@ export class WokerDialogComponent implements OnInit{
       this.workerProfileForm = this.formBuilder.group({
         file: ['']
       })
+      if (this.editData.mode === 'details') {
+        console.log(this.editData);
+      }
+
+      if (this.editData.mode === 'details') {
+        this.workerDetailsForm = this.formBuilder.group({
+          firstName: [this.editData.workerData.firstName],
+          lastName: [this.editData.workerData.lastName],
+          department: [this.editData.workerData.department.name],
+          phoneNo: [this.editData.workerData.phoneNo],
+          location: [this.editData.workerData.district]
+        });
+      }
   }
 
   onFileSelected(event: any) {
@@ -33,7 +49,16 @@ export class WokerDialogComponent implements OnInit{
     const formData = new FormData();
     formData.append('file', fileC?.value);
     this.service.editPhoto(formData).subscribe((value)=>{
-      console.log(value);
+      this.ref.close('photoUpdated')
+    })
+  }
+
+  updateDetails() {
+    this.formData2 = this.workerDetailsForm.value
+    console.log(this.formData2);
+    this.service.editDetails(this.formData2).subscribe((value)=>{
+      console.log(value); 
+      this.ref.close('detailsUpdated')
     })
   }
 }

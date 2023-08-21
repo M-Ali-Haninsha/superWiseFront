@@ -52,6 +52,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { WokerDialogComponent } from './workerComponents/woker-dialog/woker-dialog.component';
 import { WokerSidenavComponent } from './workerComponents/woker-sidenav/woker-sidenav.component';
+import { AcceptedWorksComponent } from './workerComponents/accepted-works/accepted-works.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { WokerSidenavComponent } from './workerComponents/woker-sidenav/woker-si
     WorkerProfileComponent,
     ViewWorkerComponent,
     WokerDialogComponent,
-    WokerSidenavComponent
+    WokerSidenavComponent,
+    AcceptedWorksComponent
   ],
   imports: [
     BrowserModule,

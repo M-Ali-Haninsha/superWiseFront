@@ -24,6 +24,7 @@ import { WorkerInboxComponent } from './workerComponents/worker-inbox/worker-inb
 import { LandingPageComponent } from './workerComponents/landing-page/landing-page.component';
 import { WorkerProfileComponent } from './workerComponents/worker-profile/worker-profile.component';
 import { ViewWorkerComponent } from './userComponents/view-worker/view-worker.component';
+import { AcceptedWorksComponent } from './workerComponents/accepted-works/accepted-works.component';
 
 const routes: Routes = [
 //recruiter routing  
@@ -54,7 +55,8 @@ const routes: Routes = [
     {path:'', redirectTo: 'workerLandingPage', pathMatch:'full'},
     {path:'workerLandingPage', component:LandingPageComponent},
     {path: 'inbox', component: WorkerInboxComponent},
-    {path: 'workerProfile', component: WorkerProfileComponent}
+    {path: 'workerProfile', component: WorkerProfileComponent},
+    {path:'acceptedWorks', component: AcceptedWorksComponent}
   ]}
 ];
 

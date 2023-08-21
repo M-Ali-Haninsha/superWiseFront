@@ -42,6 +42,13 @@ export class WorkerService {
     return this.http.put<any>(this.url+'workerEditProfilePhoto', data, requestOptions)
   }
 
+  editDetails(data:any): Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.put<any>(this.url+'workerEditProfileData', data, requestOptions)
+  }
+
   fetchRequests(): Observable<any> {
     const item = 'workerValue'
     const headers = new HttpHeaders().set('usertype', item);
