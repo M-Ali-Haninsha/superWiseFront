@@ -10,44 +10,33 @@
       </div>
       <div class="flex flex-col items-center -mt-20 bg-black">
         <img
-          src="https://res.cloudinary.com/dboafhu31/image/upload/v1625318266/imagen_2021-07-03_091743_vtbkf8.png"
+        [src]="data?.image"
           class="w-40 border-4 border-white rounded-full"
         />
         <div class="flex items-center space-x-2 mt-2">
-          <p class="text-gray-100 text-2xl">example name</p>
-          <span class="bg-blue-500 rounded-full p-1" title="Verified">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="text-gray-100 h-2.5 w-2.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="4"
-                d="M5 13l4 4L19 7"
-              ></path>
-            </svg>
-          </span>
+          <p class="text-gray-100 text-2xl">{{data?.firstName}} {{data?.lastName}}</p>
         </div>
-        <p class="text-gray-700">service</p>
-        <p class="text-sm text-gray-500">location</p>
+        <p class="text-gray-700">{{data?.phone}}</p>
+        <p class="text-sm text-gray-500">{{data?.email}}</p>
       </div>
-      <div
-        class="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2"
-      >
+      <div class="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2">
         <div class="flex items-center space-x-4 mt-2">
-          <button
-        
-            class="flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100"
+          <input 
+            type="file"
+            id="photoInput"
+            style="display: none"
+            (change)="handleFileChange($event)"
+          />
+          <label
+            for="photoInput"
+            class="cursor-pointer flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100"
           >
-          <span>edit photo</span>
-          </button>
+            <span>edit photo</span>
+          </label>
         </div>
       </div>
     </div>
+    
   
     <div
       class="my-4 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4"
@@ -63,50 +52,40 @@
           <ul class="mt-2 text-gray-700">
             <li class="flex border-y py-2">
               <span class="font-bold w-24">First name:</span>
-              <span class="text-gray-300">firstName</span>
+              <span class="text-gray-300">{{data?.firstName}}</span>
             </li>
             <li class="flex border-b py-2">
               <span class="font-bold w-24">Last name:</span>
-              <span class="text-gray-300">lastName</span>
-            </li>
-            <li class="flex border-b py-2">
-              <span class="font-bold w-24">Department:</span>
-              <span class="text-gray-300">department.name</span>
+              <span class="text-gray-300">{{data?.lastName}}</span>
             </li>
             <li class="flex border-b py-2">
               <span class="font-bold w-24">Mobile:</span>
-              <span class="text-gray-300">phoneNo</span>
+              <span class="text-gray-300">{{data?.phone}}</span>
             </li>
             <li class="flex border-b py-2">
               <span class="font-bold w-24">Email:</span>
-              <span class="text-gray-300">email</span>
+              <span class="text-gray-300">{{data?.email}}</span>
             </li>
             <li class="flex border-b py-2">
               <span class="font-bold w-24">Location:</span>
-              <span class="text-gray-300">district</span>
+              <span class="text-gray-300">{{data?.location}}</span>
             </li>
           </ul>
         </div>
       </div>
       <div class="flex flex-col w-full 2xl:w-2/3">
         <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
-          <div class="flex items-center justify-between">
-              <h4 class="text-xl text-gray-200 font-bold">About :</h4>
-              <button class="flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100">
-                  <span>Edit</span>
-              </button>
-          </div>
-          
-  
-          <p class="mt-2 text-gray-300">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-            voluptates obcaecati numquam error et ut fugiat asperiores. Sunt nulla
-            ad incidunt laboriosam, laudantium est unde natus cum numquam, neque
-            facere. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut,
-            magni odio magnam commodi sunt ipsum eum! Voluptas eveniet aperiam at
-            maxime, iste id dicta autem odio laudantium eligendi commodi
-            distinctio!
-          </p>
+              <h4 class="text-xl text-gray-200 font-bold">Hired Works</h4>
+              <mat-card class="light-bg dark-bg mt-2" *ngFor="let worker of workerData" >
+                <mat-card-header>
+                  <mat-card-title class="text">{{worker.department.name}}</mat-card-title>
+                  <mat-card-subtitle class="text">{{worker.firstName}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-actions align="end">
+                  <button mat-button color="warn">View More</button>
+                  <!-- <button mat-button color="warn">SHARE</button> -->
+                </mat-card-actions>
+              </mat-card>
         </div>
       </div>
     </div>

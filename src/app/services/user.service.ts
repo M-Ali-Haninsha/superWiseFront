@@ -44,4 +44,25 @@ export class UserService {
     const requestOptions = { headers: headers };
     return this.http.post<any> (this.url+ 'hireWorker/'+id, data, requestOptions)
   }
+
+  fetchUserData(): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'fetchUserData', requestOptions)
+  }
+
+  uploadFile(file:any): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.put<any> (this.url+'updatePhoto', file, requestOptions)
+  }
+
+  listHiredWorkers(): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'hiredWorkers', requestOptions)
+  }
 }

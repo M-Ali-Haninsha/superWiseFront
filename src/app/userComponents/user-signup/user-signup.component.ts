@@ -22,7 +22,8 @@ export class UserSignupComponent implements OnInit{
         lastName:['', Validators.required],
         email:['', Validators.required],
         password:['', [Validators.required, Validators.minLength(8)]],
-        phoneNo:['', [Validators.required, Validators.minLength(10)]]
+        phoneNo:['', [Validators.required, Validators.minLength(10)]],
+        location:['', Validators.required]
       })
   }
 

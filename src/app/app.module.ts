@@ -47,6 +47,7 @@ import { WorkerInboxComponent } from './workerComponents/worker-inbox/worker-inb
 import { WorkerProfileComponent } from './workerComponents/worker-profile/worker-profile.component';
 import { ViewWorkerComponent } from './userComponents/view-worker/view-worker.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCardModule} from '@angular/material/card';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
@@ -109,7 +110,8 @@ import { AcceptedWorksComponent } from './workerComponents/accepted-works/accept
     MatMenuModule,
     MatExpansionModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatCardModule
     ],
   providers: [
     {
