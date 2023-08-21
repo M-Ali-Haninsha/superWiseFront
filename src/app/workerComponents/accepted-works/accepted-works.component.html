@@ -1,1 +1,49 @@
-<p>accepted-works works!</p>
+<h1 class="font-bold py-4 uppercase">Current Works</h1>
+<div style="background-color: #1a202c; color: white;">
+    <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. John" #input>
+      </mat-form-field>
+      
+      <div class="mat-elevation-z8 bg-gray-900 dark:bg-gray-800">
+        <table mat-table [dataSource]="dataSource" matSort class="responsive-table">
+      
+          <ng-container matColumnDef="rowNumber">
+            <th mat-header-cell *matHeaderCellDef> No </th>
+            <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
+          </ng-container>
+      
+          <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Firstname </th>
+            <td mat-cell *matCellDef="let row"> {{row.userInfo.firstName}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> email </th>
+            <td mat-cell *matCellDef="let row"> {{row.userInfo.email}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone no </th>
+            <td mat-cell *matCellDef="let row"> {{row.userInfo.phone}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="details">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+            <td mat-cell *matCellDef="let row">
+                <button  mat-icon-button  color="primary" >
+                    <mat-icon>visibility</mat-icon>
+                </button>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+          </tr>
+        </table>
+      
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+      </div>
+</div>

@@ -56,4 +56,25 @@ export class WorkerService {
     return this.http.get<any> (this.url+'fetchUserRequest', requestOptions)
   }
 
+  requestAccept(id:any): Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.put<any>(this.url+'workAccept', id, requestOptions)
+  }
+
+  requestReject(id:any): Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.put<any>(this.url+'workReject', id, requestOptions)
+  }
+
+  fetchAcceptedWorks(): Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'fetchAcceptedWorks', requestOptions)
+  }
+
 }

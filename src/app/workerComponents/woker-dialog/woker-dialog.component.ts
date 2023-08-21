@@ -15,6 +15,7 @@ export class WokerDialogComponent implements OnInit{
   formData2:any
   workerProfileForm!: FormGroup
   workerDetailsForm!: FormGroup
+  details:any
 
   constructor( private formBuilder: FormBuilder,private service: WorkerService ,private ref: MatDialogRef<WokerDialogComponent>, @Inject(MAT_DIALOG_DATA) public editData:any) {
 
@@ -23,10 +24,7 @@ export class WokerDialogComponent implements OnInit{
   ngOnInit(): void {
       this.workerProfileForm = this.formBuilder.group({
         file: ['']
-      })
-      if (this.editData.mode === 'details') {
-        console.log(this.editData);
-      }
+      })   
 
       if (this.editData.mode === 'details') {
         this.workerDetailsForm = this.formBuilder.group({
@@ -37,6 +35,13 @@ export class WokerDialogComponent implements OnInit{
           location: [this.editData.workerData.district]
         });
       }
+
+      if (this.editData.mode === 'userRequirements') {
+        this.details = this.editData
+        console.log('test', this.details);
+        
+      }
+
   }
 
   onFileSelected(event: any) {

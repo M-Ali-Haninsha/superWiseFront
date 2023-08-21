@@ -62,3 +62,17 @@
 </div>
 
 </div>
+
+<div  *ngIf="editData.mode === 'userRequirements'" class="flex flex-col w-full 2xl:w-2/3" style="width: 100%;">
+  <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
+    <div class="flex items-center justify-between">
+        <h4 class="text-xl text-gray-200 font-bold">Requirements :</h4>
+       
+    </div>
+    
+
+    <p class="mt-2 text-gray-300">
+      {{ details.requirement}}
+    </p>
+  </div>
+</div>
