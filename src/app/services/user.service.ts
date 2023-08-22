@@ -65,4 +65,11 @@ export class UserService {
     const requestOptions = { headers: headers };
     return this.http.get<any> (this.url+'hiredWorkers', requestOptions)
   }
+
+  editUserDetails(data:any): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.put<any> (this.url+'updateUserData', data, requestOptions)
+  }
 }

@@ -54,6 +54,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { WokerDialogComponent } from './workerComponents/woker-dialog/woker-dialog.component';
 import { WokerSidenavComponent } from './workerComponents/woker-sidenav/woker-sidenav.component';
 import { AcceptedWorksComponent } from './workerComponents/accepted-works/accepted-works.component';
+import { UserDialogComponent } from './userComponents/user-dialog/user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { AcceptedWorksComponent } from './workerComponents/accepted-works/accept
     ViewWorkerComponent,
     WokerDialogComponent,
     WokerSidenavComponent,
-    AcceptedWorksComponent
+    AcceptedWorksComponent,
+    UserDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/services/user.service';
+import { UserDialogComponent } from '../user-dialog/user-dialog.component'
 
 @Component({
   selector: 'app-user-profile',
@@ -11,7 +13,7 @@ export class UserProfileComponent implements OnInit{
   data:any
   workerData:any
 
-  constructor(private service: UserService) {}
+  constructor(private service: UserService, private dialog: MatDialog) {}
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
@@ -49,6 +51,19 @@ export class UserProfileComponent implements OnInit{
       console.log('testing',value);
       this.workerData = value.worker
     })
+  }  
+
+  editUserDetails() {
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width:'30%',
+      data: {mode: 'userDetails', data: this.data}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == 'detailsUpdated') {
+        this.getUserDetails()
+      }
+    });
   }
   
 }

@@ -49,18 +49,13 @@ export class ViewWorkerComponent implements OnInit{
     if(this.hireForm.valid) {
     let formData = new FormData()
     formData = this.hireForm.value
-    console.log(formData);
     this.service.workerHire(formData, id).subscribe((value)=>{
-      console.log(value);
       if(value.error){
-        console.log('error');
-        
+        alert('already request sended')
       }
       if(value.done) {
-        console.log('doneeeee');
-        
+        alert('request sended')
       }
-      
     })
     }
   }

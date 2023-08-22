@@ -1,0 +1,33 @@
+<div *ngIf="editData.mode=== 'userDetails'"> 
+    <h1 mat-dialog-title> edit details </h1>
+  <div mat-dialog-content>
+  <form [formGroup]="userDetailsForm">
+    <mat-form-field>
+      <mat-label>Enter your Firstname</mat-label>
+      <input  matInput placeholder="john"   formControlName="firstName" required>
+    </mat-form-field>
+  
+        <mat-form-field>
+          <mat-label>Enter your Lastname</mat-label>
+          <input  matInput placeholder="do"   formControlName="lastName" required>
+        </mat-form-field>
+  
+        <mat-form-field>
+          <mat-label>Enter your mobile no</mat-label>
+          <input  matInput placeholder="1234567898"   formControlName="phoneNo" required>
+        </mat-form-field>
+  
+        <mat-form-field>
+          <mat-label>Enter your district</mat-label>
+          <input  matInput placeholder="district"   formControlName="location" required>
+        </mat-form-field>
+       
+      
+      <mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close>Cancel</button>
+          <button (click)="updateUserData()" mat-button [mat-dialog-close]="true" cdkFocusInitial>submit</button>
+        </mat-dialog-actions>
+  </form>
+  </div>
+  
+  </div>
