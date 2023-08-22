@@ -72,7 +72,13 @@ export class WokerDialogComponent implements OnInit{
     this.formData2 = this.workerDetailsForm.value
     this.service.editDetails(this.formData2).subscribe((value)=>{
       console.log(value); 
-      this.ref.close('detailsUpdated')
+      if(value.updated){
+        this.ref.close('detailsUpdated')
+      }
+      if(value.error){
+        alert('invalid categories')
+      }
+      
     })
   }
 

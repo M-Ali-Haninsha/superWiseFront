@@ -45,7 +45,6 @@ export class WorkerProfileComponent implements OnInit{
         workerData: this.workerData 
       }
     })
-
     dialogRef.afterClosed().subscribe(result => {
       if(result == 'detailsUpdated') {
         this.getWorkerDetails()
