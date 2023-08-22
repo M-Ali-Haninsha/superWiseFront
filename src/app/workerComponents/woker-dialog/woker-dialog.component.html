@@ -22,9 +22,9 @@
 
   <!-- worker details edit  -->
 
-<div *ngIf="editData.mode === 'details'">
-  <h1 mat-dialog-title> edit details </h1>
-<div mat-dialog-content>
+<div *ngIf="editData.mode === 'details'" class="bg-black">
+  <h1 style="color: white;" mat-dialog-title> edit details </h1>
+<div mat-dialog-content style="overflow-y: hidden;">
 <form [formGroup]="workerDetailsForm">
   <mat-form-field>
     <mat-label>Enter your Firstname</mat-label>
@@ -36,8 +36,6 @@
         <input  matInput placeholder="do"   formControlName="lastName" required>
       </mat-form-field>
 
-    
-    
       <mat-form-field>
         <mat-label>Enter your department</mat-label>
         <input  matInput placeholder="eg: electrician"   formControlName="department" required>
@@ -55,24 +53,47 @@
      
     
     <mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close>Cancel</button>
-        <button (click)="updateDetails()" mat-button [mat-dialog-close]="true" cdkFocusInitial>submit</button>
+        <button color="warn" mat-button mat-dialog-close>Cancel</button>
+        <button color="primary" (click)="updateDetails()" mat-button [mat-dialog-close]="true" cdkFocusInitial>submit</button>
       </mat-dialog-actions>
 </form>
 </div>
-
 </div>
 
 <div  *ngIf="editData.mode === 'userRequirements'" class="flex flex-col w-full 2xl:w-2/3" style="width: 100%;">
   <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
     <div class="flex items-center justify-between">
         <h4 class="text-xl text-gray-200 font-bold">Requirements :</h4>
+    </div>
+    <p class="mt-2 text-gray-300">
+      {{ details.requirement.requirement}}
+    </p>
+    <div>
+      <img [src]="details.requirement.file" alt="">
+    </div>
+  </div>
+</div>
+
+<div  *ngIf="editData.mode === 'description'" class="flex flex-col w-full 2xl:w-2/3" style="width: 100%;">
+  <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
+    <div class="flex items-center justify-between">
+        <h4 class="text-xl text-gray-200 font-bold">Description :</h4>
        
     </div>
-    
+    <div class="cols">
+      <form [formGroup]="workerDescriptionForm">
+         <textarea formControlName="description" 
+      class="no-resize block w-full  border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none" 
+      id="message" style="background-color: black; color: white;">
+</textarea>     
+ <p  class="text-gray-600 text-xs italic"></p>
+ <mat-dialog-actions align="end">
+  <button color="warn" mat-button mat-dialog-close>Cancel</button>
+  <button color="primary" (click)="editDescription()" mat-button [mat-dialog-close]="true" cdkFocusInitial>submit</button>
+</mat-dialog-actions>
+      </form>
+     
+    </div>
 
-    <p class="mt-2 text-gray-300">
-      {{ details.requirement}}
-    </p>
   </div>
 </div>

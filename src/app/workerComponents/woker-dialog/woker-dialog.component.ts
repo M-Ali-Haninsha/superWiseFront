@@ -13,9 +13,12 @@ export class WokerDialogComponent implements OnInit{
 
   hide = true;
   formData2:any
+  formdata3: any
   workerProfileForm!: FormGroup
   workerDetailsForm!: FormGroup
+  workerDescriptionForm!: FormGroup
   details:any
+  desc:any
 
   constructor( private formBuilder: FormBuilder,private service: WorkerService ,private ref: MatDialogRef<WokerDialogComponent>, @Inject(MAT_DIALOG_DATA) public editData:any) {
 
@@ -39,8 +42,15 @@ export class WokerDialogComponent implements OnInit{
       if (this.editData.mode === 'userRequirements') {
         this.details = this.editData
         console.log('test', this.details);
-        
       }
+
+      if (this.editData.mode === 'description') {
+        console.log(this.editData);
+        this.workerDescriptionForm = this.formBuilder.group({
+          description: [this.editData.workerData.description],
+        });
+      }
+
 
   }
 
@@ -60,10 +70,17 @@ export class WokerDialogComponent implements OnInit{
 
   updateDetails() {
     this.formData2 = this.workerDetailsForm.value
-    console.log(this.formData2);
     this.service.editDetails(this.formData2).subscribe((value)=>{
       console.log(value); 
       this.ref.close('detailsUpdated')
+    })
+  }
+
+  editDescription() {
+    this.formdata3 = this.workerDescriptionForm.value
+    this.service.editDescription(this.formdata3).subscribe((value)=> {
+      console.log(value);
+      this.ref.close('descriptionUpdated')
     })
   }
 }

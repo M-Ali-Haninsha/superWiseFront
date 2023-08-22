@@ -77,4 +77,10 @@ export class WorkerService {
     return this.http.get<any> (this.url+'fetchAcceptedWorks', requestOptions)
   }
 
+  editDescription(data:any): Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.put<any> (this.url+'updateDescription', data, requestOptions)
+  }
 }

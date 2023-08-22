@@ -1,4 +1,4 @@
-<div id="last-users">
+<!-- <div id="last-users">
     <h1 class="font-bold py-4 uppercase">requests</h1>
     <div class="overflow-x-scroll">
         <table class="w-full whitespace-nowrap">
@@ -36,11 +36,11 @@
 
         </table>
     </div>
-</div>
+</div> -->
 
 
 
-<div class="mt-40" style="background-color: #1a202c; color: white;">
+<div>
     <mat-form-field>
         <mat-label>Search</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. John" #input>
@@ -67,7 +67,7 @@
           <ng-container matColumnDef="details">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Details </th>
             <td mat-cell *matCellDef="let row">
-              <button (click)="showDetails(row.requirement)" mat-icon-button  color="primary" >
+              <button title="view Details" (click)="showDetails(row)" mat-icon-button  color="primary" >
                 <mat-icon>visibility</mat-icon>
               </button>
           </td>
@@ -78,10 +78,10 @@
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
             <td mat-cell *matCellDef="let row">
-              <button (click)="acceptWork(row._id)" mat-icon-button color="warn" >
+              <button title="accept" (click)="acceptWork(row._id)" mat-icon-button color="warn" >
                 <mat-icon>check_circle</mat-icon>
             </button>
-                <button (click)="rejectWork(row._id)"  mat-icon-button  color="primary" >
+                <button title="reject" (click)="rejectWork(row._id)"  mat-icon-button  color="primary" >
                     <mat-icon>block</mat-icon>
                 </button>
             </td>

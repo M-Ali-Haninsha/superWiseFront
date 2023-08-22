@@ -39,7 +39,7 @@ export class WorkerProfileComponent implements OnInit{
 
   editDetails(){
     const dialogRef = this.dialog.open(WokerDialogComponent, {
-      width:'30%',
+      width:'20%',
       data: {
         mode: 'details',
         workerData: this.workerData 
@@ -48,6 +48,22 @@ export class WorkerProfileComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       if(result == 'detailsUpdated') {
+        this.getWorkerDetails()
+      }
+    });
+  }
+
+  editDescription() {
+    const dialogRef = this.dialog.open(WokerDialogComponent, {
+      width:'30%',
+      data: {
+        mode: 'description',
+        workerData: this.workerData 
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == 'descriptionUpdated') {
         this.getWorkerDetails()
       }
     });

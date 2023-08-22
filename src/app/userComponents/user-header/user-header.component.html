@@ -5,11 +5,13 @@
     <span>SuperWise</span>
     <span class="example-spacer"></span>
     <span *ngIf="login">login</span>
-    <button *ngIf="login" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" routerLink="/userLogin">
-      <mat-icon>login</mat-icon>
-    </button>
-    <button *ngIf="logged" mat-button [matMenuTriggerFor]="menu"> user </button>
-    <mat-menu #menu="matMenu">
+    <button *ngIf="login" mat-button [matMenuTriggerFor]="beforemenu"> <mat-icon>login</mat-icon> </button>
+    <mat-menu #beforemenu="matMenu">
+      <button  mat-menu-item routerLink="/userLogin">Client</button>
+      <button  mat-menu-item routerLink="/workerLogin">Worker</button>
+    </mat-menu>
+    <button *ngIf="logged" mat-button [matMenuTriggerFor]="aftermenu"> {{data?.firstName}} </button>
+    <mat-menu #aftermenu="matMenu">
       <button (click)="profile()" mat-menu-item >profile</button>
       <button (click)="signout()" mat-menu-item >signout</button>
     </mat-menu>

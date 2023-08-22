@@ -62,12 +62,12 @@ export class WorkerInboxComponent implements OnInit{
     })
   }
 
-  showDetails(requirement:any) {
+  showDetails(data:any) {
     const dialogRef = this.dialog.open(WokerDialogComponent, {
       width:'30%',
       data: {
         mode: 'userRequirements',
-        requirement: requirement
+        requirement: data
       }
     })
 

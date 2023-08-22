@@ -13,7 +13,7 @@ export class ViewWorkerComponent implements OnInit{
   workerData:any
   id:string
   hireForm!: FormGroup
-
+  selectedPhoto: File | undefined;
   step = 0;
 
   setStep(index: number) {
@@ -35,7 +35,8 @@ export class ViewWorkerComponent implements OnInit{
   ngOnInit(): void {
       this.viewWorkerDetails(this.id)
       this.hireForm = this.formBuilder.group({
-        description:['', Validators.required]
+        description:['', Validators.required],
+        file: ['']
       })
   }
 
@@ -44,11 +45,23 @@ export class ViewWorkerComponent implements OnInit{
       this.workerData = value.data
     })
   }
+  onPhotoSelected(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedPhoto = event.target.files[0];
+    }
+  }
 
   hire(id:string) {
     if(this.hireForm.valid) {
     let formData = new FormData()
-    formData = this.hireForm.value
+    if (this.selectedPhoto) {
+      formData.append('file', this.selectedPhoto);
+    }
+
+    formData.append('description', this.hireForm.get('description')?.value);
+
+    console.log('checkinnnnnng',formData);
+    
     this.service.workerHire(formData, id).subscribe((value)=>{
       if(value.error){
         alert('already request sended')

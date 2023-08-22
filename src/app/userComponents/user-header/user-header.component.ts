@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-header',
@@ -10,8 +11,9 @@ export class UserHeaderComponent implements OnInit{
 
   login: boolean = true
   logged: boolean = false
+  data:any
 
-  constructor(private route: Router) {
+  constructor(private route: Router, private service: UserService) {
     if(sessionStorage.getItem('userValue')) {
       this.login = false
       this.logged = true
@@ -19,7 +21,16 @@ export class UserHeaderComponent implements OnInit{
   }
 
   ngOnInit(): void {
-      
+    if(this.logged){
+      this.getUserName()
+    }
+  }
+
+  getUserName() {
+    this.service.fetchUserData().subscribe((value)=> {
+      console.log(value);
+      this.data = value.fetchedData
+    })
   }
 
   signout() {    
