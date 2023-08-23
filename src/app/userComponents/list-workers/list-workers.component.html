@@ -9,10 +9,8 @@
         <div class="mt-4">
            <p class=" text-gray-800 capitalize  dark:text-white">CATEGORIES</p> 
         </div>
-        <div>
-            <a href="#" class=" text-gray-800 capitalize  dark:text-white block px-4 py-2 text-sm"   id="menu-item-0">cats1</a>
-            <a href="#" class=" text-gray-800 capitalize  dark:text-white block px-4 py-2 text-sm"   id="menu-item-1">cats2</a>
-            <a href="#" class=" text-gray-800 capitalize  dark:text-white block px-4 py-2 text-sm"   id="menu-item-2">cats3</a>
+        <div *ngFor="let cat of category">
+            <a class=" text-gray-800 capitalize  dark:text-gray-500 block px-4 py-2 text-sm hover:cursor-pointer"   id="menu-item-0">{{cat?.name}}</a>
         </div>
         </div>
         
@@ -24,16 +22,43 @@
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo incidunt ex placeat modi magni quia error alias, adipisci rem similique, at omnis eligendi optio eos harum.
         </p>
         
+        <div class="flex items-center max-w-md mx-auto bg-white rounded-lg" x-data="{ search: '' }">
+            <div class="w-full">
+                <input
+                    type="search"
+                    class="w-full px-4 py-1 text-gray-800 rounded-full focus:outline-none"
+                    placeholder="Search by name and location"
+                    [(ngModel)]="search"
+                    (input)="applySearchFilter()"
+                >
+            </div>
+            <div>
+                <button
+                    type="button"
+                    class="flex items-center bg-blue-500 justify-center w-12 h-12 text-white rounded-r-lg"
+                    [class.bg-purple-500]="search.length > 0"
+                    [class.bg-gray-500]="search.length === 0"
+                    [disabled]="search.length === 0"
+                    (click)="clearSearch()"
+                >
+                    <svg class="w-5 h-5 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
         
         <div class="grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 xl:grid-cols-4">
-            <div class="flex flex-col items-center p-8 transition-colors duration-200 transform cursor-pointer group hover:bg-blue-600 rounded-xl" *ngFor="let workers of worker" (click)="viewWorkerDetails(workers._id)">
+            <div class="flex flex-col items-center p-8 transition-colors duration-200 transform cursor-pointer group hover:bg-blue-600 rounded-xl" *ngFor="let workers of filteredWorkers" (click)="viewWorkerDetails(workers._id)">
                 <img class="object-cover w-32 h-32 rounded-full ring-4 ring-gray-300" [src]="workers.image" alt="">
                 
-                <h1 class="mt-4 text-2xl font-semibold text-gray-700 capitalize dark:text-white group-hover:text-white">{{workers.firstName}} {{workers.lastName}} </h1>
+                <h1 class="mt-4 text-2xl font-semibold text-gray-700 capitalize dark:text-white group-hover:text-white">{{workers?.firstName}} {{workers?.lastName}} </h1>
+                <p class=" text-gray-500 capitalize dark:text-gray-300 group-hover:text-gray-300">{{workers?.district}}</p>
+                <p class=" text-gray-500 capitalize dark:text-gray-300 group-hover:text-gray-300">{{workers?.department.name}}</p>
                 
-                <p class="mt-2 text-gray-500 capitalize dark:text-gray-300 group-hover:text-gray-300">{{workers.department.name}}</p>
                 
-                <div class="flex mt-3 -mx-2">
+                <!-- <div class="flex mt-3 -mx-2">
                     <a href="#" class="mx-2 text-gray-600 dark:text-gray-300 hover:text-gray-500 dark:hover:text-gray-300 group-hover:text-white" aria-label="Reddit">
                         <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -61,10 +86,8 @@
                             </path>
                         </svg>
                     </a>
-                </div>
+                </div> -->
             </div>
-
-           
         </div>
     </div>
 </section>
