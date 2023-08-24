@@ -82,7 +82,7 @@
                   <mat-card-subtitle class="text">{{worker.firstName}}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-actions align="end">
-                  <button mat-button color="warn">View More</button>
+                  <button (click)="viewProgress(worker._id)" mat-button color="warn">View More</button>
                   <!-- <button mat-button color="warn">SHARE</button> -->
                 </mat-card-actions>
               </mat-card>

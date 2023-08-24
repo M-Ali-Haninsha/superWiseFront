@@ -1,0 +1,82 @@
+<p>update-work works!</p>
+<div class="example-input-wrapper">
+    <!-- <label for="duration">Animation duration:</label> -->
+    <input id="duration" hidden value="2000" type="number" min="0" step="100" #duration>
+  </div>
+  
+  <mat-vertical-stepper [linear]="false" #stepper [animationDuration]="duration.value">
+    <mat-step [stepControl]="firstFormGroup">
+        <ng-template matStepLabel>Client Details</ng-template>
+        <div class="w-full flex flex-col 2xl:w-2/3">
+            <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
+             <div class="flex items-center justify-between">
+              <h4 class="text-xl text-gray-200 font-bold">Personal Info</h4>
+              <button  class="flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100">
+                <span>Requirements</span>
+            </button>
+             </div>
+              <ul class="mt-2 text-gray-700">
+                <li class="flex border-y py-2">
+                  <span class="font-bold w-24">First name:</span>
+                  <span class="text-gray-300">name</span>
+                </li>
+                <li class="flex border-b py-2">
+                  <span class="font-bold w-24">Last name:</span>
+                  <span class="text-gray-300">last</span>
+                </li>
+                <li class="flex border-b py-2">
+                  <span class="font-bold w-24">Mobile:</span>
+                  <span class="text-gray-300">8798797</span>
+                </li>
+                <li class="flex border-b py-2">
+                  <span class="font-bold w-24">Email:</span>
+                  <span class="text-gray-300">ahs@gmail</span>
+                </li>
+                <li class="flex border-b py-2">
+                  <span class="font-bold w-24">Location:</span>
+                  <span class="text-gray-300">ahgsd</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+      </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+      <form [formGroup]="secondFormGroup">
+        
+        <ng-template matStepLabel>Update Work Progress</ng-template>
+          <div class="mt-2">
+            <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
+          </div>
+          <div class="grid grid-cols-10">
+            <div class="col-span-2">
+                <button color="warn" mat-button (click)="updateProgress(0)">clear</button>
+            </div>
+            <div class="col-span-6">
+                <button color="warn" mat-button (click)="updateProgress(1)">Work Started</button>
+                <button color="warn" mat-button (click)="updateProgress(2)">work under process</button>
+                <button color="warn" mat-button (click)="updateProgress(3)">completed</button> 
+            </div>
+            <div class="col-span-2">
+                <button color="primary" mat-button>Update</button>
+            </div>
+          </div>
+        
+        <div class="mt-4">
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Update Service Charge</ng-template>
+      You are now done.
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
+  

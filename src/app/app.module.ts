@@ -48,6 +48,7 @@ import { WorkerProfileComponent } from './workerComponents/worker-profile/worker
 import { ViewWorkerComponent } from './userComponents/view-worker/view-worker.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
@@ -55,6 +56,8 @@ import { WokerDialogComponent } from './workerComponents/woker-dialog/woker-dial
 import { WokerSidenavComponent } from './workerComponents/woker-sidenav/woker-sidenav.component';
 import { AcceptedWorksComponent } from './workerComponents/accepted-works/accepted-works.component';
 import { UserDialogComponent } from './userComponents/user-dialog/user-dialog.component';
+import { UpdateWorkComponent } from './workerComponents/update-work/update-work.component';
+import { WorkProgressComponent } from './userComponents/work-progress/work-progress.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +91,9 @@ import { UserDialogComponent } from './userComponents/user-dialog/user-dialog.co
     WokerDialogComponent,
     WokerSidenavComponent,
     AcceptedWorksComponent,
-    UserDialogComponent
+    UserDialogComponent,
+    UpdateWorkComponent,
+    WorkProgressComponent
   ],
   imports: [
     BrowserModule,
@@ -113,7 +118,8 @@ import { UserDialogComponent } from './userComponents/user-dialog/user-dialog.co
     MatExpansionModule,
     MatNativeDateModule,
     MatDatepickerModule,
-    MatCardModule
+    MatCardModule,
+    MatProgressBarModule
     ],
   providers: [
     {

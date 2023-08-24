@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/services/user.service';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,7 +14,7 @@ export class UserProfileComponent implements OnInit{
   data:any
   workerData:any
 
-  constructor(private service: UserService, private dialog: MatDialog) {}
+  constructor(private service: UserService, private dialog: MatDialog, private route: Router) {}
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
@@ -64,6 +65,10 @@ export class UserProfileComponent implements OnInit{
         this.getUserDetails()
       }
     });
+  }
+
+  viewProgress(id:string) {
+    this.route.navigate(['workProgress',id])
   }
   
 }

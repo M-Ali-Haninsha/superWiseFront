@@ -32,6 +32,10 @@ export class ListWorkersComponent implements OnInit{
     })
   }
 
+  filterWorkersByCategory(categoryId: string) {
+    this.viewWorkers(categoryId);
+  }
+
   viewWorkerDetails(id:string){
     this.route.navigate(['/viewWorker',id])
   }

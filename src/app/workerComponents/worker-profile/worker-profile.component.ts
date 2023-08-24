@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { WorkerService } from 'src/app/services/worker.service';
 import { WokerDialogComponent } from '../woker-dialog/woker-dialog.component'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-worker-profile',
@@ -13,16 +14,23 @@ export class WorkerProfileComponent implements OnInit{
 
   workerData: any
 
-  constructor(private service: WorkerService, private dialog: MatDialog) {}
+  constructor(private service: WorkerService, private dialog: MatDialog, private route: Router) {}
 
   ngOnInit(): void {
       this.getWorkerDetails()
   }
 
   getWorkerDetails() {
-    this.service.fetchWorkerData().subscribe((value)=>{      
+    this.service.fetchWorkerData().subscribe({
+      next:(value)=>{      
       this.workerData = value.data                  
-    })
+    },
+    error:(value)=>{
+      if(value.error.message == 'session has expired') {
+        alert('session expired')
+        this.route.navigate(['/workerLogin'])
+      }
+    }})
   }
   editButton(){
     const dialogRef = this.dialog.open(WokerDialogComponent, {
