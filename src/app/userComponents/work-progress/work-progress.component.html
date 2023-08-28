@@ -1,1 +1,47 @@
-<p>work-progress works!</p>
+<app-user-header></app-user-header>
+<div class="grid grid-cols-10 h-full">
+    <div class="col-span-4 bg-black">
+        <div class="max-w-lg mx-auto my-10 bg-white rounded-lg shadow-md p-5">
+          <img
+            class="w-32 h-32 rounded-full mx-auto"
+            [src]="workerData?.image"
+            alt="Profile picture"
+          />
+          <h2 class="text-center text-2xl font-semibold mt-3">{{workerData?.firstName}}</h2>
+          <p class="text-center text-gray-600 mt-1">{{workerData?.department.name}}</p>
+  
+          <div class="mt-5">
+            <h3 class="text-xl font-semibold">Details</h3>
+            <div class="grid grid-cols-10">
+              <p class="mt-2 col-span-5"> name: <span class="text-gray-600 ">{{workerData?.firstName}} {{workerData?.lastName}}</span></p>
+            <p class="mt-2 col-span-5"> mobile no: <span class="text-gray-600 ">{{workerData?.phoneNo}}</span></p>
+
+              <p class="mt-2 col-span-5"> location: <span class="text-gray-600">{{workerData?.district}}</span> </p>
+              <p class="mt-2 col-span-5"> email: <span class="text-gray-600">{{workerData?.email}}</span> </p>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-span-6 bg-black">   
+          
+        <div class="progress-container">
+            <h1 class="text-white" *ngIf="active">Current Progress</h1>  
+            <h1 class="text-white" *ngIf="inActive">Work In Progress</h1>  
+            <mat-progress-bar *ngIf="active" mode="determinate" [value]="progressBar" color="warn"></mat-progress-bar>
+            <mat-progress-bar *ngIf="inActive" mode="indeterminate" color="warn"></mat-progress-bar>
+            <div class="progress-stage my-5" >Work Started</div>
+            <div class="progress-stage  my-5" style="left: 50%;">Work Under Progress</div>
+            <div class="progress-stage  my-5" style="left: 100%;"> Completed</div>
+            
+        </div>
+        <button class="start-10" mat-raised-button color="warn">view images</button>
+        <mat-card class="start-10 my-6 w-10/12">
+            <mat-card-content>
+                Amount to be Paid : ₹{{Amount}}
+                <div class="ml-auto flex justify-end">
+                   <button mat-raised-button color="primary">pay</button> 
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

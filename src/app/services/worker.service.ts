@@ -8,6 +8,7 @@ export class WorkerService {
 
   workerSignupUrl = 'http://localhost:3000/workerSignup'
   url = 'http://localhost:3000/'
+
   constructor(private http: HttpClient) { }
 
   workerSignup(data:any): Observable<any> {
@@ -82,5 +83,19 @@ export class WorkerService {
     const headers = new HttpHeaders().set('usertype', item);
     const requestOptions = { headers: headers };
     return this.http.put<any> (this.url+'updateDescription', data, requestOptions)
+  }
+
+  showProgress(id:string) {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'viewProgress/'+id, requestOptions)
+  }
+
+  updateProgress(clientId:string, progress:number): Observable<any> {    
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.put<any> (this.url+'updateWorkProgress/'+ clientId, {progress}, requestOptions)
   }
 }

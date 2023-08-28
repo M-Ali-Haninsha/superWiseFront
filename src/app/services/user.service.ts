@@ -72,4 +72,11 @@ export class UserService {
     const requestOptions = { headers: headers };
     return this.http.put<any> (this.url+'updateUserData', data, requestOptions)
   }
+
+  getProgressData(id:string): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'getProgressValue/'+id, requestOptions)
+  }
 }

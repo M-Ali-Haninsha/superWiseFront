@@ -1,0 +1,21 @@
+.progress-container {
+    width: 80%;
+    margin: 50px auto;
+    position: relative;
+  }
+  
+  .progress-bar {
+    width: 0;
+    height: 30px;
+    background-color: #3498db;
+    position: absolute;
+    transition: width 0.5s;
+  }
+  
+  .progress-stage {
+    position: absolute;
+    top: 35px;
+    transform: translateX(-50%);
+    color: white;
+  }
+  

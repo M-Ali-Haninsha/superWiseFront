@@ -49,6 +49,7 @@ import { ViewWorkerComponent } from './userComponents/view-worker/view-worker.co
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
@@ -131,6 +132,9 @@ import { WorkProgressComponent } from './userComponents/work-progress/work-progr
       useClass: MyInterceptor,
       multi: true,
     },
+    {
+      provide:MatSnackBar
+    }
   ],
   bootstrap: [AppComponent]
 })
