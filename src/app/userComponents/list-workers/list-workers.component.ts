@@ -42,7 +42,6 @@ export class ListWorkersComponent implements OnInit{
 
   getCategory() {
     this.service.fetchCategory().subscribe((value)=> {
-      console.log(value.result);
       this.category = value.result
     })
   }

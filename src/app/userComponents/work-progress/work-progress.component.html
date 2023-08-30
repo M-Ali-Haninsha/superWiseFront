@@ -36,12 +36,14 @@
         </div>
         <button class="start-10" mat-raised-button color="warn">view images</button>
         <mat-card class="start-10 my-6 w-10/12">
+          <form [formGroup]="amountForm">
             <mat-card-content>
-                Amount to be Paid : ₹{{Amount}}
+              <p> Amount to be Paid : ₹{{Amount}}</p>
                 <div class="ml-auto flex justify-end">
-                   <button mat-raised-button color="primary">pay</button> 
+                   <button mat-raised-button color="primary" (click)="initiateRazorpayPayment()">pay</button> 
                 </div>
             </mat-card-content>
+          </form>
         </mat-card>
     </div>
 </div>

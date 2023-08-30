@@ -28,7 +28,6 @@ export class UserHeaderComponent implements OnInit{
 
   getUserName() {
     this.service.fetchUserData().subscribe((value)=> {
-      console.log(value);
       this.data = value.fetchedData
     })
   }

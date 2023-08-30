@@ -16,7 +16,8 @@ export class UpdateWorkComponent implements OnInit{
   progressValue = 0;
   firstFormGroup: FormGroup = this._formBuilder.group({firstCtrl: ['']});
   secondFormGroup: FormGroup = this._formBuilder.group({secondCtrl: ['']});
-  test:any
+  selectedType: string = 'normal';
+  clientData:any
 
   constructor(private activateRoute: ActivatedRoute, private _formBuilder: FormBuilder, private service: WorkerService, private snackBar: MatSnackBar) {
     this.id = this.activateRoute.snapshot.paramMap.get('id') || ''  
@@ -24,11 +25,11 @@ export class UpdateWorkComponent implements OnInit{
   
   ngOnInit(): void {
       this.viewProgress()
+      // this.clientDetails()
   }
 
   viewProgress() {
     this.service.showProgress(this.id).subscribe((value) => {
-      console.log(value.workStatus);      
       // if (value.workStatus && value.workStatus.length > 0 && value.workStatus[0].progressBar !== undefined) {
       //   this.progressValue = value.workStatus[0].progressBar;
       // }
@@ -36,14 +37,23 @@ export class UpdateWorkComponent implements OnInit{
     })
   }
 
+  // clientDetails() {
+  //   this.service.getClientData(this.id).subscribe((value)=> {
+  //     console.log('client',value);  
+  //     this.clientData = value.data
+  //     console.log(this.clientData);
+      
+  //   })
+  // }
+
   updateProgress(stage: number): void {
     if(stage===0) {
       this.progressValue = 0; 
     }else if (stage === 1) {
-      this.progressValue = 33; 
+      this.progressValue = 20; 
       
     } else if (stage === 2) {
-      this.progressValue = 66; 
+      this.progressValue = 50; 
     } else if (stage === 3) {
       this.progressValue = 100; 
     }    

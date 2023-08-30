@@ -50,6 +50,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
@@ -120,7 +121,8 @@ import { WorkProgressComponent } from './userComponents/work-progress/work-progr
     MatNativeDateModule,
     MatDatepickerModule,
     MatCardModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSelectModule
     ],
   providers: [
     {

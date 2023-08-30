@@ -26,7 +26,6 @@ export class UserProfileComponent implements OnInit{
   getUserDetails() {
     this.service.fetchUserData().subscribe((value)=> {
       this.data = value.fetchedData
-      console.log(this.data);
     })
   }
 
@@ -41,7 +40,6 @@ export class UserProfileComponent implements OnInit{
       const formData = new FormData();
       formData.append('file', selectedFile);
       this.service.uploadFile(formData).subscribe((value)=>{
-        console.log(value);
         this.getUserDetails()
       })
     }
@@ -49,7 +47,6 @@ export class UserProfileComponent implements OnInit{
 
   listWorkers(){
     this.service.listHiredWorkers().subscribe((value)=> {
-      console.log('testing',value);
       this.workerData = value.worker
     })
   }  

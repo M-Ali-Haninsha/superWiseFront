@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class ViewWorkerComponent implements OnInit{
     this.step--;
   }
 
-  constructor(private activateRoute: ActivatedRoute, private service: UserService, private formBuilder: FormBuilder) {
+  constructor(private activateRoute: ActivatedRoute, private service: UserService, private formBuilder: FormBuilder, private route: Router) {
     this.id = this.activateRoute.snapshot.paramMap.get('id') || ''            
   }
 
@@ -52,7 +52,8 @@ export class ViewWorkerComponent implements OnInit{
   }
 
   hire(id:string) {
-    if(this.hireForm.valid) {
+    if(sessionStorage.getItem('userValue')) {
+if(this.hireForm.valid ) {
     let formData = new FormData()
     if (this.selectedPhoto) {
       formData.append('file', this.selectedPhoto);
@@ -71,6 +72,11 @@ export class ViewWorkerComponent implements OnInit{
       }
     })
     }
+    } else {
+      alert('plz login')
+      this.route.navigate(['/userLogin'])
+    }
+    
   }
 }
 

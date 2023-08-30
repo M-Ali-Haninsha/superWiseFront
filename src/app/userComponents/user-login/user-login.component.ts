@@ -28,10 +28,8 @@ export class UserLoginComponent implements OnInit{
   onSubmit(){
     if(this.userSigninForm.valid) {
       this.formData= this.userSigninForm.value;
-      console.log('this is data', this.formData);
       
       this.service.userLogin(this.formData).subscribe((value:any)=>{
-        console.log('login',value);
         if(value.msg == 'passwordWrong') {
           this.passCheckErr = true
 
@@ -41,7 +39,6 @@ export class UserLoginComponent implements OnInit{
         else {
           const strValue = JSON.stringify(value)
           sessionStorage.setItem('userValue', strValue)
-          console.log("logged");
           this.route.navigate(['/'])
         }
       })

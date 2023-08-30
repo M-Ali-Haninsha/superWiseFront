@@ -30,7 +30,6 @@ export class WorkerLoginComponent implements OnInit{
       this.formData = this.workerLoginForm.value
       console.log('data', this.formData);
       this.service.workerLogin(this.formData).subscribe((value)=>{
-        console.log('response',value);
         if(value.msg == 'passwordWrong') {
           this.passCheckErr = true
 
@@ -40,7 +39,6 @@ export class WorkerLoginComponent implements OnInit{
         else {
           const strValue = JSON.stringify(value)
           sessionStorage.setItem('workerValue', strValue)
-          console.log("logged");
           this.route.navigate(['/workerHome'])
         }
       })

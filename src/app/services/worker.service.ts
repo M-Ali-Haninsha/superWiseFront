@@ -98,4 +98,11 @@ export class WorkerService {
     const requestOptions = { headers: headers };
     return this.http.put<any> (this.url+'updateWorkProgress/'+ clientId, {progress}, requestOptions)
   }
+
+  getClientData(id:string): Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any>(this.url+'getClientData/'+id, requestOptions)
+  }
 }
