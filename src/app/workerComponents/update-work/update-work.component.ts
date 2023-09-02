@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { WorkerService } from 'src/app/services/worker.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,32 +19,29 @@ export class UpdateWorkComponent implements OnInit{
   selectedType: string = 'normal';
   clientData:any
 
+  paymentForm!: FormGroup
+
   constructor(private activateRoute: ActivatedRoute, private _formBuilder: FormBuilder, private service: WorkerService, private snackBar: MatSnackBar) {
     this.id = this.activateRoute.snapshot.paramMap.get('id') || ''  
+    this.paymentForm = this._formBuilder.group({
+      selectedType: ['normal'],
+      reason: [''], 
+      amount: ['', [Validators.required, Validators.min(0)]]
+    })
   }
   
   ngOnInit(): void {
       this.viewProgress()
-      // this.clientDetails()
   }
 
   viewProgress() {
     this.service.showProgress(this.id).subscribe((value) => {
-      // if (value.workStatus && value.workStatus.length > 0 && value.workStatus[0].progressBar !== undefined) {
-      //   this.progressValue = value.workStatus[0].progressBar;
-      // }
+      console.log(value);
       this.progressValue = value.workStatus[0].progressBar;
+      this.clientData = value
     })
   }
 
-  // clientDetails() {
-  //   this.service.getClientData(this.id).subscribe((value)=> {
-  //     console.log('client',value);  
-  //     this.clientData = value.data
-  //     console.log(this.clientData);
-      
-  //   })
-  // }
 
   updateProgress(stage: number): void {
     if(stage===0) {
@@ -63,6 +60,21 @@ export class UpdateWorkComponent implements OnInit{
         this.showSnackbar('Progress updated successfully');
       }
     })
+  }
+
+  sendAmount() {
+    this.service.postAmount(this.id, this.paymentForm.value).subscribe({next:
+      (value)=> {
+      console.log('done',value);
+      this.showSnackbar('amount updated');
+    },
+    error:(value)=>{
+      if(value) {
+        console.log(value);
+        this.showSnackbar('work not completed');
+      }
+    } })
+
   }
 
   showSnackbar(message: string) {

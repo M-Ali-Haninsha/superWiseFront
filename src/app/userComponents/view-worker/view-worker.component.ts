@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
@@ -13,6 +14,7 @@ export class ViewWorkerComponent implements OnInit{
   workerData:any
   id:string
   hireForm!: FormGroup
+  rating:any
   selectedPhoto: File | undefined;
   step = 0;
 
@@ -28,14 +30,16 @@ export class ViewWorkerComponent implements OnInit{
     this.step--;
   }
 
-  constructor(private activateRoute: ActivatedRoute, private service: UserService, private formBuilder: FormBuilder, private route: Router) {
+  constructor(private activateRoute: ActivatedRoute, private service: UserService, private formBuilder: FormBuilder, private route: Router, private snackBar: MatSnackBar) {
     this.id = this.activateRoute.snapshot.paramMap.get('id') || ''            
   }
 
   ngOnInit(): void {
       this.viewWorkerDetails(this.id)
+      this.viewRating()
       this.hireForm = this.formBuilder.group({
         description:['', Validators.required],
+        date:['', Validators.required],
         file: ['']
       })
   }
@@ -60,15 +64,14 @@ if(this.hireForm.valid ) {
     }
 
     formData.append('description', this.hireForm.get('description')?.value);
+    formData.append('date', this.hireForm.get('date')?.value)
 
-    console.log('checkinnnnnng',formData);
-    
     this.service.workerHire(formData, id).subscribe((value)=>{
       if(value.error){
-        alert('already request sended')
+        this.showSnackbar('request already sended');
       }
       if(value.done) {
-        alert('request sended')
+        this.showSnackbar('Request sended successfully');
       }
     })
     }
@@ -76,7 +79,21 @@ if(this.hireForm.valid ) {
       alert('plz login')
       this.route.navigate(['/userLogin'])
     }
-    
+  }
+
+  viewRating() {
+    this.service.showRating(this.id).subscribe((value)=> {
+      this.rating = value.rating
+      console.log(this.rating);
+    })
+  }
+
+  showSnackbar(message: string) {
+    this.snackBar.open(message, 'Dismiss', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top'
+    });
   }
 }
 

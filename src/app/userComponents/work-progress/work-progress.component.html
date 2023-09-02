@@ -27,14 +27,14 @@
         <div class="progress-container">
             <h1 class="text-white" *ngIf="active">Current Progress</h1>  
             <h1 class="text-white" *ngIf="inActive">Work In Progress</h1>  
-            <mat-progress-bar *ngIf="active" mode="determinate" [value]="progressBar" color="warn"></mat-progress-bar>
+            <mat-progress-bar *ngIf="active" mode="determinate" [value]="progressBar" color="primary"></mat-progress-bar>
             <mat-progress-bar *ngIf="inActive" mode="indeterminate" color="warn"></mat-progress-bar>
             <div class="progress-stage my-5" >Work Started</div>
             <div class="progress-stage  my-5" style="left: 50%;">Work Under Progress</div>
             <div class="progress-stage  my-5" style="left: 100%;"> Completed</div>
             
         </div>
-        <button class="start-10" mat-raised-button color="warn">view images</button>
+        <button class="start-10" mat-raised-button color="primary">view images</button>
         <mat-card class="start-10 my-6 w-10/12">
           <form [formGroup]="amountForm">
             <mat-card-content>
@@ -45,5 +45,7 @@
             </mat-card-content>
           </form>
         </mat-card>
+
+        <button *ngIf="ratingButtonActive" class="start-10" mat-raised-button color="primary" (click)="ratingModal()">Give rating</button>
     </div>
 </div>

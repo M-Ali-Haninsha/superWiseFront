@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./worker-inbox.component.css']
 })
 export class WorkerInboxComponent implements OnInit{
-  displayedColumns: string[] = ['rowNumber', 'email', 'phone', 'details','action'];
+  displayedColumns: string[] = ['rowNumber', 'email', 'phone', 'details', 'expected date', 'action'];
   dataSource: MatTableDataSource<any>;
   delete: boolean  = false
   result:any

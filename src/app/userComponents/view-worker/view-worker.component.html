@@ -65,91 +65,45 @@
               </mat-expansion-panel-header>
     
               <div class="h-[300px] overflow-y-auto">
-                <div class="bg-green-50 mt-4">
+                <div class="bg-green-50 mt-4" *ngFor="let rate of rating">
                   <div class="flex justify justify-between">
                     <div class="flex gap-2">
                       <div class="w-7 h-7 text-center rounded-full bg-red-500">
-                        J
+                        <img [src]="rate.userRef.image" alt="">
                       </div>
-                      <span>Jess Hopkins</span>
+                      <span>{{rate.userRef.firstName}}</span>
                     </div>
-                    <div class="flex p-1 gap-1 text-orange-300">
+                    <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 5">
                       <p>*</p>
                       <p>*</p>
                       <p>*</p>
                       <p>*</p>
+                      <p>*</p>
+                    </div>
+                    <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 4">
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                    </div>
+                    <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 3">
+                      <p>*</p>
+                      <p>*</p>
+                      <p>*</p>
+                    </div>
+                    <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 2">
+                      <p>*</p>
+                      <p>*</p>
+                    </div>
+                    <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 1">
                       <p>*</p>
                     </div>
                   </div>
                   <div>
-                    Gorgeous design! Even more responsive than the previous version.
-                    A pleasure to use!
+                   {{rate.comment}}
                   </div>
                   <div class="flex justify-between">
-                    <span>Feb 13, 2021</span>
-                    <button
-                      class="p-1 px-2 bg-gray-900 hover:bg-gray-950 border border-gray-950 bg-opacity-60"
-                    >
-                      Share
-                    </button>
-                  </div>
-                </div>
-                <div class="bg-green-50 mt-4">
-                  <div class="flex justify justify-between">
-                    <div class="flex gap-2">
-                      <div class="w-7 h-7 text-center rounded-full bg-red-500">
-                        J
-                      </div>
-                      <span>Jess Hopkins</span>
-                    </div>
-                    <div class="flex p-1 gap-1 text-orange-300">
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                    </div>
-                  </div>
-                  <div>
-                    Gorgeous design! Even more responsive than the previous version.
-                    A pleasure to use!
-                  </div>
-                  <div class="flex justify-between">
-                    <span>Feb 13, 2021</span>
-                    <button
-                      class="p-1 px-2 bg-gray-900 hover:bg-gray-950 border border-gray-950 bg-opacity-60"
-                    >
-                      Share
-                    </button>
-                  </div>
-                </div>
-                <div class="bg-green-50 mt-4">
-                  <div class="flex justify justify-between">
-                    <div class="flex gap-2">
-                      <div class="w-7 h-7 text-center rounded-full bg-red-500">
-                        J
-                      </div>
-                      <span>Jess Hopkins</span>
-                    </div>
-                    <div class="flex p-1 gap-1 text-orange-300">
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                    </div>
-                  </div>
-                  <div>
-                    Gorgeous design! Even more responsive than the previous version.
-                    A pleasure to use!
-                  </div>
-                  <div class="flex justify-between">
-                    <span>Feb 13, 2021</span>
-                    <button
-                      class="p-1 px-2 bg-gray-900 hover:bg-gray-950 border border-gray-950 bg-opacity-60"
-                    >
-                      Share
-                    </button>
+                    <span>{{rate.date | date}}</span>
                   </div>
                 </div>
               </div>
@@ -188,7 +142,7 @@
               <small *ngIf="hireForm.controls['description'].touched && hireForm.hasError('required', 'description')" class="text-red-500">*please mention your requirements.</small>
               <mat-form-field class="example-form-field mb-4">
                 <mat-label>Expected date</mat-label>
-                <input matInput [matDatepicker]="datepicker">
+                <input matInput [matDatepicker]="datepicker" formControlName="date">
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
                 <mat-datepicker #datepicker>

@@ -37,9 +37,7 @@ export class AcceptedWorksComponent implements OnInit{
     })
   }
 
-  viewWorkStatus(id:string) {
-    console.log('this is id', id);
-    
+  viewWorkStatus(id:string) {    
     this.route.navigate(['/workerHome/updateWorks',id])
   }
 

@@ -80,7 +80,30 @@ export class UserService {
     return this.http.get<any> (this.url+'getProgressValue/'+id, requestOptions)
   }
 
+  showAmount(workerId:string): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'getAmount/'+workerId, requestOptions)
+  }
+
   razorpay(data:any):Observable<any> {
     return this.http.post<any>(this.url+'razorpay', { data })
+  }
+
+  rating(comment:string, workerId:any, starValue:any):Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+
+    const requestBody = {
+      comment: comment,
+      starValue: starValue 
+    };
+    return this.http.post<any> (this.url+'rating/'+workerId, requestBody, requestOptions)
+  }
+
+  showRating(workerId:string):Observable<any> {
+    return this.http.get<any> (this.url+ 'showRating/'+ workerId)
   }
 }

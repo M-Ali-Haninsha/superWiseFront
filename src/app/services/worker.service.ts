@@ -99,10 +99,11 @@ export class WorkerService {
     return this.http.put<any> (this.url+'updateWorkProgress/'+ clientId, {progress}, requestOptions)
   }
 
-  getClientData(id:string): Observable<any> {
+  postAmount(clientId:string, data:FormData): Observable<any> {
     const item = 'workerValue'
     const headers = new HttpHeaders().set('usertype', item);
     const requestOptions = { headers: headers };
-    return this.http.get<any>(this.url+'getClientData/'+id, requestOptions)
+    return this.http.post<any> (this.url+'postAmount/'+ clientId, data, requestOptions)
   }
+
 }

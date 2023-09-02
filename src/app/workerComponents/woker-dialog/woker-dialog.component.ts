@@ -41,11 +41,9 @@ export class WokerDialogComponent implements OnInit{
 
       if (this.editData.mode === 'userRequirements') {
         this.details = this.editData
-        console.log('test', this.details);
       }
 
       if (this.editData.mode === 'description') {
-        console.log(this.editData);
         this.workerDescriptionForm = this.formBuilder.group({
           description: [this.editData.workerData.description],
         });

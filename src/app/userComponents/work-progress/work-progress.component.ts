@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { UserDialogComponent } from '../user-dialog/user-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 declare var Razorpay: any;
 
 @Component({
@@ -14,12 +16,14 @@ export class WorkProgressComponent implements OnInit{
   workerData:any
   id:any
   progressBar: number = 0;
-  Amount: number = 2000
+  Amount: number = 0
   active: boolean = false
   inActive: boolean = false
   amountForm!: FormGroup
+  ratingButtonActive: any
+  detail:any
 
-  constructor(private activateRoute: ActivatedRoute, private service: UserService, private fb: FormBuilder) {
+  constructor(private activateRoute: ActivatedRoute, private service: UserService, private fb: FormBuilder, private dialog: MatDialog,) {
     this.id = this.activateRoute.snapshot.paramMap.get('id') || ''     
     this.amountForm = this.fb.group({
       amount:this.Amount
@@ -27,20 +31,32 @@ export class WorkProgressComponent implements OnInit{
   }
 
   ngOnInit(): void {
+
+    console.log(this.progressBar);
+    
       this.viewWorkerDetails(this.id)
       this.getProgressValue()
-      
+      this.getAmount()
+  }
+
+  getAmount() {    
+    this.service.showAmount(this.id).subscribe((value)=> {
+      console.log(value);
+      this.Amount = value.amount
+    })
   }
 
   getProgressValue() {
     this.service.getProgressData(this.id).subscribe(data => {
-      if(!data.data) {
+      if(!data) {
         this.inActive = true
       } else {
-        const workStatus = data.data.workStatus;
-      this.progressBar = workStatus[0].progressBar 
+      this.progressBar = data.data
       if(this.progressBar) {
         this.active = true
+        if(this.progressBar == 100) {
+          this.ratingButtonActive = true
+        }
       } 
       }
     });
@@ -80,65 +96,17 @@ export class WorkProgressComponent implements OnInit{
 
   razorPayResponseHandler(response:any) {
     console.log(response);
-    
   }
 
-  // initiateRazorpayPayment() {
-  //   const options = {
-  //     key: 'rzp_test_TDRJfd82mop9MS',
-  //     amount: this.Amount * 100,
-  //     currency: 'INR',
-  //     name: 'superWise',
-  //     // image:'',
-  //     description: 'Test Transaction',
-  //     prefill: {
-  //       name: 'Gaurav Kumar',
-  //       email: 'gaurav.kumar@example.com',
-  //       contact: '9000090000'
-  //     },
-  //     // theme: {
-  //     //   color:''
-  //     // },
-  //     modal: {
-  //       ondismiss: () => {
-  //         console.log('dismissed');
-          
-  //       }
-  //     }
-  //   };
-    
-  //   const success = (paymentId: any)=> {
-  //     console.log('entered');
-  //     console.log(paymentId); 
-      
-  //     const paymentData = {
-  //       payment_id: paymentId,
-  //       razorpay_signature: 'your_signature_here' // Replace with your actual signature
-  //     };
-      
-  //     fetch('/razorpay', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify(paymentData)
-  //     })
-  //       .then(response => response.json())
-  //       .then(data => {
-  //         console.log(data); 
-  //       })
-  //       .catch(error => {
-  //         console.error('Error sending payment data:', error);
-  //       });
-      
+  ratingModal() {
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width:'30%',
+      data: {mode: 'rating', data: this.id}
+    })
 
-  //   }
-
-  //   const failure = (error: any) => {
-  //     console.log('failure',error);
-  //   }
-  //   Razorpay.open(options, success.bind(this), failure)
-  // }
-  
+    dialogRef.afterClosed().subscribe(result => {
+ 
+    });
+  }
 
 }
