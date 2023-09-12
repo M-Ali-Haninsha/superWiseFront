@@ -52,6 +52,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 
+
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { WokerDialogComponent } from './workerComponents/woker-dialog/woker-dialog.component';
@@ -60,6 +61,12 @@ import { AcceptedWorksComponent } from './workerComponents/accepted-works/accept
 import { UserDialogComponent } from './userComponents/user-dialog/user-dialog.component';
 import { UpdateWorkComponent } from './workerComponents/update-work/update-work.component';
 import { WorkProgressComponent } from './userComponents/work-progress/work-progress.component';
+import { SuccesspageComponent } from './userComponents/successpage/successpage.component';
+import { ChatComponent } from './workerComponents/chat/chat.component';
+import { NgChartsModule } from 'ng2-charts';
+import { SingleViewHistoryComponent } from './userComponents/single-view-history/single-view-history.component';
+
+
 
 @NgModule({
   declarations: [
@@ -95,7 +102,10 @@ import { WorkProgressComponent } from './userComponents/work-progress/work-progr
     AcceptedWorksComponent,
     UserDialogComponent,
     UpdateWorkComponent,
-    WorkProgressComponent
+    WorkProgressComponent,
+    SuccesspageComponent,
+    ChatComponent,
+    SingleViewHistoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -107,7 +117,6 @@ import { WorkProgressComponent } from './userComponents/work-progress/work-progr
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    MatStepperModule,
     MatStepperModule,
     FormsModule,
     MatTableModule,
@@ -122,7 +131,8 @@ import { WorkProgressComponent } from './userComponents/work-progress/work-progr
     MatDatepickerModule,
     MatCardModule,
     MatProgressBarModule,
-    MatSelectModule
+    MatSelectModule,
+    NgChartsModule  
     ],
   providers: [
     {
@@ -136,7 +146,7 @@ import { WorkProgressComponent } from './userComponents/work-progress/work-progr
     },
     {
       provide:MatSnackBar
-    }
+    },
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,96 @@
+<app-user-header></app-user-header>
+
+<div class="flex justify-center items-center w-full">
+    <div class="w-10/12 flex justify-center items-center">
+      <div class="card text-center mt-5 p-1 border-none">
+        <h1 class="text-3xl font-bold">Payment Successfull</h1>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container mb-5" #printMe>
+    <div class="flex justify-center">
+      <div class="w-10/12">
+        <div class="receipt bg-white p-3">
+          <!-- <h2 class="font-bold text-3xl">{{workerDetails?.firstName}}</h2> -->
+          <!-- <h4 class="mt-2 mb-3 text-xl">Your Payment is Completed!</h4> -->
+          <h4 class="mt-2 mb-3 text-lg">Hello {{clientDataP?.firstName}},</h4>
+          <span class="text-sm text-black-50">your work Completed and Payment is recieved</span>
+          <hr class="my-3">
+  
+          <div class="flex justify-center gap-12 order-details">
+            <div *ngFor="let payment of paymentP">
+              <span class="text-sm">date: </span>
+              <span class="font-bold">{{payment.payedDate |  date}}</span>
+            </div>
+    
+            <div>
+              <span class="text-sm">Payment method: </span>
+              <span class="font-bold">online</span>
+            </div>
+
+          </div>
+  
+          <hr class="my-3">
+  
+          <div class="flex justify-between items-center product-details">
+            <div class="flex items-center">
+              <img src="" alt="" class="rounded" width="80">
+              <div class="ml-2">
+                <div>
+                  <span class="font-bold text-lg">worker: {{workerDetails?.firstName}}</span>
+                </div>
+                <span class="text-sm">category: {{workerDetails?.department.name}}</span>
+              </div>
+            </div>
+            <!-- <div class="product-price">
+              <h5>₹ subPrice</h5>
+            </div> -->
+          </div>
+  
+          <hr class="my-3">
+  
+          <div class="mt-5 amount flex">
+            <div class="flex justify-center w-1/2"></div>
+            <div class="w-1/2">
+              <div class="billing">
+                <!-- <div class="flex justify-between mt-2">
+                  <span>Shipping fee</span>
+                  <span class="font-bold">₹0</span>
+                </div> -->
+                <!-- <div class="flex justify-between mt-2">
+                  <span>Price</span>
+                  <span class="font-bold">₹subPrice</span>
+                </div> -->
+                <hr class="my-1">
+                <div class="flex justify-between mt-1" *ngFor="let payment of paymentP">
+                  <!-- <span class="font-bold">Total</span> -->
+                  <span class="font-bold text-dark ms-auto">₹grandtotal:{{payment.amount}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <span class="block mt-3 text-black-50 text-lg">We will be sending a confirmation email soon!</span>
+          <hr class="my-3">
+  
+          <div class="flex justify-between items-center footer">
+            <div class="thanks">
+              <span class="font-bold block">Thanks for Hiring us</span>
+              <span>{{workerDetails?.firstName}} {{workerDetails?.lastName}}</span>
+            </div>
+            <div class="flex flex-col justify-end items-end">
+              <span class="font-bold block">Need Help?</span>
+              <span>{{workerDetails?.phoneNo}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+<div class=" flex justify-center gap-4">
+    <button mat-raised-button routerLink="/userProfile">continue</button> 
+    <button mat-raised-button color="primary" (click)="downloadPdf()">Print</button> 
+</div>

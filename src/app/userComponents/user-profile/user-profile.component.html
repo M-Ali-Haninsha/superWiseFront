@@ -75,8 +75,13 @@
       </div>
       <div class="flex flex-col w-full 2xl:w-2/3">
         <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
-              <h4 class="text-xl text-gray-200 font-bold">Hired Works</h4>
-              <mat-card class="light-bg dark-bg mt-2" *ngFor="let worker of workerData" >
+          <div class="flex justify-between">
+            <h4 class="text-xl text-gray-200 font-bold">Hired Works</h4>
+              <button class="flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100" (click)="viewHistory()">
+                <span>History</span>
+            </button>
+          </div>
+                <mat-card class="light-bg dark-bg mt-2" *ngFor="let worker of workerData" >
                 <mat-card-header>
                   <mat-card-title class="text">{{worker.department.name}}</mat-card-title>
                   <mat-card-subtitle class="text">{{worker.firstName}}</mat-card-subtitle>

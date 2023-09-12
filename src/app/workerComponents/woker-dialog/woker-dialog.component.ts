@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { ChatService } from 'src/app/services/chat.service';
 import { WorkerService } from 'src/app/services/worker.service';
 
 @Component({
@@ -19,9 +20,16 @@ export class WokerDialogComponent implements OnInit{
   workerDescriptionForm!: FormGroup
   details:any
   desc:any
+  workerMessageForm:any
+  mWorkerData:any
+  mClientData:any
+  sendData:any
+  sendedMessageByWorker:any
 
-  constructor( private formBuilder: FormBuilder,private service: WorkerService ,private ref: MatDialogRef<WokerDialogComponent>, @Inject(MAT_DIALOG_DATA) public editData:any) {
-
+  constructor( private formBuilder: FormBuilder,private service: WorkerService ,private ref: MatDialogRef<WokerDialogComponent>, @Inject(MAT_DIALOG_DATA) public editData:any, private chatService:ChatService) {
+    this.workerMessageForm = this.formBuilder.group({
+      typedMessage: [''], 
+    });
   }
 
   ngOnInit(): void {
@@ -49,7 +57,21 @@ export class WokerDialogComponent implements OnInit{
         });
       }
 
+      if(this.editData.mode === 'sendMessageByWorker') {
+        this.mClientData = this.editData.data
+      }
 
+      this.chatService.test().subscribe((value)=>{
+        console.log('aaaaaaaaaaaaaaa',value);
+        this.sendedMessageByWorker = value
+      })
+
+      this.chatService.clientMessage().subscribe((value)=> {
+        console.log('client message',value);
+        this.sendedMessageByWorker = value
+      })
+
+      this.getWorkerDataM()
   }
 
   onFileSelected(event: any) {
@@ -86,5 +108,33 @@ export class WokerDialogComponent implements OnInit{
       console.log(value);
       this.ref.close('descriptionUpdated')
     })
+  }
+
+  getWorkerDataM() {
+    this.service.fetchWorkerData().subscribe((value)=> {
+      this.mWorkerData = value.data
+    })
+  }
+
+  selectClient(data:any) {
+    this.sendData = {
+      senderId:this.mWorkerData._id,
+      recieverId: data._id
+    }
+    this.chatService.selectWorker(this.sendData).subscribe()
+  }
+
+  sendMessageToClient(){
+    const message = this.workerMessageForm.value.typedMessage;
+    const chatMessage = {
+      sender: this.mWorkerData.firstName, 
+      senderId: this.mWorkerData._id,
+      timestamp: new Date(),
+      content: message,
+      recieverId: this.mClientData._id
+    };
+    console.log(chatMessage);
+    this.chatService.sendMessage(chatMessage).subscribe()
+    this.workerMessageForm.reset();
   }
 }

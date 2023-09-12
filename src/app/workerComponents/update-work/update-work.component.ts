@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { WorkerService } from 'src/app/services/worker.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { WokerDialogComponent } from '../woker-dialog/woker-dialog.component'
+
 
 
 @Component({
@@ -18,10 +21,9 @@ export class UpdateWorkComponent implements OnInit{
   secondFormGroup: FormGroup = this._formBuilder.group({secondCtrl: ['']});
   selectedType: string = 'normal';
   clientData:any
-
   paymentForm!: FormGroup
 
-  constructor(private activateRoute: ActivatedRoute, private _formBuilder: FormBuilder, private service: WorkerService, private snackBar: MatSnackBar) {
+  constructor(private activateRoute: ActivatedRoute, private _formBuilder: FormBuilder, private service: WorkerService, private snackBar: MatSnackBar, private dialog: MatDialog) {
     this.id = this.activateRoute.snapshot.paramMap.get('id') || ''  
     this.paymentForm = this._formBuilder.group({
       selectedType: ['normal'],
@@ -75,6 +77,38 @@ export class UpdateWorkComponent implements OnInit{
       }
     } })
 
+  }
+
+  handleFileChange(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    const selectedFiles = fileInput.files;
+  
+    if (selectedFiles) {
+      const formData = new FormData();
+  
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const selectedFile = selectedFiles[i]; 
+        formData.append('files', selectedFile);
+      }
+  
+      this.service.pushImage(this.clientData._id, formData).subscribe((value) => {
+        console.log(value);
+      });
+    }
+  }
+
+  sendMessage(){
+    const dialogRef = this.dialog.open(WokerDialogComponent, {
+      width:'80%',
+      data: {
+        mode: 'sendMessageByWorker',
+        data:this.clientData
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
   }
 
   showSnackbar(message: string) {

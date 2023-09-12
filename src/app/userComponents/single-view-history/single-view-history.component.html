@@ -1,0 +1,93 @@
+<app-user-header></app-user-header>
+
+<div class="flex justify-center items-center w-full">
+    <div class="w-10/12 flex justify-center items-center">
+      <div class="card text-center mt-5 p-1 border-none">
+        <h1 class="text-3xl font-bold">Work History</h1>
+      </div>
+    </div>
+</div>
+  
+  <div class="container mb-5" #printMe>
+    <div class="flex justify-center">
+      <div class="w-10/12">
+        <div class="receipt bg-white p-3">
+ 
+          <h4 class="mt-2 mb-3 text-lg">Client name</h4>
+          <hr class="my-3">
+  
+  
+          <div class="grid grid-cols-10 gap-2">
+            <div class="col-span-5 px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6">
+                <h3 class="text-xl dark:text-white font-semibold leading-5 text-gray-800">Employee Details</h3>
+                <div class="flex justify-center items-center w-full space-y-4 flex-col">
+                    <div class="flex justify-between w-full">
+                        <p class="text-base dark:text-white leading-4 text-gray-800">Name : </p>
+                    </div>
+                    <div class="flex justify-between items-center w-full">
+                        <p class="text-base dark:text-white leading-4 text-gray-800">Category :</p>
+                    </div>
+                    <div class="flex justify-between items-center w-full">
+                        <p class="text-base dark:text-white leading-4 text-gray-800">location : </p>
+                    </div>
+                    <div class="flex justify-between items-center w-full">
+                        <p class="text-base dark:text-white leading-4 text-gray-800">Phone no : </p>
+                    </div>
+                    <div class="flex justify-between items-center w-full">
+                        <p class="text-base dark:text-white leading-4 text-gray-800">Email : </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-span-5 px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6">
+            <h3 class="text-xl dark:text-white font-semibold leading-5 text-gray-800">Work Details</h3>
+            <div class="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
+                <div class="flex justify-between w-full">
+                    <p class="text-base dark:text-white leading-4 text-gray-800">Payment Status : Completed</p>
+                </div>
+                <div class="flex justify-between items-center w-full">
+                    <p class="text-base dark:text-white leading-4 text-gray-800">Payment Date :</p>
+                </div>
+                <div class="flex justify-between items-center w-full">
+                    <p class="text-base dark:text-white leading-4 text-gray-800">Amount</p>
+                    <p class="text-base dark:text-gray-300 leading-4 text-gray-600">$8.00</p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center w-full">
+                <p class="text-base dark:text-white font-semibold leading-4 text-gray-800">Total</p>
+                <p class="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600">$36.00</p>
+            </div>
+        </div>
+          </div>
+          
+  
+          <hr class="my-3">
+  
+          <div class="mt-5 amount flex">
+            <div class="flex justify-center w-1/2"></div>
+            <div class="w-1/2">
+              <div class="billing">
+
+  
+          <div class="flex justify-between items-center footer">
+            <div class="thanks">
+             
+            </div>
+            <div class="flex flex-col justify-end items-end">
+              <span class="font-bold block">Need Help?</span>
+              <span>workerDetails?.phoneNo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      </div>
+    </div>
+  </div>
+
+<div class=" flex justify-center gap-4">
+    <button mat-raised-button routerLink="/userProfile">go back</button> 
+    <button mat-raised-button color="primary" (click)="downloadPdf()">Print</button> 
+</div>

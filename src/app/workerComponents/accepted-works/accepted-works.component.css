@@ -8,3 +8,10 @@ table {
     width: 100%;
   }
   
+  .mat-elevation-z8 {
+    overflow-x: auto;
+  }
+
+  .responsive-table-wrapper {
+    overflow-x: auto;
+  }

@@ -3,6 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { UserService } from 'src/app/services/user.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ChatService } from 'src/app/services/chat.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,8 +19,20 @@ export class UserDialogComponent implements OnInit{
   formData:any
   formData2:any
   selectedRating: number | null = null;
+  typedMessage: string = '';
+  messageForm:any
+  progressImages:any
+  mClientData:any
+  mWorkerData:any
+  sendedMessageByClient:any
+  sendData:any
+  historyWorkStatus:any
 
-  constructor(private formBuilder: FormBuilder,private ref: MatDialogRef<UserDialogComponent>, @Inject(MAT_DIALOG_DATA) public editData:any, private service: UserService) {}
+  constructor(private formBuilder: FormBuilder,private ref: MatDialogRef<UserDialogComponent>, @Inject(MAT_DIALOG_DATA) public editData:any, private service: UserService, private chatService: ChatService, private route:Router) {
+    this.messageForm = this.formBuilder.group({
+      typedMessage: [''], 
+    });
+  }
 
   ngOnInit(): void {
      if (this.editData.mode === 'userDetails') {
@@ -34,18 +48,29 @@ export class UserDialogComponent implements OnInit{
         this.ratingForm = this.formBuilder.group({
           comment: ['', Validators.required]
         })
+      }    
+      this.chatService.test().subscribe((value)=>{
+        this.sendedMessageByClient = value
+      })
+
+      this.chatService.clientMessage().subscribe((value)=> {
+        this.sendedMessageByClient = value
+      })
+      if(this.editData.mode == 'userViewHistory') {
+        this.viewHistory()
       }
+      this.getClient()
+      this.getWorker()
+      this.getProgressImages()
   }
 
   updateUserData() {
     this.formData = this.userDetailsForm.value
-    console.log(this.formData);
     this.service.editUserDetails(this.formData).subscribe((value)=> {
       this.ref.close('detailsUpdated')
     })
   }
 
-  
 
   rate(rating: number) {
     this.selectedRating = rating;
@@ -62,10 +87,63 @@ export class UserDialogComponent implements OnInit{
   subnitRating() {
     console.log('submit',this.selectedRating);
     this.formData2 = this.ratingForm.value
-    console.log(this.formData2);
     this.service.rating(this.formData2, this.editData.data, this.selectedRating).subscribe((value)=> {
-      console.log(value);
+      this.ref.close('ratingSubmitted')
+    })
+  }
+
+  sendMessageToWorker(){
+    const message = this.messageForm.value.typedMessage;
+    console.log(this.editData.data._id);
+    const chatMessage = {
+      sender: this.mClientData.firstName, 
+      senderId: this.mClientData._id,
+      timestamp: new Date(),
+      content: message,
+      recieverId: this.sendData.recieverId
+    };
+    this.chatService.sendMessage(chatMessage).subscribe()
+    this.messageForm.reset();
+  }
+
+  getClient() {
+    this.service.clientDetails().subscribe((value)=>{
+      this.mClientData = value.clientDataMessage
+    })
+  }
+
+  getWorker() {
+    this.service.workerDetails(this.editData.data._id).subscribe((value)=> {
+      this.mWorkerData = value.workerDataMessage
       
     })
   }
+
+  selectWorker(data:any) {
+    this.sendData = {
+      senderId:this.mClientData._id,
+      recieverId: data._id
+    }
+    console.log(this.sendData);
+    this.chatService.selectWorker(this.sendData).subscribe()
+  }
+
+  getProgressImages() {
+    this.service.getprogressPhotos(this.editData.data).subscribe((value)=> {
+      this.progressImages = value.progressImages
+    })
+  }
+
+  viewHistory() {
+    this.service.userViewHistory().subscribe((value)=> {
+      console.log('mm',value.user); 
+      this.historyWorkStatus = value.user.workStatus
+      console.log(this.historyWorkStatus);
+    })
+  }
+
+  viewMoreHistory(workerId:string) {
+    this.route.navigate(['singleViewHistory',workerId])
+  }
 }
+

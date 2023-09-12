@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgZone } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,7 +24,7 @@ export class WorkProgressComponent implements OnInit{
   ratingButtonActive: any
   detail:any
 
-  constructor(private activateRoute: ActivatedRoute, private service: UserService, private fb: FormBuilder, private dialog: MatDialog,) {
+  constructor(private route: Router,private activateRoute: ActivatedRoute, private service: UserService, private fb: FormBuilder, private dialog: MatDialog, private ngZone: NgZone) {
     this.id = this.activateRoute.snapshot.paramMap.get('id') || ''     
     this.amountForm = this.fb.group({
       amount:this.Amount
@@ -80,13 +81,25 @@ export class WorkProgressComponent implements OnInit{
     }
   };
 
-  initiateRazorpayPayment() {
-    this.service.razorpay(this.Amount).subscribe((res)=> {
+  initiateRazorpayPayment(workerId:string) {
+    this.service.razorpay(this.Amount, workerId).subscribe((res)=> {
       this.razorPayOptions.key = res['key']
       this.razorPayOptions.amount = res['value'] ['amount']
       this.razorPayOptions.name = res['name']
       this.razorPayOptions.order_id = res['value'] ['id']
-      this.razorPayOptions.handler = this.razorPayResponseHandler
+      this.razorPayOptions.handler = (response: any) => {
+        console.log(response);
+  
+        if (response.razorpay_payment_id) {
+          this.ngZone.run(() => {
+            this.route.navigate(['/successPage', this.id]);
+          });
+        } else {
+          console.log('payment failed');
+        }
+      };
+      
+
       var rzp1 = new Razorpay(this.razorPayOptions)
       rzp1.open()
       console.log('opened');
@@ -94,9 +107,7 @@ export class WorkProgressComponent implements OnInit{
     })
   }
 
-  razorPayResponseHandler(response:any) {
-    console.log(response);
-  }
+
 
   ratingModal() {
     const dialogRef = this.dialog.open(UserDialogComponent, {
@@ -105,8 +116,31 @@ export class WorkProgressComponent implements OnInit{
     })
 
     dialogRef.afterClosed().subscribe(result => {
+      if(result == 'ratingSubmitted'){
+        
+      }
+    });
+  }
+
+  message() {
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width:'80%',
+      data: {mode: 'message', data:this.workerData}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
  
     });
   }
 
+  viewImages() {
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width:'60%',
+      data: {mode: 'progressImage', data:this.workerData._id}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+ 
+    });
+  }
 }

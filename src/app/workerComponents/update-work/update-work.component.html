@@ -11,6 +11,7 @@
             <div class="flex-1 rounded-lg shadow-xl p-8" style="background-color: #525960;">
              <div class="flex items-center justify-between">
               <h4 class="text-xl text-gray-200 font-bold">Personal Info of Client</h4>
+              <button  mat-raised-button color="primary" (click)="sendMessage()">message</button>
              </div>
               <ul class="mt-2 text-gray-700">
                 <li class="flex border-y py-2">
@@ -56,6 +57,21 @@
             <div class="col-span-2">
               <button color="warn" mat-button (click)="updateProgress(0)" style="left: 70%;">clear</button>
             </div>
+          </div>
+          <div class="flex items-center space-x-4 mt-2">
+            <input 
+              type="file"
+              id="photoInput"
+              style="display: none"
+              (change)="handleFileChange($event)"
+              multiple
+            />
+            <label
+              for="photoInput"
+              class="cursor-pointer flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100"
+            >
+              <span>send images</span>
+            </label>
           </div>
         
         <div class="mt-4">

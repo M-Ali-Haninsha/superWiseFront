@@ -87,8 +87,11 @@ export class UserService {
     return this.http.get<any> (this.url+'getAmount/'+workerId, requestOptions)
   }
 
-  razorpay(data:any):Observable<any> {
-    return this.http.post<any>(this.url+'razorpay', { data })
+  razorpay(data:any, workerId:string):Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.post<any>(this.url+'razorpay', { data,workerId }, requestOptions)
   }
 
   rating(comment:string, workerId:any, starValue:any):Observable<any> {
@@ -106,4 +109,50 @@ export class UserService {
   showRating(workerId:string):Observable<any> {
     return this.http.get<any> (this.url+ 'showRating/'+ workerId)
   }
-}
+
+  clientDetails():Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'clientDataMessage', requestOptions)
+  }
+
+  workerDetails(workerId:string):Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'workerDataMessage/'+workerId, requestOptions)
+  }
+
+  
+
+  getprogressPhotos(workerId:string):Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any>(this.url+'getProgressImages/'+workerId, requestOptions)
+  }
+
+  workCompleteData(workerId:string): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any>(this.url+'workCompleteData/'+workerId, requestOptions)
+  }
+
+  getPaymentData(workerId:string):Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'getPaymentData/'+ workerId, requestOptions)
+  }
+
+  userViewHistory(): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'viewWorkHistory', requestOptions)
+  }
+ }
+
+

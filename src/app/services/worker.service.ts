@@ -106,4 +106,11 @@ export class WorkerService {
     return this.http.post<any> (this.url+'postAmount/'+ clientId, data, requestOptions)
   }
 
+  pushImage(clientId:string, images:any):Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.post<any> (this.url+'pushImages/'+ clientId, images ,requestOptions)
+  }
+
 }

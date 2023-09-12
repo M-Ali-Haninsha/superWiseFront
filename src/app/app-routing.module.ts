@@ -27,6 +27,9 @@ import { ViewWorkerComponent } from './userComponents/view-worker/view-worker.co
 import { AcceptedWorksComponent } from './workerComponents/accepted-works/accepted-works.component';
 import { UpdateWorkComponent } from './workerComponents/update-work/update-work.component';
 import { WorkProgressComponent } from './userComponents/work-progress/work-progress.component';
+import { SuccesspageComponent } from './userComponents/successpage/successpage.component';
+import { ChatComponent } from './workerComponents/chat/chat.component';
+import { SingleViewHistoryComponent } from './userComponents/single-view-history/single-view-history.component';
 
 const routes: Routes = [
 //recruiter routing  
@@ -39,6 +42,8 @@ const routes: Routes = [
   {path:'listWorkers/:id', component: ListWorkersComponent},
   {path:'viewWorker/:id', component: ViewWorkerComponent},
   {path:'workProgress/:id', component: WorkProgressComponent},
+  {path:'successPage/:id', component: SuccesspageComponent},
+  {path:'singleViewHistory/:id', component: SingleViewHistoryComponent},
 
 //admin routing
   {path:'admin', component: AdminLoginComponent},
@@ -60,7 +65,8 @@ const routes: Routes = [
     {path: 'inbox', component: WorkerInboxComponent},
     {path: 'workerProfile', component: WorkerProfileComponent},
     {path:'acceptedWorks', component: AcceptedWorksComponent},
-    {path:'updateWorks/:id', component: UpdateWorkComponent}
+    {path:'updateWorks/:id', component: UpdateWorkComponent},
+    {path:'workerChat', component: ChatComponent}
   ]}
 ];
 

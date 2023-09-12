@@ -101,4 +101,25 @@ export class AdminServiceService {
     const requestOptions = { headers: headers };
     return this.http.post<any> (this.url+'adminUnblockUser', data, requestOptions)
   }
+
+  getIncomeData(): Observable<any> {
+    const item = 'adminValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'getIncome', requestOptions)
+  }
+
+  countDetails(): Observable<any> {
+    const item = 'adminValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'countDetails', requestOptions)
+  }
+
+  chartValue(): Observable<any> {
+    const item = 'adminValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'getChartValue', requestOptions)
+  }
 }

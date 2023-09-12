@@ -67,5 +67,16 @@ export class UserProfileComponent implements OnInit{
   viewProgress(id:string) {
     this.route.navigate(['workProgress',id])
   }
+
+  viewHistory() {
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width:'30%',
+      data: {mode: 'userViewHistory'}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+    });
+  }
   
 }
