@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class WorkerService {
 
-  url = environment.userApiUrl
+  private url = environment.userApiUrl
 
   constructor(private http: HttpClient) { }
 
@@ -16,16 +16,14 @@ export class WorkerService {
   }
 
   otpVerify(otp:any): Observable<any> { 
-    return this.http.post<any>('http://localhost:3000/workerOtpProcess', {otp})
+    return this.http.post<any>(this.url+'workerOtpProcess', {otp})
   }
 
   fetchCategory(): Observable<any> {
     return this.http.get<any> (this.url+'FetchCategory')
   }
 
-  workerLogin(loginData: any): Observable<any>{
-    console.log('lgon data', loginData);
-    
+  workerLogin(loginData: any): Observable<any>{    
     return this.http.post<any>(this.url+'workerLogin', loginData)
   }
 

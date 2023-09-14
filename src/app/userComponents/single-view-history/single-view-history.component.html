@@ -13,7 +13,7 @@
       <div class="w-10/12">
         <div class="receipt bg-white p-3">
  
-          <h4 class="mt-2 mb-3 text-lg">Client name</h4>
+          <h4 class="mt-2 mb-3 text-lg">Client name : {{clientData?.firstName}} {{clientData?.lastName}}</h4>
           <hr class="my-3">
   
   
@@ -22,41 +22,40 @@
                 <h3 class="text-xl dark:text-white font-semibold leading-5 text-gray-800">Employee Details</h3>
                 <div class="flex justify-center items-center w-full space-y-4 flex-col">
                     <div class="flex justify-between w-full">
-                        <p class="text-base dark:text-white leading-4 text-gray-800">Name : </p>
+                        <p class="text-base dark:text-white leading-4 text-gray-800">Name : {{workerData?.firstName}} {{workerData?.lastName}}</p>
                     </div>
                     <div class="flex justify-between items-center w-full">
-                        <p class="text-base dark:text-white leading-4 text-gray-800">Category :</p>
+                        <p class="text-base dark:text-white leading-4 text-gray-800">Category : {{workerData?.department.name}}</p>
                     </div>
                     <div class="flex justify-between items-center w-full">
-                        <p class="text-base dark:text-white leading-4 text-gray-800">location : </p>
+                        <p class="text-base dark:text-white leading-4 text-gray-800">location : {{workerData?.district}}</p>
                     </div>
                     <div class="flex justify-between items-center w-full">
-                        <p class="text-base dark:text-white leading-4 text-gray-800">Phone no : </p>
+                        <p class="text-base dark:text-white leading-4 text-gray-800">Phone no : {{workerData?.phoneNo}}</p>
                     </div>
                     <div class="flex justify-between items-center w-full">
-                        <p class="text-base dark:text-white leading-4 text-gray-800">Email : </p>
+                        <p class="text-base dark:text-white leading-4 text-gray-800">Email : {{workerData?.email}} </p>
                     </div>
                 </div>
             </div>
 
 
             <div class="col-span-5 px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6">
-            <h3 class="text-xl dark:text-white font-semibold leading-5 text-gray-800">Work Details</h3>
+            <h3 class="text-xl dark:text-white font-semibold leading-5 text-gray-800">Payment Details</h3>
             <div class="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
+              <div class="flex justify-between w-full">
+                <p class="text-base dark:text-white leading-4 text-gray-800">Payment Id : {{paymentDetails?._id}}</p>
+            </div>
                 <div class="flex justify-between w-full">
                     <p class="text-base dark:text-white leading-4 text-gray-800">Payment Status : Completed</p>
                 </div>
                 <div class="flex justify-between items-center w-full">
-                    <p class="text-base dark:text-white leading-4 text-gray-800">Payment Date :</p>
-                </div>
-                <div class="flex justify-between items-center w-full">
-                    <p class="text-base dark:text-white leading-4 text-gray-800">Amount</p>
-                    <p class="text-base dark:text-gray-300 leading-4 text-gray-600">$8.00</p>
+                    <p class="text-base dark:text-white leading-4 text-gray-800">Payment Date : {{paymentDetails?.payedDate | date}}</p>
                 </div>
             </div>
             <div class="flex justify-between items-center w-full">
-                <p class="text-base dark:text-white font-semibold leading-4 text-gray-800">Total</p>
-                <p class="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600">$36.00</p>
+                <p class="text-base dark:text-white font-semibold leading-4 text-gray-800">Total Amount</p>
+                <p class="text-base dark:text-gray-300 font-semibold leading-4 text-gray-600">₹{{paymentDetails?.amount}}</p>
             </div>
         </div>
           </div>
@@ -76,7 +75,7 @@
             </div>
             <div class="flex flex-col justify-end items-end">
               <span class="font-bold block">Need Help?</span>
-              <span>workerDetails?.phoneNo</span>
+              <span>{{workerData?.phoneNo}}</span>
             </div>
           </div>
         </div>
