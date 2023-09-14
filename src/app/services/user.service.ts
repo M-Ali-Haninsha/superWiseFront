@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs'
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  url = 'http://localhost:3000/'
+  url = environment.userApiUrl
   constructor(private http: HttpClient) { }
 
   fetchCategory(): Observable<any> {
@@ -18,9 +19,7 @@ export class UserService {
     return this.http.post<any>(this.url+'userSignup', data)
   }
 
-  userOtp(data:any):Observable<any> {
-    console.log('thissssssss', data);
-    
+  userOtp(data:any):Observable<any> {    
     return this.http.post<any> (this.url+ 'userOtp', {data})
   }
 

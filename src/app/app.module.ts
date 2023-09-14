@@ -62,7 +62,6 @@ import { UserDialogComponent } from './userComponents/user-dialog/user-dialog.co
 import { UpdateWorkComponent } from './workerComponents/update-work/update-work.component';
 import { WorkProgressComponent } from './userComponents/work-progress/work-progress.component';
 import { SuccesspageComponent } from './userComponents/successpage/successpage.component';
-import { ChatComponent } from './workerComponents/chat/chat.component';
 import { NgChartsModule } from 'ng2-charts';
 import { SingleViewHistoryComponent } from './userComponents/single-view-history/single-view-history.component';
 
@@ -104,7 +103,6 @@ import { SingleViewHistoryComponent } from './userComponents/single-view-history
     UpdateWorkComponent,
     WorkProgressComponent,
     SuccesspageComponent,
-    ChatComponent,
     SingleViewHistoryComponent,
   ],
   imports: [

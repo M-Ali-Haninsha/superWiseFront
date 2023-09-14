@@ -36,7 +36,7 @@
         </div>
         <button class="start-10" mat-raised-button color="primary" (click)="viewImages()">view images</button>
         <button class="start-10 ml-4" mat-raised-button color="primary" (click)="message()">message</button>
-        <mat-card class="start-10 my-6 w-10/12">
+        <mat-card class="start-10 my-6 w-10/12" *ngIf="payActive">
           <form [formGroup]="amountForm">
             <mat-card-content>
               <p> Amount to be Paid : ₹{{Amount}}</p>

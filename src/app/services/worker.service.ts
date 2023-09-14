@@ -1,18 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs'
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class WorkerService {
 
-  workerSignupUrl = 'http://localhost:3000/workerSignup'
-  url = 'http://localhost:3000/'
+  url = environment.userApiUrl
 
   constructor(private http: HttpClient) { }
 
   workerSignup(data:any): Observable<any> {
-    return this.http.post<any>(this.workerSignupUrl, data)
+    return this.http.post<any>(this.url+'workerSignup', data)
   }
 
   otpVerify(otp:any): Observable<any> { 
@@ -111,6 +111,13 @@ export class WorkerService {
     const headers = new HttpHeaders().set('usertype', item);
     const requestOptions = { headers: headers };
     return this.http.post<any> (this.url+'pushImages/'+ clientId, images ,requestOptions)
+  }
+
+  countData():Observable<any> {
+    const item = 'workerValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'getCount', requestOptions)
   }
 
 }

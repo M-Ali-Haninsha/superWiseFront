@@ -18,10 +18,10 @@
           <span class="text-sm text-black-50">your work Completed and Payment is recieved</span>
           <hr class="my-3">
   
-          <div class="flex justify-center gap-12 order-details">
-            <div *ngFor="let payment of paymentP">
+          <div class="flex justify-normal gap-8 order-details">
+            <div >
               <span class="text-sm">date: </span>
-              <span class="font-bold">{{payment.payedDate |  date}}</span>
+              <span class="font-bold">{{paymentP?.payedDate |  date}}</span>
             </div>
     
             <div>
@@ -63,9 +63,9 @@
                   <span class="font-bold">₹subPrice</span>
                 </div> -->
                 <hr class="my-1">
-                <div class="flex justify-between mt-1" *ngFor="let payment of paymentP">
+                <div class="flex justify-between mt-1">
                   <!-- <span class="font-bold">Total</span> -->
-                  <span class="font-bold text-dark ms-auto">₹grandtotal:{{payment.amount}}</span>
+                  <span class="font-bold text-dark ms-auto">₹grandtotal:{{paymentP?.amount}}</span>
                 </div>
               </div>
             </div>

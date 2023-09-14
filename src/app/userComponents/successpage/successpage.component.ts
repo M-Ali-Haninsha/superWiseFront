@@ -28,19 +28,15 @@ export class SuccesspageComponent implements OnInit{
   workerData() {
     this.service.userViewWorkerDetails(this.id).subscribe((value)=> {
       this.workerDetails = value.data
-      console.log('this is worker data',this.workerDetails);
-      
     })
   }
 
   paymentDetails() {    
     console.log(this.id);
     
-    this.service.getPaymentData(this.id).subscribe((value)=> {
+    this.service.getPaymentData(this.id).subscribe((value)=> {      
       this.clientDataP = value.paymentData
-      this.paymentP = this.clientDataP.payment
-      console.log(this.paymentP);
-      
+      this.paymentP = value.details      
     })
   }
 

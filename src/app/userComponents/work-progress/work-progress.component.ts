@@ -23,6 +23,7 @@ export class WorkProgressComponent implements OnInit{
   amountForm!: FormGroup
   ratingButtonActive: any
   detail:any
+  payActive:boolean = true
 
   constructor(private route: Router,private activateRoute: ActivatedRoute, private service: UserService, private fb: FormBuilder, private dialog: MatDialog, private ngZone: NgZone) {
     this.id = this.activateRoute.snapshot.paramMap.get('id') || ''     
@@ -32,9 +33,6 @@ export class WorkProgressComponent implements OnInit{
   }
 
   ngOnInit(): void {
-
-    console.log(this.progressBar);
-    
       this.viewWorkerDetails(this.id)
       this.getProgressValue()
       this.getAmount()
@@ -42,14 +40,18 @@ export class WorkProgressComponent implements OnInit{
 
   getAmount() {    
     this.service.showAmount(this.id).subscribe((value)=> {
-      console.log(value);
-      this.Amount = value.amount
+      if(value.amount == null) {
+        this.payActive = false
+      } else {
+        this.payActive = true
+        this.Amount = value.amount
+      }
     })
   }
 
   getProgressValue() {
     this.service.getProgressData(this.id).subscribe(data => {
-      if(!data) {
+      if(data.data == null) {
         this.inActive = true
       } else {
       this.progressBar = data.data

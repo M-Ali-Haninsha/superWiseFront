@@ -28,7 +28,6 @@ import { AcceptedWorksComponent } from './workerComponents/accepted-works/accept
 import { UpdateWorkComponent } from './workerComponents/update-work/update-work.component';
 import { WorkProgressComponent } from './userComponents/work-progress/work-progress.component';
 import { SuccesspageComponent } from './userComponents/successpage/successpage.component';
-import { ChatComponent } from './workerComponents/chat/chat.component';
 import { SingleViewHistoryComponent } from './userComponents/single-view-history/single-view-history.component';
 
 const routes: Routes = [
@@ -66,7 +65,6 @@ const routes: Routes = [
     {path: 'workerProfile', component: WorkerProfileComponent},
     {path:'acceptedWorks', component: AcceptedWorksComponent},
     {path:'updateWorks/:id', component: UpdateWorkComponent},
-    {path:'workerChat', component: ChatComponent}
   ]}
 ];
 

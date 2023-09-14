@@ -25,6 +25,10 @@ export class UserLoginComponent implements OnInit{
       })
   }
 
+  togglePasswordVisibility(){
+    
+  }
+
   onSubmit(){
     if(this.userSigninForm.valid) {
       this.formData= this.userSigninForm.value;

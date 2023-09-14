@@ -29,7 +29,9 @@ export class VerifiedWorkersComponent implements OnInit{
   }
 
   getWorker() {
-    this.service.getVerifiedWorkers().subscribe((value)=>{          
+    this.service.getVerifiedWorkers().subscribe((value)=>{    
+      console.log(value);
+            
       this.dataSource = new MatTableDataSource(value.workers)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort

@@ -38,9 +38,12 @@ export class UpdateWorkComponent implements OnInit{
 
   viewProgress() {
     this.service.showProgress(this.id).subscribe((value) => {
-      console.log(value);
-      this.progressValue = value.workStatus[0].progressBar;
-      this.clientData = value
+      if(!value.newData){
+        this.progressValue = 0
+      } else {
+        this.progressValue = value.newData
+      }
+      this.clientData = value.data
     })
   }
 

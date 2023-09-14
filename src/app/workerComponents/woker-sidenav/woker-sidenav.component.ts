@@ -10,16 +10,25 @@ import { WorkerService } from 'src/app/services/worker.service';
 export class WokerSidenavComponent implements OnInit{
 
   worker:any
+  reqCount: number = 0
 
   constructor(private route: Router, private service: WorkerService) {}
 
   ngOnInit(): void {
       this.workerProfile()
+      this.inboxCount()
   }
 
   workerProfile() {
     this.service.fetchWorkerData().subscribe((value)=>{
       this.worker = value.data
+    })
+  }
+
+  inboxCount(){
+    this.service.countData().subscribe((value)=> {
+      console.log(value.lengthOfReq);
+      this.reqCount = value.lengthOfReq
     })
   }
 

@@ -84,7 +84,6 @@ if(this.hireForm.valid ) {
   viewRating() {
     this.service.showRating(this.id).subscribe((value)=> {
       this.rating = value.rating
-      console.log(this.rating);
     })
   }
 

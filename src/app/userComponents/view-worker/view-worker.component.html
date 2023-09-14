@@ -69,9 +69,9 @@
                   <div class="flex justify justify-between">
                     <div class="flex gap-2">
                       <div class="w-7 h-7 text-center rounded-full bg-red-500">
-                        <img [src]="rate.userRef.image" alt="">
+                        <img [src]="rate.userRef?.image" alt="">
                       </div>
-                      <span>{{rate.userRef.firstName}}</span>
+                      <span>{{rate.userRef?.firstName}}</span>
                     </div>
                     <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 5">
                       <p>*</p>
