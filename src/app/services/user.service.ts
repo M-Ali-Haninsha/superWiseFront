@@ -19,8 +19,8 @@ export class UserService {
     return this.http.post<any>(this.url+'userSignup', data)
   }
 
-  userOtp(data:any):Observable<any> {    
-    return this.http.post<any> (this.url+ 'userOtp', {data})
+  userOtp(datas:any):Observable<any> {    
+    return this.http.post<any> (this.url+ 'userOtp', {datas})
   }
 
   userLogin(data:any):Observable<any> {
