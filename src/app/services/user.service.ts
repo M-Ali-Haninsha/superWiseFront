@@ -9,7 +9,6 @@ import { environment } from '../../environments/environment';
 export class UserService {
 
   url = environment.userApiUrl
-  // url = 'https://superwise.online/'
   constructor(private http: HttpClient) { }
 
   fetchCategory(): Observable<any> {
