@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class WorkerService {
 
-  private url = environment.userApiUrl
+  private url = environment.USER_URL
 
   constructor(private http: HttpClient) { }
 

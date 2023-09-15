@@ -6,13 +6,13 @@ import {
   returnedDataLogin,
 } from '../adminComponents/interface/adminInterface';
 // import { Worker } from '../interface/interface'
-import { environment } from '../../environments/environment'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminServiceService {
-  private url = environment.adminApiUrl;
+  private url = environment.ADMIN_URL;
 
   constructor(private http: HttpClient) {}
 
