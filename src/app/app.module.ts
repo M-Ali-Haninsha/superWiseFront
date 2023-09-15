@@ -64,6 +64,8 @@ import { WorkProgressComponent } from './userComponents/work-progress/work-progr
 import { SuccesspageComponent } from './userComponents/successpage/successpage.component';
 import { NgChartsModule } from 'ng2-charts';
 import { SingleViewHistoryComponent } from './userComponents/single-view-history/single-view-history.component';
+import { ComplaintsComponent } from './adminComponents/complaints/complaints.component';
+import { ViewComplaintComponent } from './adminComponents/view-complaint/view-complaint.component';
 
 
 
@@ -104,6 +106,8 @@ import { SingleViewHistoryComponent } from './userComponents/single-view-history
     WorkProgressComponent,
     SuccesspageComponent,
     SingleViewHistoryComponent,
+    ComplaintsComponent,
+    ViewComplaintComponent,
   ],
   imports: [
     BrowserModule,

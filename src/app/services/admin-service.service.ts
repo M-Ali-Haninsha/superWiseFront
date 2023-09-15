@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -155,4 +155,25 @@ export class AdminServiceService {
     const requestOptions = { headers: headers };
     return this.http.get<any>(this.url + 'getChartValue', requestOptions);
   }
+
+  getComplaints(): Observable<any> {
+    const item = 'adminValue';
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'getComplaints', requestOptions)
+  }
+
+  // getReportedWorker(workerId: string, clientId: string): Observable<any> {
+  //   console.log(workerId, clientId);
+    
+  //   const item = 'adminValue';
+  //   const headers = new HttpHeaders().set('usertype', item);
+  //   const params = new HttpParams()
+  //     .set('workerId', workerId)
+  //     .set('clientId', clientId);
+  //   const requestOptions = { headers: headers, params: params };
+  
+  //   return this.http.get<any>(`${this.url}getReportedWorker`, requestOptions);
+  // }
+  
 }

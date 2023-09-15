@@ -29,6 +29,8 @@ import { UpdateWorkComponent } from './workerComponents/update-work/update-work.
 import { WorkProgressComponent } from './userComponents/work-progress/work-progress.component';
 import { SuccesspageComponent } from './userComponents/successpage/successpage.component';
 import { SingleViewHistoryComponent } from './userComponents/single-view-history/single-view-history.component';
+import { ComplaintsComponent } from './adminComponents/complaints/complaints.component';
+import { ViewComplaintComponent } from './adminComponents/view-complaint/view-complaint.component';
 
 const routes: Routes = [
 //recruiter routing  
@@ -52,7 +54,9 @@ const routes: Routes = [
     {path: 'category', component:AdminCategoryComponent},
     {path: 'verification', component:AdminVerificationComponent},
     {path: 'verifiedWorkers', component:VerifiedWorkersComponent},
-    {path: 'usersList', component: UsersComponent}
+    {path: 'usersList', component: UsersComponent},
+    {path: 'userComplaints', component:ComplaintsComponent},
+    {path: 'viewComplaint/:workerId/:clientId', component:ViewComplaintComponent}
 ]},
 
 //worker routing
