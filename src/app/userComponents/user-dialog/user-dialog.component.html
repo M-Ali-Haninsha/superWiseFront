@@ -211,3 +211,42 @@
     </div>
   </div>
 </div>
+
+
+<!--report modal-->
+
+<div  *ngIf="editData.mode === 'reportWorker'" class="flex flex-col w-full 2xl:w-2/3" style="width: 100%;">
+  <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
+    <div class="flex items-center justify-between">
+        <h4 class="text-xl text-gray-200 font-bold">Issue :</h4>
+    </div>
+    <div>
+      <form [formGroup]="reportForm">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+        mention your problem here:
+      </label>
+      <textarea formControlName="reason" class=" no-resize appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-32 resize-none" id="message"></textarea>
+      <p class="text-gray-600 text-xs italic"></p>
+      <button mat-raised-button color="warn" title="Report worker" (click)="reportWorkerPost()">
+        <mat-icon>report</mat-icon>
+        Report
+      </button>  
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- <div  *ngIf="editData.mode === 'reportWorker'" class="flex flex-col w-full 2xl:w-2/3" style="width: 100%;">
+  <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
+    <div class="flex items-center justify-between">
+        <h4 class="text-xl text-gray-200 font-bold">Issue :</h4>
+    </div>
+    <p class="mt-2 text-gray-300">
+      details
+    </p>
+  </div>
+</div> -->

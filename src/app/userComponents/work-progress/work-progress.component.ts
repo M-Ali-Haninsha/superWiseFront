@@ -145,4 +145,15 @@ export class WorkProgressComponent implements OnInit{
  
     });
   }
+
+  reportWorker() {
+    const dialogRef = this.dialog.open(UserDialogComponent, {
+      width:'30%',
+      data: {mode: 'reportWorker', data:this.workerData._id}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+ 
+    });
+  }
 }

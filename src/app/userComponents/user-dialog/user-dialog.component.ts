@@ -27,6 +27,9 @@ export class UserDialogComponent implements OnInit{
   sendedMessageByClient:any
   sendData:any
   historyWorkStatus:any
+  reportForm:any
+  reportedWorkerId!:string
+  reportReason:any
 
   constructor(private formBuilder: FormBuilder,private ref: MatDialogRef<UserDialogComponent>, @Inject(MAT_DIALOG_DATA) public editData:any, private service: UserService, private chatService: ChatService, private route:Router) {
     this.messageForm = this.formBuilder.group({
@@ -49,6 +52,15 @@ export class UserDialogComponent implements OnInit{
           comment: ['', Validators.required]
         })
       }    
+
+      if(this.editData.mode == 'reportWorker') {    
+        this.reportedWorkerId = this.editData.data
+            
+        this.reportForm = this.formBuilder.group({
+          reason: ['', Validators.required]
+        })
+      }  
+
       this.chatService.test().subscribe((value)=>{
         this.sendedMessageByClient = value
       })
@@ -144,6 +156,15 @@ export class UserDialogComponent implements OnInit{
 
   viewMoreHistory(workerId:string) {
     this.route.navigate(['singleViewHistory',workerId])
+  }
+
+  reportWorkerPost(){
+    this.reportReason = this.reportForm.value
+    console.log(this.reportForm);
+    
+    this.service.reportWorkerCall(this.reportedWorkerId, this.reportReason).subscribe((value)=> {
+      console.log(value);
+    })
   }
 }
 

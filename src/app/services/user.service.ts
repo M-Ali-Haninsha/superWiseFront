@@ -160,6 +160,12 @@ export class UserService {
     return this.http.get<any> (this.url+'historyData/'+workerId, requestOptions)
   }
 
+  reportWorkerCall(workerId:string, reason:FormData): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.post<any> (this.url+'reportWorker/'+ workerId, reason, requestOptions)
+  }
  }
 
 
