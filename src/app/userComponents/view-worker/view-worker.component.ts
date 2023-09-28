@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ViewWorkerComponent implements OnInit{
 
-  workerBookedDates: Date[] = [];
+  // workerBookedDates: Date[] = [];
   workerData:any
   id:string
   hireForm!: FormGroup
@@ -90,22 +90,22 @@ if(this.hireForm.valid ) {
     })
   }
 
-  dateFilter = (date: Date | null): boolean => {
-    if (!date) {
-      return false;
-    }
+  // dateFilter = (date: Date | null): boolean => {
+  //   if (!date) {
+  //     return false;
+  //   }
     
-    return !this.workerBookedDates.some(bookedDate =>
-      new Date(bookedDate).toDateString() === date.toDateString()
-    );
-  };
+  //   return !this.workerBookedDates.some(bookedDate =>
+  //     new Date(bookedDate).toDateString() === date.toDateString()
+  //   );
+  // };
 
-  getDates() {
-    this.service.bookedDates(this.id).subscribe((value)=> {
-      console.log(value);
-      this.workerBookedDates = value.bookedDates
-    })
-  }
+  // getDates() {
+  //   this.service.bookedDates(this.id).subscribe((value)=> {
+  //     console.log(value);
+  //     this.workerBookedDates = value.bookedDates
+  //   })
+  // }
 
   showSnackbar(message: string) {
     this.snackBar.open(message, 'Dismiss', {
