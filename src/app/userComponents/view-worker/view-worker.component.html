@@ -140,7 +140,7 @@
                 <p  class="text-gray-600 text-xs italic"></p>
               </div>
               <small *ngIf="hireForm.controls['description'].touched && hireForm.hasError('required', 'description')" class="text-red-500">*please mention your requirements.</small>
-              <mat-form-field class="example-form-field mb-4">
+              <!-- <mat-form-field class="example-form-field mb-4">
                 <mat-label>Expected date</mat-label>
                 <input matInput [matDatepicker]="datepicker" formControlName="date">
                 <mat-hint>MM/DD/YYYY</mat-hint>
@@ -151,7 +151,15 @@
                     <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
                   </mat-datepicker-actions>
                 </mat-datepicker>
+              </mat-form-field> -->
+              <mat-form-field class="example-form-field mb-4">
+                <mat-label>Expected date</mat-label>
+                <input matInput [matDatepicker]="datepicker" formControlName="date" [matDatepickerFilter]="dateFilter">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+                <mat-datepicker #datepicker></mat-datepicker>
               </mat-form-field>
+              
              
               <div class="mb-3">
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="photo">

@@ -11,6 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ViewWorkerComponent implements OnInit{
 
+  workerBookedDates: Date[] = [];
   workerData:any
   id:string
   hireForm!: FormGroup
@@ -29,6 +30,16 @@ export class ViewWorkerComponent implements OnInit{
   prevStep() {
     this.step--;
   }
+
+  dateFilter = (date: Date | null): boolean => {
+    if (!date) {
+      return false;
+    }
+    
+    return !this.workerBookedDates.some(bookedDate =>
+      new Date(bookedDate).toDateString() === date.toDateString()
+    );
+  };
 
   constructor(private activateRoute: ActivatedRoute, private service: UserService, private formBuilder: FormBuilder, private route: Router, private snackBar: MatSnackBar) {
     this.id = this.activateRoute.snapshot.paramMap.get('id') || ''            
