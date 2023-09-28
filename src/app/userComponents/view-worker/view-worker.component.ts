@@ -103,6 +103,7 @@ if(this.hireForm.valid ) {
   getDates() {
     this.service.bookedDates(this.id).subscribe((value)=> {
       console.log(value);
+      this.workerBookedDates = value.bookedDates
     })
   }
 
