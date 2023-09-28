@@ -167,6 +167,13 @@ export class UserService {
     const requestOptions = { headers: headers };
     return this.http.post<any> (this.url+'reportWorker/'+ workerId, reason, requestOptions)
   }
+
+  bookedDates(workerId: string): Observable<any> {
+    const item = 'userValue'
+    const headers = new HttpHeaders().set('usertype', item);
+    const requestOptions = { headers: headers };
+    return this.http.get<any> (this.url+'bookedDates/'+ workerId, requestOptions)
+  }
  }
 
 

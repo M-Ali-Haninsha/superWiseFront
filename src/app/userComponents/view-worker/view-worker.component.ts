@@ -31,15 +31,7 @@ export class ViewWorkerComponent implements OnInit{
     this.step--;
   }
 
-  dateFilter = (date: Date | null): boolean => {
-    if (!date) {
-      return false;
-    }
-    
-    return !this.workerBookedDates.some(bookedDate =>
-      new Date(bookedDate).toDateString() === date.toDateString()
-    );
-  };
+
 
   constructor(private activateRoute: ActivatedRoute, private service: UserService, private formBuilder: FormBuilder, private route: Router, private snackBar: MatSnackBar) {
     this.id = this.activateRoute.snapshot.paramMap.get('id') || ''            
@@ -95,6 +87,22 @@ if(this.hireForm.valid ) {
   viewRating() {
     this.service.showRating(this.id).subscribe((value)=> {
       this.rating = value.rating
+    })
+  }
+
+  dateFilter = (date: Date | null): boolean => {
+    if (!date) {
+      return false;
+    }
+    
+    return !this.workerBookedDates.some(bookedDate =>
+      new Date(bookedDate).toDateString() === date.toDateString()
+    );
+  };
+
+  getDates() {
+    this.service.bookedDates(this.id).subscribe((value)=> {
+      console.log(value);
     })
   }
 
