@@ -18,7 +18,7 @@ export class ChatService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('https://superwise.online')
+    this.socket = io('https://superwise-back.onrender.com')
    }
 
    public selectWorker(message:any):Observable<void> {
