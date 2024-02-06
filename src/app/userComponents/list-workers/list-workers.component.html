@@ -7,7 +7,7 @@
             Filters
         </div>
         <div class="mt-4">
-           <p class=" text-gray-800 capitalize  dark:text-white">CATEGORIES</p> 
+           <p routerLink="/category" class=" text-gray-800 capitalize  dark:text-white">CATEGORIES</p> 
         </div>
         <div *ngFor="let cat of category">
             <a (click)="filterWorkersByCategory(cat._id)" class=" text-gray-800 capitalize  dark:text-gray-500 block px-4 py-2 text-sm hover:cursor-pointer"   id="menu-item-0">{{cat?.name}}</a>
