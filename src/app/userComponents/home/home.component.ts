@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit{
 
   constructor() {}
-
+  url="/assets/images/download.webp" 
+  url1="/assets/images/ContingentWorker_hero768w_EN.jpg" 
   ngOnInit(): void {
       
   }
