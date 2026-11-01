@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 900" preserveAspectRatio="xMidYMid slice">
+  <rect width="720" height="900" fill="#dbeafe"/>
+  <circle cx="120" cy="150" r="190" fill="#bfdbfe"/>
+  <circle cx="640" cy="780" r="210" fill="#bfdbfe"/>
+  <!-- form card -->
+  <rect x="190" y="220" width="340" height="460" rx="24" fill="#ffffff"/>
+  <circle cx="360" cy="310" r="48" fill="#1d4ed8"/>
+  <circle cx="360" cy="296" r="18" fill="#ffffff"/>
+  <path d="M328 338c5-17 18-24 32-24s27 7 32 24" fill="#ffffff"/>
+  <g fill="#e2e8f0">
+    <rect x="230" y="395" width="260" height="34" rx="10"/>
+    <rect x="230" y="447" width="260" height="34" rx="10"/>
+    <rect x="230" y="499" width="260" height="34" rx="10"/>
+  </g>
+  <rect x="230" y="565" width="260" height="46" rx="12" fill="#1d4ed8"/>
+  <!-- envelope (OTP) -->
+  <rect x="470" y="160" width="130" height="90" rx="12" fill="#fbbf24"/>
+  <path d="M470 172l65 48 65-48" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/>
+</svg>

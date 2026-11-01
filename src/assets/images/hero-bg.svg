@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e3a8a"/>
+      <stop offset="0.55" stop-color="#1d4ed8"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0v64" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1.5"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#g)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <!-- wrench -->
+    <path d="M180 690l170-170m30-80a70 70 0 1 0 70 70l-40 4-30-30z"/>
+    <!-- house -->
+    <path d="M1180 300l170-140 170 140v190h-340z"/>
+    <path d="M1310 490v-90h80v90"/>
+    <!-- paint roller -->
+    <path d="M1150 700h200v60h-200zM1350 730h40v70h-100v60"/>
+    <!-- bolt -->
+    <path d="M300 170l-50 110h60l-40 110 110-150h-60l40-70z"/>
+  </g>
+  <circle cx="1450" cy="120" r="220" fill="#fbbf24" fill-opacity="0.08"/>
+  <circle cx="120" cy="860" r="260" fill="#ffffff" fill-opacity="0.05"/>
+</svg>

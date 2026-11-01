@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 900" preserveAspectRatio="xMidYMid slice">
+  <rect width="720" height="900" fill="#dbeafe"/>
+  <circle cx="600" cy="140" r="180" fill="#bfdbfe"/>
+  <circle cx="90" cy="800" r="200" fill="#bfdbfe"/>
+  <!-- phone -->
+  <rect x="240" y="230" width="240" height="440" rx="32" fill="#1e3a8a"/>
+  <rect x="258" y="262" width="204" height="376" rx="14" fill="#ffffff"/>
+  <!-- shield with lock -->
+  <path d="M360 330l80 30v70c0 55-36 92-80 110-44-18-80-55-80-110v-70z" fill="#1d4ed8"/>
+  <rect x="330" y="420" width="60" height="48" rx="8" fill="#ffffff"/>
+  <path d="M342 420v-14a18 18 0 0 1 36 0v14" fill="none" stroke="#ffffff" stroke-width="9"/>
+  <circle cx="360" cy="442" r="7" fill="#1d4ed8"/>
+  <!-- password dots -->
+  <rect x="290" y="565" width="140" height="36" rx="18" fill="#e2e8f0"/>
+  <g fill="#1d4ed8"><circle cx="318" cy="583" r="6"/><circle cx="342" cy="583" r="6"/><circle cx="366" cy="583" r="6"/><circle cx="390" cy="583" r="6"/></g>
+  <!-- check badge -->
+  <circle cx="490" cy="640" r="38" fill="#22c55e"/>
+  <path d="M472 640l12 12 24-26" fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
