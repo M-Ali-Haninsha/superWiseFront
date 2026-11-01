@@ -8,9 +8,10 @@ import { AdminDialogComponent } from '../admin-dialog/admin-dialog.component';
 
 
 @Component({
-  selector: 'app-admin-category',
-  templateUrl: './admin-category.component.html',
-  styleUrls: ['./admin-category.component.css']
+    selector: 'app-admin-category',
+    templateUrl: './admin-category.component.html',
+    styleUrls: ['./admin-category.component.css'],
+    standalone: false
 })
 export class AdminCategoryComponent implements OnInit {
   displayedColumns: string[] = ['rowNumber', 'name', 'image','description', 'action'];

@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { WorkerService } from 'src/app/services/worker.service';
 
 @Component({
-  selector: 'app-worker-dashboard',
-  templateUrl: './worker-dashboard.component.html',
-  styleUrls: ['./worker-dashboard.component.css']
+    selector: 'app-worker-dashboard',
+    templateUrl: './worker-dashboard.component.html',
+    styleUrls: ['./worker-dashboard.component.css'],
+    standalone: false
 })
 export class WorkerDashboardComponent implements OnInit{
 

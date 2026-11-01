@@ -2,20 +2,20 @@
 <body class="bg-white dark:bg-gray-900">
   <div class="flex flex-col lg:flex-row justify-center items-center h-screen">
     <div class="mt-56 sm:mt-48 md:mt-56 lg:mt-0 w-auto">
-        <div class="max-w-lg mx-auto my-10 bg-white rounded-lg shadow-md p-5">
-          <img
-            class="w-32 h-32 rounded-full mx-auto"
-            [src]="workerData?.image"
-            alt="Profile picture"
+      <div class="max-w-lg mx-auto my-10 bg-white rounded-lg shadow-md p-5">
+        <img
+          class="w-32 h-32 rounded-full mx-auto"
+          [src]="workerData?.image"
+          alt="Profile picture"
           />
           <h2 class="text-center text-2xl font-semibold mt-3">{{workerData?.firstName}}</h2>
           <p class="text-center text-gray-600 mt-1">{{workerData?.department.name}}</p>
-  
+
           <div class="mt-5">
             <h3 class="text-xl font-semibold">Details</h3>
             <div class="grid grid-cols-10">
               <p class="mt-2 col-span-5"> name: <span class="text-gray-600 ">{{workerData?.firstName}} {{workerData?.lastName}}</span></p>
-            <p class="mt-2 col-span-5"> mobile no: <span class="text-gray-600 ">{{workerData?.phoneNo}}</span></p>
+              <p class="mt-2 col-span-5"> mobile no: <span class="text-gray-600 ">{{workerData?.phoneNo}}</span></p>
 
               <p class="mt-2 col-span-5"> location: <span class="text-gray-600">{{workerData?.district}}</span> </p>
               <p class="mt-2 col-span-5"> email: <span class="text-gray-600">{{workerData?.email}}</span> </p>
@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-    
+
       <div>
         <div class="max-w-lg my-10 bg-black rounded-lg shadow-md p-5">
           <mat-accordion class="example-headers-align">
@@ -31,7 +31,7 @@
               [expanded]="step === 0"
               (opened)="setStep(0)"
               hideToggle
-            >
+              >
               <mat-expansion-panel-header>
                 <mat-panel-title> Description </mat-panel-title>
                 <mat-panel-description>
@@ -39,23 +39,23 @@
                   <mat-icon>account_circle</mat-icon>
                 </mat-panel-description>
               </mat-expansion-panel-header>
-    
+
               <p>
                 {{workerData?.description}}
               </p>
-    
+
               <mat-action-row>
                 <button mat-button color="primary" (click)="nextStep()">
                   Next
                 </button>
               </mat-action-row>
             </mat-expansion-panel>
-    
+
             <mat-expansion-panel
               [expanded]="step === 1"
               (opened)="setStep(1)"
               hideToggle
-            >
+              >
               <mat-expansion-panel-header>
                 <mat-panel-title> Reviews </mat-panel-title>
                 <mat-panel-description>
@@ -63,51 +63,63 @@
                   <mat-icon>map</mat-icon>
                 </mat-panel-description>
               </mat-expansion-panel-header>
-    
+
               <div class="h-[300px] overflow-y-auto">
-                <div class="bg-green-50 mt-4" *ngFor="let rate of rating">
-                  <div class="flex justify justify-between">
-                    <div class="flex gap-2">
-                      <div class="w-7 h-7 text-center rounded-full bg-red-500">
-                        <img [src]="rate.userRef?.image" alt="">
+                @for (rate of rating; track rate) {
+                  <div class="bg-green-50 mt-4">
+                    <div class="flex justify justify-between">
+                      <div class="flex gap-2">
+                        <div class="w-7 h-7 text-center rounded-full bg-red-500">
+                          <img [src]="rate.userRef?.image" alt="">
+                        </div>
+                        <span>{{rate.userRef?.firstName}}</span>
                       </div>
-                      <span>{{rate.userRef?.firstName}}</span>
+                      @if (rate.starValue == 5) {
+                        <div class="flex p-1 gap-1 text-orange-300">
+                          <p>*</p>
+                          <p>*</p>
+                          <p>*</p>
+                          <p>*</p>
+                          <p>*</p>
+                        </div>
+                      }
+                      @if (rate.starValue == 4) {
+                        <div class="flex p-1 gap-1 text-orange-300">
+                          <p>*</p>
+                          <p>*</p>
+                          <p>*</p>
+                          <p>*</p>
+                        </div>
+                      }
+                      @if (rate.starValue == 3) {
+                        <div class="flex p-1 gap-1 text-orange-300">
+                          <p>*</p>
+                          <p>*</p>
+                          <p>*</p>
+                        </div>
+                      }
+                      @if (rate.starValue == 2) {
+                        <div class="flex p-1 gap-1 text-orange-300">
+                          <p>*</p>
+                          <p>*</p>
+                        </div>
+                      }
+                      @if (rate.starValue == 1) {
+                        <div class="flex p-1 gap-1 text-orange-300">
+                          <p>*</p>
+                        </div>
+                      }
                     </div>
-                    <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 5">
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
+                    <div>
+                      {{rate.comment}}
                     </div>
-                    <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 4">
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                    </div>
-                    <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 3">
-                      <p>*</p>
-                      <p>*</p>
-                      <p>*</p>
-                    </div>
-                    <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 2">
-                      <p>*</p>
-                      <p>*</p>
-                    </div>
-                    <div class="flex p-1 gap-1 text-orange-300" *ngIf="rate.starValue == 1">
-                      <p>*</p>
+                    <div class="flex justify-between">
+                      <span>{{rate.date | date}}</span>
                     </div>
                   </div>
-                  <div>
-                   {{rate.comment}}
-                  </div>
-                  <div class="flex justify-between">
-                    <span>{{rate.date | date}}</span>
-                  </div>
-                </div>
+                }
               </div>
-    
+
               <mat-action-row>
                 <button mat-button color="warn" (click)="prevStep()">
                   Previous
@@ -117,12 +129,12 @@
                 </button>
               </mat-action-row>
             </mat-expansion-panel>
-    
+
             <mat-expansion-panel
               [expanded]="step === 2"
               (opened)="setStep(2)"
               hideToggle
-            >
+              >
               <mat-expansion-panel-header>
                 <mat-panel-title> Hire </mat-panel-title>
                 <mat-panel-description>
@@ -130,37 +142,39 @@
                   <mat-icon>date_range</mat-icon>
                 </mat-panel-description>
               </mat-expansion-panel-header>
-    
+
               <form [formGroup]="hireForm">
-              <div>
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-                  Issue
-                </label>
-                <textarea formControlName="description" class=" no-resize appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-32 resize-none" id="message"></textarea>
-                <p  class="text-gray-600 text-xs italic"></p>
-              </div>
-              <small *ngIf="hireForm.controls['description'].touched && hireForm.hasError('required', 'description')" class="text-red-500">*please mention your requirements.</small>
-              <mat-form-field class="example-form-field mb-4">
-                <mat-label>Expected date</mat-label>
-                <input matInput [matDatepicker]="datepicker" formControlName="date">
-                <mat-hint>MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
-                <mat-datepicker #datepicker>
-                  <mat-datepicker-actions>
-                    <button mat-button matDatepickerCancel>Cancel</button>
-                    <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
-                  </mat-datepicker-actions>
-                </mat-datepicker>
-              </mat-form-field>
-              <!-- <mat-form-field class="example-form-field mb-4">
+                <div>
+                  <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Issue
+                  </label>
+                  <textarea formControlName="description" class=" no-resize appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-32 resize-none" id="message"></textarea>
+                  <p  class="text-gray-600 text-xs italic"></p>
+                </div>
+                @if (hireForm.controls['description'].touched && hireForm.hasError('required', 'description')) {
+                  <small class="text-red-500">*please mention your requirements.</small>
+                }
+                <mat-form-field class="example-form-field mb-4">
+                  <mat-label>Expected date</mat-label>
+                  <input matInput [matDatepicker]="datepicker" formControlName="date">
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+                  <mat-datepicker #datepicker>
+                    <mat-datepicker-actions>
+                      <button mat-button matDatepickerCancel>Cancel</button>
+                      <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+                    </mat-datepicker-actions>
+                  </mat-datepicker>
+                </mat-form-field>
+                <!-- <mat-form-field class="example-form-field mb-4">
                 <mat-label>Expected date</mat-label>
                 <input matInput [matDatepicker]="datepicker" formControlName="date" [matDatepickerFilter]="dateFilter">
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
                 <mat-datepicker #datepicker></mat-datepicker>
               </mat-form-field> -->
-              
-             
+
+
               <div class="mb-3">
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="photo">
                   Upload Photo
@@ -170,20 +184,20 @@
               <div>
                 <button (click)="hire(workerData?._id)" class="flex items-center ms-auto bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100">
                   <span>Hire</span>
-              </button>
+                </button>
               </div>
             </form>
-              <mat-datepicker #picker></mat-datepicker>
-    
-              <mat-action-row>
-                <button mat-button color="warn" (click)="prevStep()">
-                  Previous
-                </button>
-                <button mat-button color="primary" (click)="nextStep()">End</button>
-              </mat-action-row>
-            </mat-expansion-panel>
-          </mat-accordion>
-        </div>
+            <mat-datepicker #picker></mat-datepicker>
+
+            <mat-action-row>
+              <button mat-button color="warn" (click)="prevStep()">
+                Previous
+              </button>
+              <button mat-button color="primary" (click)="nextStep()">End</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </mat-accordion>
       </div>
+    </div>
   </div>
 </body>

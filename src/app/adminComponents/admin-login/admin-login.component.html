@@ -3,11 +3,15 @@
     <div class="heading">Sign In</div>
     <form class="form" [formGroup]="adminLoginForm" (ngSubmit)="onSubmit()">
       <input class="input" type="email" formControlName="email" placeholder="E-mail">
-      <small *ngIf="adminLoginForm.controls['email'].touched && adminLoginForm.hasError('required', 'email')" class="text-red-600 ">*User Email required</small>
+      @if (adminLoginForm.controls['email'].touched && adminLoginForm.hasError('required', 'email')) {
+        <small class="text-red-600 ">*User Email required</small>
+      }
       <div class="input-container">
         <input class="input" matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password">
       </div>
-      <small *ngIf="adminLoginForm.controls['password'].touched && adminLoginForm.hasError('required', 'password')" class="text-red-600">*password required</small>
+      @if (adminLoginForm.controls['password'].touched && adminLoginForm.hasError('required', 'password')) {
+        <small class="text-red-600">*password required</small>
+      }
       <button class="login-button" >Sign In</button>
     </form>
   </div>

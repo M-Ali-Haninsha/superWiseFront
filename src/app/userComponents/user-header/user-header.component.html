@@ -1,18 +1,24 @@
 <mat-toolbar>
-    <button routerLink="/" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <img src="https://demo.themesberg.com/windster/images/logo.svg" class="h-6 mr-2" alt="Windster Logo">
-    </button>
-    <span>SuperWise</span>
-    <span class="example-spacer"></span>
-    <span *ngIf="login">login</span>
-    <button *ngIf="login" mat-button [matMenuTriggerFor]="beforemenu"> <mat-icon>login</mat-icon> </button>
-    <mat-menu #beforemenu="matMenu">
-      <button  mat-menu-item routerLink="/userLogin">Client</button>
-      <button  mat-menu-item routerLink="/workerLogin">Worker</button>
-    </mat-menu>
-    <button *ngIf="logged" mat-button [matMenuTriggerFor]="aftermenu"> {{data?.firstName}} </button>
-    <mat-menu #aftermenu="matMenu">
-      <button (click)="profile()" mat-menu-item >profile</button>
-      <button (click)="signout()" mat-menu-item >signout</button>
-    </mat-menu>
-  </mat-toolbar>
+  <button routerLink="/" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <img src="https://demo.themesberg.com/windster/images/logo.svg" class="h-6 mr-2" alt="Windster Logo">
+  </button>
+  <span>SuperWise</span>
+  <span class="example-spacer"></span>
+  @if (login) {
+    <span>login</span>
+  }
+  @if (login) {
+    <button mat-button [matMenuTriggerFor]="beforemenu"> <mat-icon>login</mat-icon> </button>
+  }
+  <mat-menu #beforemenu="matMenu">
+    <button  mat-menu-item routerLink="/userLogin">Client</button>
+    <button  mat-menu-item routerLink="/workerLogin">Worker</button>
+  </mat-menu>
+  @if (logged) {
+    <button mat-button [matMenuTriggerFor]="aftermenu"> {{data?.firstName}} </button>
+  }
+  <mat-menu #aftermenu="matMenu">
+    <button (click)="profile()" mat-menu-item >profile</button>
+    <button (click)="signout()" mat-menu-item >signout</button>
+  </mat-menu>
+</mat-toolbar>

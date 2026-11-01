@@ -3,9 +3,10 @@ import { Chart, ChartOptions, ChartData, ChartTypeRegistry } from 'chart.js';
 import { AdminServiceService } from 'src/app/services/admin-service.service';
 
 @Component({
-  selector: 'app-admin-chart-area',
-  templateUrl: './admin-chart-area.component.html',
-  styleUrls: ['./admin-chart-area.component.css']
+    selector: 'app-admin-chart-area',
+    templateUrl: './admin-chart-area.component.html',
+    styleUrls: ['./admin-chart-area.component.css'],
+    standalone: false
 })
 export class AdminChartAreaComponent implements OnInit{
 

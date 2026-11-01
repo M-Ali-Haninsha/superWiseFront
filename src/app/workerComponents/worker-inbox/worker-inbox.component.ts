@@ -7,9 +7,10 @@ import { WokerDialogComponent } from '../woker-dialog/woker-dialog.component'
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-worker-inbox',
-  templateUrl: './worker-inbox.component.html',
-  styleUrls: ['./worker-inbox.component.css']
+    selector: 'app-worker-inbox',
+    templateUrl: './worker-inbox.component.html',
+    styleUrls: ['./worker-inbox.component.css'],
+    standalone: false
 })
 export class WorkerInboxComponent implements OnInit{
   displayedColumns: string[] = ['rowNumber', 'email', 'phone', 'details', 'expected date', 'action'];

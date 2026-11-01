@@ -8,9 +8,10 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-verified-workers',
-  templateUrl: './verified-workers.component.html',
-  styleUrls: ['./verified-workers.component.css'],
+    selector: 'app-verified-workers',
+    templateUrl: './verified-workers.component.html',
+    styleUrls: ['./verified-workers.component.css'],
+    standalone: false
 })
 export class VerifiedWorkersComponent implements OnInit {
   displayedColumns: string[] = [

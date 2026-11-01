@@ -6,9 +6,10 @@ import { WokerDialogComponent } from '../woker-dialog/woker-dialog.component'
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-worker-profile',
-  templateUrl: './worker-profile.component.html',
-  styleUrls: ['./worker-profile.component.css']
+    selector: 'app-worker-profile',
+    templateUrl: './worker-profile.component.html',
+    styleUrls: ['./worker-profile.component.css'],
+    standalone: false
 })
 export class WorkerProfileComponent implements OnInit{
 

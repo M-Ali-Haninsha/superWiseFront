@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-list-workers',
-  templateUrl: './list-workers.component.html',
-  styleUrls: ['./list-workers.component.css']
+    selector: 'app-list-workers',
+    templateUrl: './list-workers.component.html',
+    styleUrls: ['./list-workers.component.css'],
+    standalone: false
 })
 export class ListWorkersComponent implements OnInit{
 

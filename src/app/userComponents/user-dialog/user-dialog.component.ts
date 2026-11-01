@@ -8,9 +8,10 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-user-dialog',
-  templateUrl: './user-dialog.component.html',
-  styleUrls: ['./user-dialog.component.css']
+    selector: 'app-user-dialog',
+    templateUrl: './user-dialog.component.html',
+    styleUrls: ['./user-dialog.component.css'],
+    standalone: false
 })
 export class UserDialogComponent implements OnInit{
 

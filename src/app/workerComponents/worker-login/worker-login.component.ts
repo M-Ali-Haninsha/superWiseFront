@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { WorkerService } from 'src/app/services/worker.service';
 
 @Component({
-  selector: 'app-worker-login',
-  templateUrl: './worker-login.component.html',
-  styleUrls: ['./worker-login.component.css']
+    selector: 'app-worker-login',
+    templateUrl: './worker-login.component.html',
+    styleUrls: ['./worker-login.component.css'],
+    standalone: false
 })
 export class WorkerLoginComponent implements OnInit{
 

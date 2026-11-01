@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-single-view-history',
-  templateUrl: './single-view-history.component.html',
-  styleUrls: ['./single-view-history.component.css']
+    selector: 'app-single-view-history',
+    templateUrl: './single-view-history.component.html',
+    styleUrls: ['./single-view-history.component.css'],
+    standalone: false
 })
 export class SingleViewHistoryComponent implements OnInit{
   @ViewChild('printMe', { static: false }) printMe!: ElementRef;

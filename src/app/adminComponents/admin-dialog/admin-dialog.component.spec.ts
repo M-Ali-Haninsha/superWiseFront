@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AppModule } from '../../app.module';
 
 import { AdminDialogComponent } from './admin-dialog.component';
 
@@ -8,7 +11,8 @@ describe('AdminDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AdminDialogComponent]
+      imports: [AppModule],
+      providers: [provideHttpClientTesting(), { provide: MatDialogRef, useValue: { close: () => {} } }, { provide: MAT_DIALOG_DATA, useValue: {} }]
     });
     fixture = TestBed.createComponent(AdminDialogComponent);
     component = fixture.componentInstance;

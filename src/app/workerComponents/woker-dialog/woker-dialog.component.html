@@ -1,192 +1,190 @@
-<div class="bg-black/60 to-white/5" *ngIf="editData.mode === 'photo'">
+@if (editData.mode === 'photo') {
+  <div class="bg-black/60 to-white/5">
     <h1 mat-dialog-title>Edit photo</h1>
-<div mat-dialog-content>
-  <form [formGroup]="workerProfileForm">
-    <div>
-        <label class="text-black">image</label>
-    </div>
-    <div>
-        <input type="file"  formControlName="file" (change)="onFileSelected($event)" accept=".jpg, .jpeg, .png">
-    </div>
-
-    <mat-dialog-actions >
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button  cdkFocusInitial (click)="updatePhoto()">Change</button>
-    </mat-dialog-actions>
-  </form>
-</div>
-
-</div>
-
-
-
-  <!-- worker details edit  -->
-
-<div *ngIf="editData.mode === 'details'" class="bg-black">
-  <h1 style="color: white;" mat-dialog-title> edit details </h1>
-<div mat-dialog-content style="overflow-y: hidden;">
-<form [formGroup]="workerDetailsForm">
-  <mat-form-field>
-    <mat-label>Enter your Firstname</mat-label>
-    <input  matInput placeholder="john"   formControlName="firstName" required>
-  </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Enter your Lastname</mat-label>
-        <input  matInput placeholder="do"   formControlName="lastName" required>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Enter your department</mat-label>
-        <input  matInput placeholder="eg: electrician"   formControlName="department" required>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Enter your mobile no</mat-label>
-        <input  matInput placeholder="1234567898"   formControlName="phoneNo" required>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Enter your district</mat-label>
-        <input  matInput placeholder="district"   formControlName="location" required>
-      </mat-form-field>
-     
-    
-    <mat-dialog-actions align="end">
-        <button color="warn" mat-button mat-dialog-close>Cancel</button>
-        <button color="primary" (click)="updateDetails()" mat-button [mat-dialog-close]="true" cdkFocusInitial>submit</button>
-      </mat-dialog-actions>
-</form>
-</div>
-</div>
-
-<div  *ngIf="editData.mode === 'userRequirements'" class="flex flex-col w-full 2xl:w-2/3" style="width: 100%;">
-  <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
-    <div class="flex items-center justify-between">
-        <h4 class="text-xl text-gray-200 font-bold">Requirements :</h4>
-    </div>
-    <p class="mt-2 text-gray-300">
-      {{ details.requirement.requirement}}
-    </p>
-    <div>
-      <img [src]="details.requirement.file" alt="">
-    </div>
-  </div>
-</div>
-
-<div  *ngIf="editData.mode === 'description'" class="flex flex-col w-full 2xl:w-2/3" style="width: 100%;">
-  <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
-    <div class="flex items-center justify-between">
-        <h4 class="text-xl text-gray-200 font-bold">Description :</h4>
-       
-    </div>
-    <div class="cols">
-      <form [formGroup]="workerDescriptionForm">
-         <textarea formControlName="description" 
-      class="no-resize block w-full  border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none" 
-      id="message" style="background-color: black; color: white;">
-</textarea>     
- <p  class="text-gray-600 text-xs italic"></p>
- <mat-dialog-actions align="end">
-  <button color="warn" mat-button mat-dialog-close>Cancel</button>
-  <button color="primary" (click)="editDescription()" mat-button [mat-dialog-close]="true" cdkFocusInitial>submit</button>
-</mat-dialog-actions>
+    <div mat-dialog-content>
+      <form [formGroup]="workerProfileForm">
+        <div>
+          <label class="text-black">image</label>
+        </div>
+        <div>
+          <input type="file"  formControlName="file" (change)="onFileSelected($event)" accept=".jpg, .jpeg, .png">
+        </div>
+        <mat-dialog-actions >
+          <button mat-button mat-dialog-close>Cancel</button>
+          <button mat-button  cdkFocusInitial (click)="updatePhoto()">Change</button>
+        </mat-dialog-actions>
       </form>
-     
     </div>
-
   </div>
-</div>
+}
+
+
+
+<!-- worker details edit  -->
+
+@if (editData.mode === 'details') {
+  <div class="bg-black">
+    <h1 style="color: white;" mat-dialog-title> edit details </h1>
+    <div mat-dialog-content style="overflow-y: hidden;">
+      <form [formGroup]="workerDetailsForm">
+        <mat-form-field>
+          <mat-label>Enter your Firstname</mat-label>
+          <input  matInput placeholder="john"   formControlName="firstName" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Enter your Lastname</mat-label>
+          <input  matInput placeholder="do"   formControlName="lastName" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Enter your department</mat-label>
+          <input  matInput placeholder="eg: electrician"   formControlName="department" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Enter your mobile no</mat-label>
+          <input  matInput placeholder="1234567898"   formControlName="phoneNo" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Enter your district</mat-label>
+          <input  matInput placeholder="district"   formControlName="location" required>
+        </mat-form-field>
+        <mat-dialog-actions align="end">
+          <button color="warn" mat-button mat-dialog-close>Cancel</button>
+          <button color="primary" (click)="updateDetails()" mat-button [mat-dialog-close]="true" cdkFocusInitial>submit</button>
+        </mat-dialog-actions>
+      </form>
+    </div>
+  </div>
+}
+
+@if (editData.mode === 'userRequirements') {
+  <div  class="flex flex-col w-full 2xl:w-2/3" style="width: 100%;">
+    <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
+      <div class="flex items-center justify-between">
+        <h4 class="text-xl text-gray-200 font-bold">Requirements :</h4>
+      </div>
+      <p class="mt-2 text-gray-300">
+        {{ details.requirement.requirement}}
+      </p>
+      <div>
+        <img [src]="details.requirement.file" alt="">
+      </div>
+    </div>
+  </div>
+}
+
+@if (editData.mode === 'description') {
+  <div  class="flex flex-col w-full 2xl:w-2/3" style="width: 100%;">
+    <div class="flex-1 bg-black rounded-lg shadow-xl p-8">
+      <div class="flex items-center justify-between">
+        <h4 class="text-xl text-gray-200 font-bold">Description :</h4>
+      </div>
+      <div class="cols">
+        <form [formGroup]="workerDescriptionForm">
+          <textarea formControlName="description"
+            class="no-resize block w-full  border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none"
+            id="message" style="background-color: black; color: white;">
+          </textarea>
+          <p  class="text-gray-600 text-xs italic"></p>
+          <mat-dialog-actions align="end">
+            <button color="warn" mat-button mat-dialog-close>Cancel</button>
+            <button color="primary" (click)="editDescription()" mat-button [mat-dialog-close]="true" cdkFocusInitial>submit</button>
+          </mat-dialog-actions>
+        </form>
+      </div>
+    </div>
+  </div>
+}
 
 
 <!--message-->
 
 
-<div *ngIf="editData.mode === 'sendMessageByWorker'" class="container mx-auto shadow-lg rounded-lg">
-  <div class="px-5 py-5 flex justify-between items-center bg-white border-b-2">
-  <div class="font-semibold text-2xl">GoingChat</div>
-  
-  <div
-    class="h-12 w-12 p-2 bg-yellow-500 rounded-full text-white font-semibold flex items-center justify-center"
-  >
-    RA
-  </div>
-  </div>
-  
-  <div class="flex flex-row justify-between bg-white">
-  <div class="flex flex-col w-2/5 border-r-2 overflow-y-auto">
-    <div class="border-b-2 py-4 px-2">
-      <input
-        type="text"
-        placeholder="search chatting"
-        class="py-2 px-2 border-2 border-gray-200 rounded-2xl w-full"
-      />
-    </div>
-  
-    <div
-      class="flex flex-row py-4 px-2 justify-center items-center border-b-2"
-    >
-      <div class="w-1/4">
-        <img
-          src="https://source.unsplash.com/_7LbC5J-jw4/600x600"
-          class="object-cover h-12 w-12 rounded-full"
-          alt=""
-        />
-      </div>
-      <div class="w-full" (click)="selectClient(mClientData)">
-        <div class="text-lg font-semibold">{{mClientData.firstName}}</div>
-        <span class="text-gray-500">Pick me at 9:00 Am</span>
-      </div>
-    </div>
-  
-  
-  
-  
-  </div>
-  
-  <div class="w-full px-5 flex flex-col justify-between" >
-    <div class="flex flex-col mt-5" *ngFor="let message of sendedMessageByWorker">
-      <div class="flex justify-end mb-4" >
-        <div
-          class="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white" *ngIf="message.senderId == mWorkerData._id"
+@if (editData.mode === 'sendMessageByWorker') {
+  <div class="container mx-auto shadow-lg rounded-lg">
+    <div class="px-5 py-5 flex justify-between items-center bg-white border-b-2">
+      <div class="font-semibold text-2xl">GoingChat</div>
+      <div
+        class="h-12 w-12 p-2 bg-yellow-500 rounded-full text-white font-semibold flex items-center justify-center"
         >
-        {{message.content}}
-        </div>
-        <img
-          src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
-          class="object-cover h-8 w-8 rounded-full"
-          alt=""
-          *ngIf="message.senderId == mWorkerData._id"
-        />
-      </div>
-      <div class="flex justify-start mb-4" *ngIf="message.senderId != mWorkerData._id">
-        <img
-          src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
-          class="object-cover h-8 w-8 rounded-full"
-          alt=""
-          *ngIf="message.senderId != mWorkerData._id"
-        />
-        <div
-          class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white" *ngIf="message.senderId != mWorkerData._id"
-        >
-          {{message.content}}
-         
-        </div>
+        RA
       </div>
     </div>
-    <div class="py-5">
-      <form [formGroup]="workerMessageForm" (ngSubmit)="sendMessageToClient()">
-        <input
-          class="w-full bg-gray-300 py-5 px-3 rounded-xl"
-          type="text"
-          placeholder="type your message here..."
-          formControlName="typedMessage" 
-        />
-        <button type="submit">Send</button>
-      </form>
-    </div>
-  </div>
-  
-  </div>
-  </div>
-  
+    <div class="flex flex-row justify-between bg-white">
+      <div class="flex flex-col w-2/5 border-r-2 overflow-y-auto">
+        <div class="border-b-2 py-4 px-2">
+          <input
+            type="text"
+            placeholder="search chatting"
+            class="py-2 px-2 border-2 border-gray-200 rounded-2xl w-full"
+            />
+          </div>
+          <div
+            class="flex flex-row py-4 px-2 justify-center items-center border-b-2"
+            >
+            <div class="w-1/4">
+              <img
+                src="https://source.unsplash.com/_7LbC5J-jw4/600x600"
+                class="object-cover h-12 w-12 rounded-full"
+                alt=""
+                />
+              </div>
+              <div class="w-full" (click)="selectClient(mClientData)">
+                <div class="text-lg font-semibold">{{mClientData.firstName}}</div>
+                <span class="text-gray-500">Pick me at 9:00 Am</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full px-5 flex flex-col justify-between" >
+            @for (message of sendedMessageByWorker; track message) {
+              <div class="flex flex-col mt-5">
+                <div class="flex justify-end mb-4" >
+                  @if (message.senderId == mWorkerData._id) {
+                    <div
+                      class="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white"
+                      >
+                      {{message.content}}
+                    </div>
+                  }
+                  @if (message.senderId == mWorkerData._id) {
+                    <img
+                      src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                      class="object-cover h-8 w-8 rounded-full"
+                      alt=""
+                      />
+                  }
+                </div>
+                @if (message.senderId != mWorkerData._id) {
+                  <div class="flex justify-start mb-4">
+                    @if (message.senderId != mWorkerData._id) {
+                      <img
+                        src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                        class="object-cover h-8 w-8 rounded-full"
+                        alt=""
+                        />
+                    }
+                    @if (message.senderId != mWorkerData._id) {
+                      <div
+                        class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white"
+                        >
+                        {{message.content}}
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+            <div class="py-5">
+              <form [formGroup]="workerMessageForm" (ngSubmit)="sendMessageToClient()">
+                <input
+                  class="w-full bg-gray-300 py-5 px-3 rounded-xl"
+                  type="text"
+                  placeholder="type your message here..."
+                  formControlName="typedMessage"
+                  />
+                  <button type="submit">Send</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      }

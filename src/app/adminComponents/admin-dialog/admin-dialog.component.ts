@@ -5,9 +5,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog'
 
 @Component({
-  selector: 'app-admin-dialog',
-  templateUrl: './admin-dialog.component.html',
-  styleUrls: ['./admin-dialog.component.css']
+    selector: 'app-admin-dialog',
+    templateUrl: './admin-dialog.component.html',
+    styleUrls: ['./admin-dialog.component.css'],
+    standalone: false
 })
 export class AdminDialogComponent implements OnInit {
 

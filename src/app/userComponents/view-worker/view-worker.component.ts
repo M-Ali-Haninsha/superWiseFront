@@ -5,9 +5,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-view-worker',
-  templateUrl: './view-worker.component.html',
-  styleUrls: ['./view-worker.component.css']
+    selector: 'app-view-worker',
+    templateUrl: './view-worker.component.html',
+    styleUrls: ['./view-worker.component.css'],
+    standalone: false
 })
 export class ViewWorkerComponent implements OnInit{
 

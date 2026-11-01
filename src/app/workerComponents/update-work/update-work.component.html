@@ -1,79 +1,79 @@
 <p>update-work!</p>
 <div class="example-input-wrapper">
-    <!-- <label for="duration">Animation duration:</label> -->
-    <input id="duration" hidden value="2000" type="number" min="0" step="100" #duration>
-  </div>
-  
-  <mat-vertical-stepper [linear]="false" #stepper [animationDuration]="duration.value">
-    <mat-step [stepControl]="firstFormGroup">
-        <ng-template matStepLabel>Client Details</ng-template>
-        <div class="w-full flex flex-col 2xl:w-2/3">
-            <div class="flex-1 rounded-lg shadow-xl p-8" style="background-color: #525960;">
-             <div class="flex items-center justify-between">
-              <h4 class="text-xl text-gray-200 font-bold">Personal Info of Client</h4>
-              <button  mat-raised-button color="primary" (click)="sendMessage()">message</button>
-             </div>
-              <ul class="mt-2 text-gray-700">
-                <li class="flex border-y py-2">
-                  <span class="font-bold w-24">First name:</span>
-                  <span class="text-gray-300">{{clientData?.firstName}}</span>
-                </li>
-                <li class="flex border-b py-2">
-                  <span class="font-bold w-24">Last name:</span>
-                  <span class="text-gray-300">{{clientData?.lastName}}</span>
-                </li>
-                <li class="flex border-b py-2">
-                  <span class="font-bold w-24">Mobile:</span>
-                  <span class="text-gray-300">{{clientData?.phone}}</span>
-                </li>
-                <li class="flex border-b py-2">
-                  <span class="font-bold w-24">Email:</span>
-                  <span class="text-gray-300">{{clientData?.email}}</span>
-                </li>
-                <li class="flex border-b py-2">
-                  <span class="font-bold w-24">Location:</span>
-                  <span class="text-gray-300">{{clientData?.location}}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div>
-            <button mat-button matStepperNext>Next</button>
-          </div>
-      </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-      <form [formGroup]="secondFormGroup">
-        
-        <ng-template matStepLabel>Update Work Progress</ng-template>
-          <div class="mt-2">
-            <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
-          </div>
-          <div class="grid grid-cols-10">
-            <div class="col-span-8">
-                <button color="warn" mat-button (click)="updateProgress(1)">Work Started</button>
-                <button color="warn" mat-button (click)="updateProgress(2)" style="left: 11%;">work under process</button>
-                <button color="warn" mat-button (click)="updateProgress(3)" style="left: 25%;">completed</button> 
-            </div>
-            <div class="col-span-2">
-              <button color="warn" mat-button (click)="updateProgress(0)" style="left: 70%;">clear</button>
-            </div>
-          </div>
-          <div class="flex items-center space-x-4 mt-2">
-            <input 
-              type="file"
-              id="photoInput"
-              style="display: none"
-              (change)="handleFileChange($event)"
-              multiple
-            />
-            <label
-              for="photoInput"
-              class="cursor-pointer flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100"
+  <!-- <label for="duration">Animation duration:</label> -->
+  <input id="duration" hidden value="2000" type="number" min="0" step="100" #duration>
+</div>
+
+<mat-vertical-stepper [linear]="false" #stepper [animationDuration]="duration.value">
+  <mat-step [stepControl]="firstFormGroup">
+    <ng-template matStepLabel>Client Details</ng-template>
+    <div class="w-full flex flex-col 2xl:w-2/3">
+      <div class="flex-1 rounded-lg shadow-xl p-8" style="background-color: #525960;">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xl text-gray-200 font-bold">Personal Info of Client</h4>
+          <button  mat-raised-button color="primary" (click)="sendMessage()">message</button>
+        </div>
+        <ul class="mt-2 text-gray-700">
+          <li class="flex border-y py-2">
+            <span class="font-bold w-24">First name:</span>
+            <span class="text-gray-300">{{clientData?.firstName}}</span>
+          </li>
+          <li class="flex border-b py-2">
+            <span class="font-bold w-24">Last name:</span>
+            <span class="text-gray-300">{{clientData?.lastName}}</span>
+          </li>
+          <li class="flex border-b py-2">
+            <span class="font-bold w-24">Mobile:</span>
+            <span class="text-gray-300">{{clientData?.phone}}</span>
+          </li>
+          <li class="flex border-b py-2">
+            <span class="font-bold w-24">Email:</span>
+            <span class="text-gray-300">{{clientData?.email}}</span>
+          </li>
+          <li class="flex border-b py-2">
+            <span class="font-bold w-24">Location:</span>
+            <span class="text-gray-300">{{clientData?.location}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+
+      <ng-template matStepLabel>Update Work Progress</ng-template>
+      <div class="mt-2">
+        <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
+      </div>
+      <div class="grid grid-cols-10">
+        <div class="col-span-8">
+          <button color="warn" mat-button (click)="updateProgress(1)">Work Started</button>
+          <button color="warn" mat-button (click)="updateProgress(2)" style="left: 11%;">work under process</button>
+          <button color="warn" mat-button (click)="updateProgress(3)" style="left: 25%;">completed</button>
+        </div>
+        <div class="col-span-2">
+          <button color="warn" mat-button (click)="updateProgress(0)" style="left: 70%;">clear</button>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4 mt-2">
+        <input
+          type="file"
+          id="photoInput"
+          style="display: none"
+          (change)="handleFileChange($event)"
+          multiple
+          />
+          <label
+            for="photoInput"
+            class="cursor-pointer flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100"
             >
-              <span>send images</span>
-            </label>
-          </div>
-        
+            <span>send images</span>
+          </label>
+        </div>
+
         <div class="mt-4">
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -98,28 +98,27 @@
                 <mat-option value="advance">Advance Payment</mat-option>
               </mat-select>
             </mat-form-field>
-          
-            <ng-container  *ngIf="paymentForm.get('selectedType')?.value === 'advance'">
+
+            @if (paymentForm.get('selectedType')?.value === 'advance') {
               <mat-form-field>
                 <input matInput type="text" formControlName="reason" placeholder="Reason for advance" name="reason" />
               </mat-form-field>
-            </ng-container>
-          
+            }
+
             <mat-form-field>
               <input matInput type="number" formControlName="amount" placeholder="Amount" name="amount" />
             </mat-form-field>
-          
+
             <button mat-raised-button color="primary" type="submit" class="ml-4" (click)="sendAmount()">Submit</button>
           </form>
-          
+
         </mat-card-content>
       </mat-card>
-      
-      
+
+
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button (click)="stepper.reset()">Reset</button>
       </div>
     </mat-step>
   </mat-vertical-stepper>
-  

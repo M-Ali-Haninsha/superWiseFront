@@ -9,7 +9,6 @@ import { UserLoginComponent } from './userComponents/user-login/user-login.compo
 import { WorkerSignupComponent } from './workerComponents/worker-signup/worker-signup.component';
 import { WorkerLoginComponent } from './workerComponents/worker-login/worker-login.component';
 import { HomeComponent } from './userComponents/home/home.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminDashboardComponent } from './adminComponents/admin-dashboard/admin-dashboard.component';
 import { WorkerDashboardComponent } from './workerComponents/worker-dashboard/worker-dashboard.component'
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MyInterceptor } from '../app/interceptor/interceptor'
 import { AdminHeaderComponent } from './adminComponents/admin-header/admin-header.component';
 import { AdminSideNavComponent } from './adminComponents/admin-side-nav/admin-side-nav.component';
@@ -62,94 +61,85 @@ import { UserDialogComponent } from './userComponents/user-dialog/user-dialog.co
 import { UpdateWorkComponent } from './workerComponents/update-work/update-work.component';
 import { WorkProgressComponent } from './userComponents/work-progress/work-progress.component';
 import { SuccesspageComponent } from './userComponents/successpage/successpage.component';
-import { NgChartsModule } from 'ng2-charts';
 import { SingleViewHistoryComponent } from './userComponents/single-view-history/single-view-history.component';
 import { ComplaintsComponent } from './adminComponents/complaints/complaints.component';
 import { ViewComplaintComponent } from './adminComponents/view-complaint/view-complaint.component';
 
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    AdminLoginComponent,
-    UserSignupComponent,
-    WorkerSignupComponent,
-    UserLoginComponent,
-    WorkerLoginComponent,
-    HomeComponent,
-    AdminDashboardComponent,
-    WorkerDashboardComponent,
-    AdminHeaderComponent,
-    AdminSideNavComponent,
-    AdminChartAreaComponent,
-    AdminCategoryComponent,
-    AdminVerificationComponent,
-    ListWorkersComponent,
-    ListCategoryComponent,
-    UserHeaderComponent,
-    UserFooterComponent,
-    UserProfileComponent,
-    AdminDialogComponent,
-    VerifiedWorkersComponent,
-    UserOtpComponent,
-    UsersComponent,
-    LandingPageComponent,
-    WorkerInboxComponent,
-    WorkerProfileComponent,
-    ViewWorkerComponent,
-    WokerDialogComponent,
-    WokerSidenavComponent,
-    AcceptedWorksComponent,
-    UserDialogComponent,
-    UpdateWorkComponent,
-    WorkProgressComponent,
-    SuccesspageComponent,
-    SingleViewHistoryComponent,
-    ComplaintsComponent,
-    ViewComplaintComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    AppRoutingModule,
-    MatStepperModule,
-    FormsModule,
-    MatTableModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([]),
-    MatPaginatorModule,
-    MatToolbarModule,
-    MatDialogModule,
-    MatMenuModule,
-    MatExpansionModule,
-    MatNativeDateModule,
-    MatDatepickerModule,
-    MatCardModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    NgChartsModule  
+@NgModule({ declarations: [
+        AppComponent,
+        AdminLoginComponent,
+        UserSignupComponent,
+        WorkerSignupComponent,
+        UserLoginComponent,
+        WorkerLoginComponent,
+        HomeComponent,
+        AdminDashboardComponent,
+        WorkerDashboardComponent,
+        AdminHeaderComponent,
+        AdminSideNavComponent,
+        AdminChartAreaComponent,
+        AdminCategoryComponent,
+        AdminVerificationComponent,
+        ListWorkersComponent,
+        ListCategoryComponent,
+        UserHeaderComponent,
+        UserFooterComponent,
+        UserProfileComponent,
+        AdminDialogComponent,
+        VerifiedWorkersComponent,
+        UserOtpComponent,
+        UsersComponent,
+        LandingPageComponent,
+        WorkerInboxComponent,
+        WorkerProfileComponent,
+        ViewWorkerComponent,
+        WokerDialogComponent,
+        WokerSidenavComponent,
+        AcceptedWorksComponent,
+        UserDialogComponent,
+        UpdateWorkComponent,
+        WorkProgressComponent,
+        SuccesspageComponent,
+        SingleViewHistoryComponent,
+        ComplaintsComponent,
+        ViewComplaintComponent,
     ],
-  providers: [
-    {
-      provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: {showError: true},
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MyInterceptor,
-      multi: true,
-    },
-    {
-      provide:MatSnackBar
-    },
-  ],
-  bootstrap: [AppComponent]
-})
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        MatStepperModule,
+        FormsModule,
+        MatTableModule,
+        StoreModule.forRoot({}, {}),
+        EffectsModule.forRoot([]),
+        MatPaginatorModule,
+        MatToolbarModule,
+        MatDialogModule,
+        MatMenuModule,
+        MatExpansionModule,
+        MatNativeDateModule,
+        MatDatepickerModule,
+        MatCardModule,
+        MatProgressBarModule,
+        MatSelectModule], providers: [
+        {
+            provide: STEPPER_GLOBAL_OPTIONS,
+            useValue: { showError: true },
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: MyInterceptor,
+            multi: true,
+        },
+        {
+            provide: MatSnackBar
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule { }

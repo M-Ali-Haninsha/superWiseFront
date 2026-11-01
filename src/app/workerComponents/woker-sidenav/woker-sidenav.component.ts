@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { WorkerService } from 'src/app/services/worker.service';
 
 @Component({
-  selector: 'app-woker-sidenav',
-  templateUrl: './woker-sidenav.component.html',
-  styleUrls: ['./woker-sidenav.component.css']
+    selector: 'app-woker-sidenav',
+    templateUrl: './woker-sidenav.component.html',
+    styleUrls: ['./woker-sidenav.component.css'],
+    standalone: false
 })
 export class WokerSidenavComponent implements OnInit{
 

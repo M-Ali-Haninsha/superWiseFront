@@ -6,9 +6,10 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-worker-signup',
-  templateUrl: './worker-signup.component.html',
-  styleUrls: ['./worker-signup.component.css'],
+    selector: 'app-worker-signup',
+    templateUrl: './worker-signup.component.html',
+    styleUrls: ['./worker-signup.component.css'],
+    standalone: false
 })
 export class WorkerSignupComponent implements OnInit {
 

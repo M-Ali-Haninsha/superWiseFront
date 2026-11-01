@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-successpage',
-  templateUrl: './successpage.component.html',
-  styleUrls: ['./successpage.component.css']
+    selector: 'app-successpage',
+    templateUrl: './successpage.component.html',
+    styleUrls: ['./successpage.component.css'],
+    standalone: false
 })
 export class SuccesspageComponent implements OnInit{
   @ViewChild('printMe', { static: false }) printMe!: ElementRef;

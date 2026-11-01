@@ -5,9 +5,10 @@ import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-user-otp',
-  templateUrl: './user-otp.component.html',
-  styleUrls: ['./user-otp.component.css']
+    selector: 'app-user-otp',
+    templateUrl: './user-otp.component.html',
+    styleUrls: ['./user-otp.component.css'],
+    standalone: false
 })
 export class UserOtpComponent implements OnInit {
 

@@ -6,9 +6,10 @@ import { AdminServiceService } from 'src/app/services/admin-service.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+    selector: 'app-users',
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.css'],
+    standalone: false
 })
 export class UsersComponent implements OnInit{
   displayedColumns: string[] = ['rowNumber', 'firstName', 'lastName', 'email','action'];

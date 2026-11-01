@@ -9,9 +9,10 @@ import { WokerDialogComponent } from '../woker-dialog/woker-dialog.component'
 
 
 @Component({
-  selector: 'app-update-work',
-  templateUrl: './update-work.component.html',
-  styleUrls: ['./update-work.component.css']
+    selector: 'app-update-work',
+    templateUrl: './update-work.component.html',
+    styleUrls: ['./update-work.component.css'],
+    standalone: false
 })
 export class UpdateWorkComponent implements OnInit{
 

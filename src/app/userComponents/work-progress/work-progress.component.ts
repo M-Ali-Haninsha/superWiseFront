@@ -8,9 +8,10 @@ import { MatDialog } from '@angular/material/dialog';
 declare var Razorpay: any;
 
 @Component({
-  selector: 'app-work-progress',
-  templateUrl: './work-progress.component.html',
-  styleUrls: ['./work-progress.component.css']
+    selector: 'app-work-progress',
+    templateUrl: './work-progress.component.html',
+    styleUrls: ['./work-progress.component.css'],
+    standalone: false
 })
 export class WorkProgressComponent implements OnInit{
 

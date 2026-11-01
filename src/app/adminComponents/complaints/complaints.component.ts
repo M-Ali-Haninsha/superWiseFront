@@ -8,9 +8,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-complaints',
-  templateUrl: './complaints.component.html',
-  styleUrls: ['./complaints.component.css'],
+    selector: 'app-complaints',
+    templateUrl: './complaints.component.html',
+    styleUrls: ['./complaints.component.css'],
+    standalone: false
 })
 export class ComplaintsComponent implements OnInit {
 

@@ -8,9 +8,10 @@ import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-verification',
-  templateUrl: './admin-verification.component.html',
-  styleUrls: ['./admin-verification.component.css'],
+    selector: 'app-admin-verification',
+    templateUrl: './admin-verification.component.html',
+    styleUrls: ['./admin-verification.component.css'],
+    standalone: false
 })
 export class AdminVerificationComponent implements OnInit {
   displayedColumns: string[] = [

@@ -6,9 +6,10 @@ import { ChatService } from 'src/app/services/chat.service';
 import { WorkerService } from 'src/app/services/worker.service';
 
 @Component({
-  selector: 'app-woker-dialog',
-  templateUrl: './woker-dialog.component.html',
-  styleUrls: ['./woker-dialog.component.css']
+    selector: 'app-woker-dialog',
+    templateUrl: './woker-dialog.component.html',
+    styleUrls: ['./woker-dialog.component.css'],
+    standalone: false
 })
 export class WokerDialogComponent implements OnInit{
 

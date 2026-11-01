@@ -6,9 +6,10 @@ import { Router } from '@angular/router';
 import { WorkerService } from 'src/app/services/worker.service';
 
 @Component({
-  selector: 'app-accepted-works',
-  templateUrl: './accepted-works.component.html',
-  styleUrls: ['./accepted-works.component.css']
+    selector: 'app-accepted-works',
+    templateUrl: './accepted-works.component.html',
+    styleUrls: ['./accepted-works.component.css'],
+    standalone: false
 })
 export class AcceptedWorksComponent implements OnInit{
   displayedColumns: string[] = ['rowNumber','firstName', 'email', 'phone', 'details'];

@@ -1,13 +1,17 @@
 import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { WorkerGuardService } from './worker-guard.service';
+import { WorkerGuard } from './worker-guard.service';
 
-describe('WorkerGuardService', () => {
-  let service: WorkerGuardService;
+describe('WorkerGuard', () => {
+  let service: WorkerGuard;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(WorkerGuardService);
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()]
+    });
+    service = TestBed.inject(WorkerGuard);
   });
 
   it('should be created', () => {

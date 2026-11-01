@@ -3,13 +3,14 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-list-category',
-  templateUrl: './list-category.component.html',
-  styleUrls: ['./list-category.component.css']
+    selector: 'app-list-category',
+    templateUrl: './list-category.component.html',
+    styleUrls: ['./list-category.component.css'],
+    standalone: false
 })
 export class ListCategoryComponent implements OnInit {
 
-  category:any
+  category:any[] = []
 
   currentPage: number = 1;
   itemsPerPage: number = 6; 
@@ -26,14 +27,14 @@ export class ListCategoryComponent implements OnInit {
 
   ngOnInit(): void {
       this.listCategory()
-      if (this.category.length <= this.itemsPerPage) {
-        this.itemsPerPage = this.category.length;
-      }
   }
 
   listCategory() {
     this.service.fetchCategory().subscribe((value)=>{
       this.category = value.result
+      if (this.category.length <= this.itemsPerPage) {
+        this.itemsPerPage = this.category.length;
+      }
     })
   }
 

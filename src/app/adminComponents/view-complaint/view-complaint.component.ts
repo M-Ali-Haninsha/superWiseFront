@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { AdminServiceService } from 'src/app/services/admin-service.service';
 
 @Component({
-  selector: 'app-view-complaint',
-  templateUrl: './view-complaint.component.html',
-  styleUrls: ['./view-complaint.component.css']
+    selector: 'app-view-complaint',
+    templateUrl: './view-complaint.component.html',
+    styleUrls: ['./view-complaint.component.css'],
+    standalone: false
 })
 export class ViewComplaintComponent implements OnInit{
 
