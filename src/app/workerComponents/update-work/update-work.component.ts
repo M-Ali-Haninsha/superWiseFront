@@ -1,125 +1,93 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { WorkerService } from 'src/app/services/worker.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { WokerDialogComponent } from '../woker-dialog/woker-dialog.component'
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { errorMessage } from 'src/app/core/http';
+import { ClientForWorker } from 'src/app/models/api.models';
+import { WorkerService } from 'src/app/services/worker.service';
+import { WokerDialogComponent, WorkerDialogData } from '../woker-dialog/woker-dialog.component';
 
-
+const PROGRESS_BY_STAGE = [0, 20, 50, 100];
 
 @Component({
-    selector: 'app-update-work',
-    templateUrl: './update-work.component.html',
-    styleUrls: ['./update-work.component.css'],
-    standalone: false
+  selector: 'app-update-work',
+  templateUrl: './update-work.component.html',
+  styleUrls: ['./update-work.component.css'],
+  standalone: false,
 })
-export class UpdateWorkComponent implements OnInit{
+export class UpdateWorkComponent implements OnInit {
+  private service = inject(WorkerService);
+  private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
+  private fb = inject(FormBuilder);
 
-  id!:string
+  id = inject(ActivatedRoute).snapshot.paramMap.get('id') ?? '';
   progressValue = 0;
-  firstFormGroup: FormGroup = this._formBuilder.group({firstCtrl: ['']});
-  secondFormGroup: FormGroup = this._formBuilder.group({secondCtrl: ['']});
-  selectedType: string = 'normal';
-  clientData:any
-  paymentForm!: FormGroup
+  selectedType = 'normal';
+  clientData?: ClientForWorker;
+  firstFormGroup = this.fb.group({ firstCtrl: [''] });
+  secondFormGroup = this.fb.group({ secondCtrl: [''] });
+  paymentForm = this.fb.nonNullable.group({
+    selectedType: ['normal'],
+    reason: [''],
+    amount: [0, [Validators.required, Validators.min(1)]],
+  });
 
-  constructor(private activateRoute: ActivatedRoute, private _formBuilder: FormBuilder, private service: WorkerService, private snackBar: MatSnackBar, private dialog: MatDialog) {
-    this.id = this.activateRoute.snapshot.paramMap.get('id') || ''  
-    this.paymentForm = this._formBuilder.group({
-      selectedType: ['normal'],
-      reason: [''], 
-      amount: ['', [Validators.required, Validators.min(0)]]
-    })
-  }
-  
   ngOnInit(): void {
-      this.viewProgress()
-  }
-
-  viewProgress() {
-    this.service.showProgress(this.id).subscribe((value) => {
-      if(!value.newData){
-        this.progressValue = 0
-      } else {
-        this.progressValue = value.newData
-      }
-      this.clientData = value.data
-    })
-  }
-
-
-  updateProgress(stage: number): void {
-    if(stage===0) {
-      this.progressValue = 0; 
-    }else if (stage === 1) {
-      this.progressValue = 20; 
-      
-    } else if (stage === 2) {
-      this.progressValue = 50; 
-    } else if (stage === 3) {
-      this.progressValue = 100; 
-    }    
-    this.service.updateProgress(this.id, this.progressValue).subscribe((value)=> {
-      console.log(value);
-      if(value.updated == 'status updated') {
-        this.showSnackbar('Progress updated successfully');
-      }
-    })
-  }
-
-  sendAmount() {
-    this.service.postAmount(this.id, this.paymentForm.value).subscribe({next:
-      (value)=> {
-      console.log('done',value);
-      this.showSnackbar('amount updated');
-    },
-    error:(value)=>{
-      if(value) {
-        console.log(value);
-        this.showSnackbar('work not completed');
-      }
-    } })
-
-  }
-
-  handleFileChange(event: Event) {
-    const fileInput = event.target as HTMLInputElement;
-    const selectedFiles = fileInput.files;
-  
-    if (selectedFiles) {
-      const formData = new FormData();
-  
-      for (let i = 0; i < selectedFiles.length; i++) {
-        const selectedFile = selectedFiles[i]; 
-        formData.append('files', selectedFile);
-      }
-  
-      this.service.pushImage(this.clientData._id, formData).subscribe((value) => {
-        console.log(value);
-      });
-    }
-  }
-
-  sendMessage(){
-    const dialogRef = this.dialog.open(WokerDialogComponent, {
-      width:'80%',
-      data: {
-        mode: 'sendMessageByWorker',
-        data:this.clientData
-      }
-    })
-
-    dialogRef.afterClosed().subscribe(result => {
-
+    this.service.showProgress(this.id).subscribe({
+      next: ({ data, newData }) => {
+        this.progressValue = newData ?? 0;
+        this.clientData = data;
+      },
+      error: (err: unknown) => this.showSnackbar(errorMessage(err)),
     });
   }
 
-  showSnackbar(message: string) {
+  updateProgress(stage: number): void {
+    this.progressValue = PROGRESS_BY_STAGE[stage] ?? this.progressValue;
+    this.service.updateProgress(this.id, this.progressValue).subscribe({
+      next: () => this.showSnackbar('Progress updated successfully'),
+      error: (err: unknown) => this.showSnackbar(errorMessage(err)),
+    });
+  }
+
+  sendAmount(): void {
+    if (this.paymentForm.invalid) {
+      this.showSnackbar('Please enter an amount greater than 0');
+      return;
+    }
+    const { selectedType, reason, amount } = this.paymentForm.getRawValue();
+    this.service.postAmount(this.id, { selectedType, type: reason, amount: Number(amount) }).subscribe({
+      next: () => this.showSnackbar('Amount sent to the client'),
+      error: (err: unknown) => this.showSnackbar(errorMessage(err)),
+    });
+  }
+
+  handleFileChange(event: Event): void {
+    const files = (event.target as HTMLInputElement).files;
+    if (!files?.length) return;
+    const formData = new FormData();
+    for (const file of Array.from(files)) formData.append('files', file);
+    this.service.pushImage(this.id, formData).subscribe({
+      next: () => this.showSnackbar('Images uploaded'),
+      error: (err: unknown) => this.showSnackbar(errorMessage(err)),
+    });
+  }
+
+  sendMessage(): void {
+    if (!this.clientData) return;
+    this.dialog.open<WokerDialogComponent, WorkerDialogData>(WokerDialogComponent, {
+      width: '80%',
+      data: { mode: 'sendMessageByWorker', data: this.clientData },
+    });
+  }
+
+  showSnackbar(message: string): void {
     this.snackBar.open(message, 'Dismiss', {
       duration: 3000,
       horizontalPosition: 'center',
-      verticalPosition: 'bottom'
+      verticalPosition: 'bottom',
     });
   }
 }

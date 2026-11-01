@@ -18,10 +18,10 @@
 
   </div>
   <div class="container px-6 py-10 col-span-8 sm:col-span-6 md:col-span-7 lg:col-span-8">
-    <h1 class="text-3xl font-semibold text-center text-gray-800 capitalize lg:text-4xl dark:text-white">Our Executive Team</h1>
+    <h1 class="text-3xl font-semibold text-center text-gray-800 capitalize lg:text-4xl dark:text-white">Find a verified worker</h1>
 
     <p class="text-center text-gray-500 dark:text-gray-300">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo incidunt ex placeat modi magni quia error alias, adipisci rem similique, at omnis eligendi optio eos harum.
+      Every worker here has been verified by our team. Search by name or location, then open a profile to see reviews and send a request.
     </p>
 
     <div class="flex items-center max-w-md mx-auto bg-white rounded-lg" x-data="{ search: '' }">
@@ -54,10 +54,10 @@
       <div class="grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 xl:grid-cols-4">
         @for (workers of filteredWorkers; track workers) {
           <div class="flex flex-col items-center p-8 transition-colors duration-200 transform cursor-pointer group hover:bg-blue-600 rounded-xl" (click)="viewWorkerDetails(workers._id)">
-            <img class="object-cover w-32 h-32 rounded-full ring-4 ring-gray-300" [src]="workers.image" alt="">
+            <img class="object-cover w-32 h-32 rounded-full ring-4 ring-gray-300" [src]="workers.image || 'assets/images/avatar.svg'" alt="">
             <h1 class="mt-4 text-2xl font-semibold text-gray-700 capitalize dark:text-white group-hover:text-white">{{workers?.firstName}} {{workers?.lastName}} </h1>
             <p class=" text-gray-500 capitalize dark:text-gray-300 group-hover:text-gray-300">{{workers?.district}}</p>
-            <p class=" text-gray-500 capitalize dark:text-gray-300 group-hover:text-gray-300">{{workers?.department.name}}</p>
+            <p class=" text-gray-500 capitalize dark:text-gray-300 group-hover:text-gray-300">{{workers.department.name}}</p>
           </div>
         }
       </div>

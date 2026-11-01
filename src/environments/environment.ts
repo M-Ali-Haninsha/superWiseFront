@@ -1,5 +1,7 @@
+// Production settings (used by `ng build`).
 export const environment = {
-    production: false,
-    ADMIN_URL: 'https://superwise-back.onrender.com/admin/',
-    USER_URL: 'https://superwise-back.onrender.com/',
-  };
+  production: true,
+  API_URL: 'https://superwise-back.onrender.com',
+  USER_URL: 'https://superwise-back.onrender.com/',
+  ADMIN_URL: 'https://superwise-back.onrender.com/admin/',
+};

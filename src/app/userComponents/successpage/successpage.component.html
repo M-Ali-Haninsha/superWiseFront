@@ -8,7 +8,7 @@
     </div>
   </div>
   
-  <div class="container mb-5" #printMe>
+  <div class="container mb-5 print-area">
     <div class="flex justify-center">
       <div class="w-10/12">
         <div class="receipt bg-white p-3">
@@ -40,7 +40,7 @@
                 <div>
                   <span class="font-bold text-lg">worker: {{workerDetails?.firstName}}</span>
                 </div>
-                <span class="text-sm">category: {{workerDetails?.department.name}}</span>
+                <span class="text-sm">category: {{workerDetails?.department?.name}}</span>
               </div>
             </div>
             <!-- <div class="product-price">

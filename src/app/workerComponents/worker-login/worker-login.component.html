@@ -50,9 +50,6 @@
                 @if (workerLoginForm.controls['email'].errors?.['email']) {
                   <small class="text-red-500">* invalid email</small>
                 }
-                @if (wrongEmail) {
-                  <small class="text-red-500">wrong email</small>
-                }
 
                 <div id="input" class="flex flex-col w-full my-5">
                   <label for="password" class="text-gray-500 mb-2"
@@ -72,8 +69,8 @@
                     @if (workerLoginForm.controls['password'].errors?.['minlength']) {
                       <small class="text-red-500">* minimum 8 characters required</small>
                     }
-                    @if (passCheckErr) {
-                      <small class="text-red-500">wrong password</small>
+                    @if (loginError) {
+                      <small class="text-red-500">{{ loginError }}</small>
                     }
 
                     <div id="button" class="flex flex-col w-full my-5">

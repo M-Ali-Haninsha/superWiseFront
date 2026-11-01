@@ -1,160 +1,118 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgZone } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
-import { UserDialogComponent } from '../user-dialog/user-dialog.component';
+import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-declare var Razorpay: any;
+import { ActivatedRoute, Router } from '@angular/router';
+import { showError } from 'src/app/core/notify';
+import { openRazorpayCheckout } from 'src/app/core/razorpay';
+import { Worker } from 'src/app/models/api.models';
+import { UserService } from 'src/app/services/user.service';
+import { UserDialogComponent, UserDialogData } from '../user-dialog/user-dialog.component';
 
 @Component({
-    selector: 'app-work-progress',
-    templateUrl: './work-progress.component.html',
-    styleUrls: ['./work-progress.component.css'],
-    standalone: false
+  selector: 'app-work-progress',
+  templateUrl: './work-progress.component.html',
+  styleUrls: ['./work-progress.component.css'],
+  standalone: false,
 })
-export class WorkProgressComponent implements OnInit{
+export class WorkProgressComponent implements OnInit {
+  private route = inject(Router);
+  private service = inject(UserService);
+  private dialog = inject(MatDialog);
+  private ngZone = inject(NgZone);
 
-  workerData:any
-  id:any
-  progressBar: number = 0;
-  Amount: number = 0
-  active: boolean = false
-  inActive: boolean = false
-  amountForm!: FormGroup
-  ratingButtonActive: any
-  detail:any
-  payActive:boolean = true
-
-  constructor(private route: Router,private activateRoute: ActivatedRoute, private service: UserService, private fb: FormBuilder, private dialog: MatDialog, private ngZone: NgZone) {
-    this.id = this.activateRoute.snapshot.paramMap.get('id') || ''     
-    this.amountForm = this.fb.group({
-      amount:this.Amount
-    })
-  }
+  id = inject(ActivatedRoute).snapshot.paramMap.get('id') ?? '';
+  workerData?: Worker;
+  progressBar = 0;
+  Amount = 0;
+  active = false;
+  inActive = false;
+  ratingButtonActive = false;
+  payActive = true;
+  paying = false;
+  amountForm = inject(FormBuilder).nonNullable.group({ amount: 0 });
 
   ngOnInit(): void {
-      this.viewWorkerDetails(this.id)
-      this.getProgressValue()
-      this.getAmount()
+    this.service.userViewWorkerDetails(this.id).subscribe({
+      next: ({ data }) => (this.workerData = data),
+      error: (err: unknown) => showError(err),
+    });
+    this.getProgressValue();
+    this.getAmount();
   }
 
-  getAmount() {    
-    this.service.showAmount(this.id).subscribe((value)=> {
-      if(value.amount == null) {
-        this.payActive = false
-      } else {
-        this.payActive = true
-        this.Amount = value.amount
-      }
-    })
-  }
-
-  getProgressValue() {
-    this.service.getProgressData(this.id).subscribe(data => {
-      if(data.data == null) {
-        this.inActive = true
-      } else {
-      this.progressBar = data.data
-      if(this.progressBar) {
-        this.active = true
-        if(this.progressBar == 100) {
-          this.ratingButtonActive = true
-        }
-      } 
-      }
+  getAmount(): void {
+    this.service.showAmount(this.id).subscribe({
+      next: ({ amount }) => {
+        this.payActive = amount != null;
+        this.Amount = amount ?? 0;
+      },
+      error: (err: unknown) => showError(err),
     });
   }
 
-  viewWorkerDetails(id:string){
-    this.service.userViewWorkerDetails(id).subscribe((value)=> {
-      this.workerData = value.data
-    })
-  }
-
-  razorPayOptions = {
-    "key":'rzp_test_TDRJfd82mop9MS',
-    "amount":this.Amount * 100,
-    "currency": 'INR',
-    "name":"superWise",
-    "description": 'Test Transaction',
-    "order_id":'',
-    "handler": (res:any) => {
-      console.log(res);
-    }
-  };
-
-  initiateRazorpayPayment(workerId:string) {
-    this.service.razorpay(this.Amount, workerId).subscribe((res)=> {
-      this.razorPayOptions.key = res['key']
-      this.razorPayOptions.amount = res['value'] ['amount']
-      this.razorPayOptions.name = res['name']
-      this.razorPayOptions.order_id = res['value'] ['id']
-      this.razorPayOptions.handler = (response: any) => {
-        console.log(response);
-  
-        if (response.razorpay_payment_id) {
-          this.ngZone.run(() => {
-            this.route.navigate(['/successPage', this.id]);
-          });
-        } else {
-          console.log('payment failed');
-        }
-      };
-      
-
-      var rzp1 = new Razorpay(this.razorPayOptions)
-      rzp1.open()
-      console.log('opened');
-      console.log('response',res);  
-    })
-  }
-
-
-
-  ratingModal() {
-    const dialogRef = this.dialog.open(UserDialogComponent, {
-      width:'30%',
-      data: {mode: 'rating', data: this.id}
-    })
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result == 'ratingSubmitted'){
-        
-      }
+  getProgressValue(): void {
+    this.service.getProgressData(this.id).subscribe({
+      next: ({ data }) => {
+        // 0 means the worker accepted but has not started yet.
+        this.progressBar = data ?? 0;
+        this.active = this.progressBar > 0;
+        this.inActive = !this.active;
+        this.ratingButtonActive = this.progressBar === 100;
+      },
+      error: (err: unknown) => showError(err),
     });
   }
 
-  message() {
-    const dialogRef = this.dialog.open(UserDialogComponent, {
-      width:'80%',
-      data: {mode: 'message', data:this.workerData}
-    })
-
-    dialogRef.afterClosed().subscribe(result => {
- 
+  initiateRazorpayPayment(workerId: string | undefined): void {
+    if (!workerId || this.paying) return;
+    this.paying = true;
+    this.service.razorpay(workerId).subscribe({
+      next: ({ key, value: order }) => {
+        openRazorpayCheckout({
+          key,
+          amount: order.amount,
+          currency: order.currency ?? 'INR',
+          name: 'SuperWise',
+          description: 'Payment for completed work',
+          order_id: order.id,
+          handler: (result) => this.ngZone.run(() => this.confirmPayment(workerId, result)),
+          modal: { ondismiss: () => this.ngZone.run(() => (this.paying = false)) },
+        });
+      },
+      error: (err: unknown) => {
+        this.paying = false;
+        showError(err);
+      },
     });
   }
 
-  viewImages() {
-    const dialogRef = this.dialog.open(UserDialogComponent, {
-      width:'60%',
-      data: {mode: 'progressImage', data:this.workerData._id}
-    })
-
-    dialogRef.afterClosed().subscribe(result => {
- 
+  private confirmPayment(workerId: string, result: Parameters<UserService['verifyPayment']>[1]): void {
+    this.service.verifyPayment(workerId, result).subscribe({
+      next: () => void this.route.navigate(['/successPage', this.id]),
+      error: (err: unknown) => {
+        this.paying = false;
+        showError(err, 'We could not confirm your payment. If money was deducted, please contact support.');
+      },
     });
   }
 
-  reportWorker() {
-    const dialogRef = this.dialog.open(UserDialogComponent, {
-      width:'30%',
-      data: {mode: 'reportWorker', data:this.workerData._id}
-    })
+  ratingModal(): void {
+    this.openDialog({ mode: 'rating', data: this.id }, '30%');
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
- 
-    });
+  message(): void {
+    if (this.workerData) this.openDialog({ mode: 'message', data: this.workerData }, '80%');
+  }
+
+  viewImages(): void {
+    if (this.workerData) this.openDialog({ mode: 'progressImage', data: this.workerData._id }, '60%');
+  }
+
+  reportWorker(): void {
+    if (this.workerData) this.openDialog({ mode: 'reportWorker', data: this.workerData._id }, '30%');
+  }
+
+  private openDialog(data: UserDialogData, width: string): void {
+    this.dialog.open<UserDialogComponent, UserDialogData, string>(UserDialogComponent, { width, data });
   }
 }

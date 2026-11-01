@@ -1,52 +1,39 @@
-import { Component, OnInit, Renderer2, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { showError } from 'src/app/core/notify';
+import { Client, Payment, Worker } from 'src/app/models/api.models';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-    selector: 'app-successpage',
-    templateUrl: './successpage.component.html',
-    styleUrls: ['./successpage.component.css'],
-    standalone: false
+  selector: 'app-successpage',
+  templateUrl: './successpage.component.html',
+  styleUrls: ['./successpage.component.css'],
+  standalone: false,
 })
-export class SuccesspageComponent implements OnInit{
-  @ViewChild('printMe', { static: false }) printMe!: ElementRef;
+export class SuccesspageComponent implements OnInit {
+  private service = inject(UserService);
 
-  id:string
-  workerDetails:any
-  userDetails:any
-  clientDataP:any
-  paymentP:any
-
-  constructor(private activateRoute: ActivatedRoute, private service: UserService, private renderer: Renderer2) {
-    this.id = this.activateRoute.snapshot.paramMap.get('id') || ''     
-  }
+  id = inject(ActivatedRoute).snapshot.paramMap.get('id') ?? '';
+  workerDetails?: Worker;
+  clientDataP?: Client;
+  paymentP?: Payment;
 
   ngOnInit(): void {
-  this.workerData()      
-  this.paymentDetails()
+    this.service.userViewWorkerDetails(this.id).subscribe({
+      next: ({ data }) => (this.workerDetails = data),
+      error: (err: unknown) => showError(err),
+    });
+    this.service.getPaymentData(this.id).subscribe({
+      next: ({ paymentData, details }) => {
+        this.clientDataP = paymentData;
+        this.paymentP = details;
+      },
+      error: (err: unknown) => showError(err),
+    });
   }
 
-  workerData() {
-    this.service.userViewWorkerDetails(this.id).subscribe((value)=> {
-      this.workerDetails = value.data
-    })
-  }
-
-  paymentDetails() {    
-    console.log(this.id);
-    
-    this.service.getPaymentData(this.id).subscribe((value)=> {      
-      this.clientDataP = value.paymentData
-      this.paymentP = value.details      
-    })
-  }
-
-  downloadPdf(){
-    const printContents = this.printMe.nativeElement.innerHTML;
-    const originalContents = document.body.innerHTML;
-
-    this.renderer.setProperty(document.body, 'innerHTML', printContents);
+  /** Prints only the receipt (see the .print-area rules in styles.css). */
+  downloadPdf(): void {
     window.print();
-    this.renderer.setProperty(document.body, 'innerHTML', originalContents);
   }
 }

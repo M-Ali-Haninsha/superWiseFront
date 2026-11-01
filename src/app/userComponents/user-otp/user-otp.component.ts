@@ -1,61 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth.service';
+import { showError, showSuccess } from 'src/app/core/notify';
 import { UserService } from 'src/app/services/user.service';
-import Swal from 'sweetalert2';
+
+const digit = ['', [Validators.required, Validators.pattern(/^\d$/)]];
 
 @Component({
-    selector: 'app-user-otp',
-    templateUrl: './user-otp.component.html',
-    styleUrls: ['./user-otp.component.css'],
-    standalone: false
+  selector: 'app-user-otp',
+  templateUrl: './user-otp.component.html',
+  styleUrls: ['./user-otp.component.css'],
+  standalone: false,
 })
 export class UserOtpComponent implements OnInit {
+  private service = inject(UserService);
+  private auth = inject(AuthService);
+  private route = inject(Router);
 
-  otpForm!: FormGroup
-  formData!:any
-
-  constructor(private formBuilder: FormBuilder, private service: UserService, private route: Router) {}
+  private email = '';
+  otpForm = inject(FormBuilder).nonNullable.group({
+    otp1: digit,
+    otp2: digit,
+    otp3: digit,
+    otp4: digit,
+  });
 
   ngOnInit(): void {
-      this.otpForm = this.formBuilder.group({
-        otp1: ['', Validators.required],
-        otp2: ['', Validators.required],
-        otp3: ['', Validators.required],
-        otp4: ['', Validators.required]
-      })
+    const email = this.auth.getPendingSignup();
+    if (!email) {
+      void this.route.navigate(['/userSignup']);
+      return;
+    }
+    this.email = email;
   }
 
-  verify() {
-    console.log(this.otpForm);
-    
-    const otp1 = this.otpForm.get('otp1')?.value;
-    const otp2 = this.otpForm.get('otp2')?.value;
-    const otp3 = this.otpForm.get('otp3')?.value;
-    const otp4 = this.otpForm.get('otp4')?.value;
-  
-    if (otp1 && otp2 && otp3 && otp4) {
-      const combinedOtp = otp1 + otp2 + otp3 + otp4;
-      console.log('combined otp', combinedOtp);
-      this.formData = parseInt(combinedOtp, 10)
-      console.log('noakaaan',this.formData);
-      this.service.userOtp(this.formData).subscribe((value: any) => {        
-        if(value.otpDone == true) {
-          Swal.fire({
-            icon: 'success',
-            title: 'OTP Verified',
-            text: 'OTP verified, you will directed to login page.',
-          }).then(() => {
-            this.route.navigate(['/userLogin'])
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Otp login Error',
-            text: 'Please check the otp or resend otp.',
-          });
-        }
-      });
-    }
+  verify(): void {
+    if (this.otpForm.invalid) return;
+    const { otp1, otp2, otp3, otp4 } = this.otpForm.getRawValue();
+    // Kept as a string so OTPs that start with 0 still match.
+    const otp = `${otp1}${otp2}${otp3}${otp4}`;
+
+    this.service.userOtp({ email: this.email, otp }).subscribe({
+      next: () => {
+        this.auth.clearPendingSignup();
+        void showSuccess('OTP Verified', 'Your account is ready. Please log in.').then(() =>
+          this.route.navigate(['/userLogin']),
+        );
+      },
+      error: (err: unknown) => showError(err, 'Please check the OTP and try again.'),
+    });
   }
 }

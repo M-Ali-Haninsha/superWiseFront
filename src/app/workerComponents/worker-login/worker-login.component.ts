@@ -1,48 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth.service';
+import { errorMessage } from 'src/app/core/http';
 import { WorkerService } from 'src/app/services/worker.service';
 
 @Component({
-    selector: 'app-worker-login',
-    templateUrl: './worker-login.component.html',
-    styleUrls: ['./worker-login.component.css'],
-    standalone: false
+  selector: 'app-worker-login',
+  templateUrl: './worker-login.component.html',
+  styleUrls: ['./worker-login.component.css'],
+  standalone: false,
 })
-export class WorkerLoginComponent implements OnInit{
+export class WorkerLoginComponent {
+  private service = inject(WorkerService);
+  private auth = inject(AuthService);
+  private route = inject(Router);
 
-  passCheckErr: boolean = false
-  wrongEmail: boolean = false
+  loginError = '';
+  workerLoginForm = inject(FormBuilder).nonNullable.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+  });
 
-
-  workerLoginForm!: FormGroup
-  formData!: FormData
-  constructor(private formBuilder: FormBuilder, private service: WorkerService, private route: Router) {}
-
-  ngOnInit(): void {
-      this.workerLoginForm = this.formBuilder.group({
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(8)]]
-  })
-  }
-
-  workerLogin(){
-    if(this.workerLoginForm.valid){
-      this.formData = this.workerLoginForm.value
-      console.log('data', this.formData);
-      this.service.workerLogin(this.formData).subscribe((value)=>{
-        if(value.msg == 'passwordWrong') {
-          this.passCheckErr = true
-
-        } else if(value.msg == 'wrongEmail') {
-          this.wrongEmail = true
-        } 
-        else {
-          const strValue = JSON.stringify(value)
-          sessionStorage.setItem('workerValue', strValue)
-          this.route.navigate(['/workerHome'])
-        }
-      })
-    }
+  workerLogin(): void {
+    if (this.workerLoginForm.invalid) return;
+    this.loginError = '';
+    this.service.workerLogin(this.workerLoginForm.getRawValue()).subscribe({
+      next: ({ token }) => {
+        this.auth.login('worker', token);
+        void this.route.navigate(['/workerHome']);
+      },
+      error: (err: unknown) => (this.loginError = errorMessage(err)),
+    });
   }
 }

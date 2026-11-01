@@ -28,9 +28,6 @@
             @if (userSigninForm.controls['email'].errors?.['email']) {
               <small class="text-red-500">* invalid email</small>
             }
-            @if (wrongEmail) {
-              <small class="text-red-500">wrong email</small>
-            }
 
             <div class="mt-6 relative">
               <div class="flex justify-between mb-2">
@@ -62,8 +59,8 @@
               @if (userSigninForm.controls['password'].errors?.['minlength']) {
                 <small class="text-red-500">* minimum 8 characters required</small>
               }
-              @if (passCheckErr) {
-                <small class="text-red-500">wrong password</small>
+              @if (loginError) {
+                <small class="text-red-500">{{ loginError }}</small>
               }
 
               <div class="mt-6">

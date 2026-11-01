@@ -12,10 +12,8 @@ import { AdminVerificationComponent } from './adminComponents/admin-verification
 import { UserSignupComponent } from './userComponents/user-signup/user-signup.component';
 import { ListCategoryComponent } from './userComponents/list-category/list-category.component';
 import { UserProfileComponent } from './userComponents/user-profile/user-profile.component';
-import { AdminAuthGuard } from './routguard/admin-guard.service'
+import { roleGuard } from './core/role.guard';
 import { WorkerDashboardComponent } from './workerComponents/worker-dashboard/worker-dashboard.component';
-import { WorkerGuard } from './routguard/worker-guard.service';
-import { UserGuardService } from './routguard/user-guard.service';
 import { VerifiedWorkersComponent } from './adminComponents/verified-workers/verified-workers.component';
 import { UserOtpComponent } from './userComponents/user-otp/user-otp.component';
 import { UsersComponent } from './adminComponents/users/users.component';
@@ -38,19 +36,19 @@ const routes: Routes = [
   {path:'userLogin', component: UserLoginComponent},
   {path:'userSignup', component: UserSignupComponent},
   {path:'category', component:ListCategoryComponent},
-  {path:'userProfile', component:UserProfileComponent, canActivate: [UserGuardService]},
+  {path:'userProfile', component:UserProfileComponent, canActivate: [roleGuard('user', '/')]},
   {path:'userOtp', component:UserOtpComponent},
   {path:'listWorkers/:id', component: ListWorkersComponent},
   {path:'viewWorker/:id', component: ViewWorkerComponent},
-  {path:'workProgress/:id', component: WorkProgressComponent},
-  {path:'successPage/:id', component: SuccesspageComponent},
-  {path:'singleViewHistory/:id', component: SingleViewHistoryComponent},
+  {path:'workProgress/:id', component: WorkProgressComponent, canActivate: [roleGuard('user')]},
+  {path:'successPage/:id', component: SuccesspageComponent, canActivate: [roleGuard('user')]},
+  {path:'singleViewHistory/:id', component: SingleViewHistoryComponent, canActivate: [roleGuard('user')]},
 
 //admin routing
   {path:'admin', component: AdminLoginComponent},
-  {path:'adminHome', component: AdminDashboardComponent, canActivate: [AdminAuthGuard], children:[
+  {path:'adminHome', component: AdminDashboardComponent, canActivate: [roleGuard('admin')], children:[
     {path:'', redirectTo: 'adminChartArea', pathMatch:'full'},
-    {path: 'adminChartArea', component:AdminChartAreaComponent, canActivate: [AdminAuthGuard]},
+    {path: 'adminChartArea', component:AdminChartAreaComponent},
     {path: 'category', component:AdminCategoryComponent},
     {path: 'verification', component:AdminVerificationComponent},
     {path: 'verifiedWorkers', component:VerifiedWorkersComponent},
@@ -62,7 +60,7 @@ const routes: Routes = [
 //worker routing
   {path:'workerSignup', component: WorkerSignupComponent},
   {path:'workerLogin', component:WorkerLoginComponent},
-  {path:'workerHome', component:WorkerDashboardComponent, canActivate: [WorkerGuard], children:[
+  {path:'workerHome', component:WorkerDashboardComponent, canActivate: [roleGuard('worker')], children:[
     {path:'', redirectTo: 'workerLandingPage', pathMatch:'full'},
     {path:'workerLandingPage', component:LandingPageComponent},
     {path: 'inbox', component: WorkerInboxComponent},

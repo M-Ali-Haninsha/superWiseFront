@@ -31,8 +31,8 @@
         @if (thirdFormGroup.controls['email'].errors?.['email']) {
           <small class="text-red-500">* invalid email</small>
         }
-        @if (workerExists) {
-          <small class="text-red-500">! account already exists</small>
+        @if (signupError) {
+          <small class="text-red-500">{{ signupError }}</small>
         }
         <label>
           <input formControlName="password" required type="password" class="input">

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth.service';
 
 @Component({
     selector: 'app-admin-header',
@@ -8,13 +9,11 @@ import { Router } from '@angular/router';
     standalone: false
 })
 export class AdminHeaderComponent {
+  private route = inject(Router);
+  private auth = inject(AuthService);
 
-  constructor(private route: Router) {}
-
-  signout() {    
-    if(sessionStorage.getItem('adminValue')){
-      sessionStorage.removeItem('adminValue')
-      this.route.navigate(['/admin'])
-    }
+  signout(): void {
+    this.auth.logout('admin');
+    void this.route.navigate(['/admin']);
   }
 }

@@ -1,51 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth.service';
+import { errorMessage } from 'src/app/core/http';
 import { AdminServiceService } from 'src/app/services/admin-service.service';
+
 @Component({
-    selector: 'app-admin-login',
-    templateUrl: './admin-login.component.html',
-    styleUrls: ['./admin-login.component.css'],
-    standalone: false
+  selector: 'app-admin-login',
+  templateUrl: './admin-login.component.html',
+  styleUrls: ['./admin-login.component.css'],
+  standalone: false,
 })
-export class AdminLoginComponent implements OnInit {
+export class AdminLoginComponent {
+  private service = inject(AdminServiceService);
+  private auth = inject(AuthService);
+  private route = inject(Router);
+
   hide = true;
-  adminLoginForm: any = FormGroup;
-  formData: any;
-  passCheckErr: boolean = false;
-  wrongEmail: boolean = false;
+  loginError = '';
+  adminLoginForm = inject(FormBuilder).nonNullable.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+  });
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private service: AdminServiceService,
-    private route: Router
-  ) {
-    if (sessionStorage.getItem('adminValue')) {
-      this.route.navigate(['/adminHome']);
+  constructor() {
+    if (this.auth.isLoggedIn('admin')) {
+      void this.route.navigate(['/adminHome']);
     }
   }
 
-  ngOnInit(): void {
-    this.adminLoginForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
+  onSubmit(): void {
+    if (this.adminLoginForm.invalid) return;
+    this.loginError = '';
+    this.service.adminLogin(this.adminLoginForm.getRawValue()).subscribe({
+      next: ({ token }) => {
+        this.auth.login('admin', token);
+        void this.route.navigate(['/adminHome']);
+      },
+      error: (err: unknown) => (this.loginError = errorMessage(err)),
     });
-  }
-
-  onSubmit() {
-    if (this.adminLoginForm.valid) {
-      this.formData = this.adminLoginForm.value;
-      this.service.adminSignup(this.formData).subscribe((value: any) => {
-        if (value.msg == 'passwordWrong') {
-          this.passCheckErr = true;
-        } else if (value.msg == 'wrongEmail') {
-          this.wrongEmail = true;
-        } else {
-          const strValue = JSON.stringify(value);
-          sessionStorage.setItem('adminValue', strValue);
-          this.route.navigate(['/adminHome']);
-        }
-      });
-    }
   }
 }

@@ -1,88 +1,69 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { showError } from 'src/app/core/notify';
+import { applyTableFilter, createTableSource } from 'src/app/core/table';
+import { WorkRequest } from 'src/app/models/api.models';
 import { WorkerService } from 'src/app/services/worker.service';
-import { WokerDialogComponent } from '../woker-dialog/woker-dialog.component'
-import { MatDialog } from '@angular/material/dialog';
+import { WokerDialogComponent, WorkerDialogData } from '../woker-dialog/woker-dialog.component';
 
 @Component({
-    selector: 'app-worker-inbox',
-    templateUrl: './worker-inbox.component.html',
-    styleUrls: ['./worker-inbox.component.css'],
-    standalone: false
+  selector: 'app-worker-inbox',
+  templateUrl: './worker-inbox.component.html',
+  styleUrls: ['./worker-inbox.component.css'],
+  standalone: false,
 })
-export class WorkerInboxComponent implements OnInit{
-  displayedColumns: string[] = ['rowNumber', 'email', 'phone', 'details', 'expected date', 'action'];
-  dataSource: MatTableDataSource<any>;
-  delete: boolean  = false
-  result:any
+export class WorkerInboxComponent implements OnInit {
+  private service = inject(WorkerService);
+  private dialog = inject(MatDialog);
 
+  displayedColumns = ['rowNumber', 'email', 'phone', 'details', 'expected date', 'action'];
+  dataSource = new MatTableDataSource<WorkRequest>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-
-  constructor(private service: WorkerService, private dialog: MatDialog) {
-    this.dataSource = new MatTableDataSource<any>;
-  }
-
   ngOnInit(): void {
-      this.getRequests()
+    this.getRequests();
   }
 
-  getRequests() {
-    this.service.fetchRequests().subscribe((value)=>{
-      if(value.requests){
-        console.log(value.requests);
-        this.result = value.requests
-        this.dataSource = new MatTableDataSource(value.requests)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort
-      }
-
-      if(value.error) {
-        console.log('err');
-        
-      }
-    })
-  }
-
-  acceptWork(id:any) {    
-    const requestData = { id: id };
-    this.service.requestAccept(requestData).subscribe((value)=> {
-      console.log(value);
-      this.getRequests()
-    })
-  }
-
-  rejectWork(id:any) {    
-    const requestData = { id: id };
-    this.service.requestReject(requestData).subscribe((value)=> {
-      console.log(value);
-      this.getRequests()
-    })
-  }
-
-  showDetails(data:any) {
-    const dialogRef = this.dialog.open(WokerDialogComponent, {
-      width:'30%',
-      data: {
-        mode: 'userRequirements',
-        requirement: data
-      }
-    })
-
-    dialogRef.afterClosed().subscribe(result => {
-
+  getRequests(): void {
+    this.service.fetchRequests().subscribe({
+      next: ({ requests }) => {
+        this.dataSource = createTableSource(
+          requests,
+          (r) => [r.userInfo?.firstName, r.userInfo?.lastName, r.userInfo?.email, r.userInfo?.phone, r.requirement],
+          this.paginator,
+          this.sort,
+        );
+      },
+      error: (err: unknown) => showError(err),
     });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  acceptWork(id: string): void {
+    this.service.requestAccept(id).subscribe({
+      next: () => this.getRequests(),
+      error: (err: unknown) => showError(err),
+    });
+  }
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  rejectWork(id: string): void {
+    this.service.requestReject(id).subscribe({
+      next: () => this.getRequests(),
+      error: (err: unknown) => showError(err),
+    });
+  }
+
+  showDetails(request: WorkRequest): void {
+    this.dialog.open<WokerDialogComponent, WorkerDialogData>(WokerDialogComponent, {
+      width: '30%',
+      data: { mode: 'userRequirements', requirement: request },
+    });
+  }
+
+  applyFilter(event: Event): void {
+    applyTableFilter(this.dataSource, event);
   }
 }

@@ -1,27 +1,49 @@
-# Project
+# SuperWise
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.1.
+Frontend for **SuperWise**, a services marketplace where clients hire verified
+workers, follow the work's progress, chat in real time and pay online. Workers
+manage requests and update progress; admins verify workers and handle complaints.
 
-## Development server
+Live: https://superwise.vercel.app · API: [superWiseBack](https://github.com/M-Ali-Haninsha/superWiseBack)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Stack
 
-## Code scaffolding
+Angular 21 · TypeScript (strict, no `any`) · NgRx · Angular Material ·
+Tailwind CSS · Socket.IO client · Chart.js · Razorpay Checkout · Vitest
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Structure
 
-## Build
+```
+src/app/
+  core/            AuthService, auth interceptor, role guard, HTTP/table/notify helpers
+  models/          typed API models (requests and responses)
+  services/        one typed API service per area (user, worker, admin, chat)
+  state/           NgRx store for the admin's worker lists (actions, reducer, effects)
+  userComponents/  client pages: browse, hire, progress, payment, history
+  workerComponents/ worker dashboard: inbox, accepted works, progress updates
+  adminComponents/ admin dashboard: verification, users, categories, complaints
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Each API call declares which role's token it needs (`asRole('worker')`), and the
+  interceptor attaches it. A 401 or a blocked account ends the session and
+  returns to that role's login page.
+- Routes are protected with `roleGuard('user' | 'worker' | 'admin')`.
+- Payments open Razorpay Checkout, then the result is verified by the API before
+  the success page is shown.
 
-## Running unit tests
+## Running locally
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+npm install
+npm start        # http://localhost:4200
+```
 
-## Running end-to-end tests
+`ng serve` uses `src/environments/environment.development.ts`, which points at a
+local API on `http://localhost:3000` (run `npm run dev` in superWiseBack).
+Production builds use `environment.ts` (the Render API).
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+| Script | |
+|---|---|
+| `npm start` | dev server |
+| `npm run build` | production build into `dist/project` |
+| `npm test` | unit tests (Vitest) |

@@ -1,103 +1,65 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
+import { confirmAction, showError, showSuccess } from 'src/app/core/notify';
+import { applyTableFilter, createTableSource } from 'src/app/core/table';
+import { Client } from 'src/app/models/api.models';
 import { AdminServiceService } from 'src/app/services/admin-service.service';
-import Swal from 'sweetalert2';
 
 @Component({
-    selector: 'app-users',
-    templateUrl: './users.component.html',
-    styleUrls: ['./users.component.css'],
-    standalone: false
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.css'],
+  standalone: false,
 })
-export class UsersComponent implements OnInit{
-  displayedColumns: string[] = ['rowNumber', 'firstName', 'lastName', 'email','action'];
-  dataSource: MatTableDataSource<any>;
-  delete: boolean  = false
+export class UsersComponent implements OnInit {
+  private service = inject(AdminServiceService);
 
+  displayedColumns = ['rowNumber', 'firstName', 'lastName', 'email', 'action'];
+  dataSource = new MatTableDataSource<Client>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private service: AdminServiceService) {
-    this.dataSource = new MatTableDataSource<any>;
-  }
-
   ngOnInit(): void {
-      this.getUsers()
+    this.getUsers();
   }
 
-  getUsers() {
-    this.service.fetchUser().subscribe((value)=>{
-      this.dataSource = new MatTableDataSource(value.user)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort
-      
-    })
-  }
-
-  block(data: any) {
-    const requestData = { id: data };
-    console.log(requestData);
-  
-    Swal.fire({
-      title: 'Confirm Block',
-      text: 'Are you sure you want to block this user?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, block it!',
-      cancelButtonText: 'No, cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.service.blockUser(requestData).subscribe((value) => {
-          console.log(value);
-          if (value === 'done') {
-            this.getUsers();
-            Swal.fire('Success', 'User has been blocked!', 'success');
-          } else {
-            Swal.fire('Error', 'Failed to block user', 'error');
-          }
-        });
-      } else {
-        Swal.fire('Canceled', 'The user was not blocked.', 'info');
-      }
-    });
-  }
-  
-  unBlock(data: any) {
-    const requestData = { id: data };
-    console.log(requestData);
-  
-    Swal.fire({
-      title: 'Confirm Unblock',
-      text: 'Are you sure you want to unblock this user?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, unblock it!',
-      cancelButtonText: 'No, cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.service.unBlockUser(requestData).subscribe((value) => {
-          console.log(value);
-          if (value === 'done') {
-            this.getUsers();
-            Swal.fire('Success', 'User has been unblocked!', 'success');
-          } else {
-            Swal.fire('Error', 'Failed to unblock user', 'error');
-          }
-        });
-      } else {
-        Swal.fire('Canceled', 'The user was not unblocked.', 'info');
-      }
+  getUsers(): void {
+    this.service.fetchUser().subscribe({
+      next: ({ user }) => {
+        this.dataSource = createTableSource(user, (u) => [u.firstName, u.lastName, u.email], this.paginator, this.sort);
+      },
+      error: (err: unknown) => showError(err),
     });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  block(id: string): void {
+    void this.changeBlock(this.service.blockUser(id), 'block');
+  }
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  unBlock(id: string): void {
+    void this.changeBlock(this.service.unBlockUser(id), 'unblock');
+  }
+
+  private async changeBlock(request: Observable<unknown>, verb: 'block' | 'unblock'): Promise<void> {
+    const confirmed = await confirmAction(
+      `Confirm ${verb}`,
+      `Are you sure you want to ${verb} this user?`,
+      `Yes, ${verb} it!`,
+    );
+    if (!confirmed) return;
+    request.subscribe({
+      next: () => {
+        this.getUsers();
+        void showSuccess('Success', `User has been ${verb}ed.`);
+      },
+      error: (err: unknown) => showError(err),
+    });
+  }
+
+  applyFilter(event: Event): void {
+    applyTableFilter(this.dataSource, event);
   }
 }

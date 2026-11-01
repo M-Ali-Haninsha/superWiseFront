@@ -1,62 +1,47 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { AdminServiceService } from 'src/app/services/admin-service.service';
-import { AdminDialogComponent } from '../admin-dialog/admin-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { showError } from 'src/app/core/notify';
+import { applyTableFilter, createTableSource } from 'src/app/core/table';
+import { Complaint } from 'src/app/models/api.models';
+import { AdminServiceService } from 'src/app/services/admin-service.service';
 
 @Component({
-    selector: 'app-complaints',
-    templateUrl: './complaints.component.html',
-    styleUrls: ['./complaints.component.css'],
-    standalone: false
+  selector: 'app-complaints',
+  templateUrl: './complaints.component.html',
+  styleUrls: ['./complaints.component.css'],
+  standalone: false,
 })
 export class ComplaintsComponent implements OnInit {
+  private service = inject(AdminServiceService);
+  private route = inject(Router);
 
-  displayedColumns: string[] = [
-    'rowNumber',
-    'firstName',
-    'lastName',
-    'email',
-    'phoneNo',
-    'reportedWorker',
-  ];
-  dataSource: MatTableDataSource<any>;
-  delete: boolean = false;
-
+  displayedColumns = ['rowNumber', 'firstName', 'lastName', 'email', 'phoneNo', 'reportedWorker'];
+  dataSource = new MatTableDataSource<Complaint>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private service: AdminServiceService, private route: Router) {
-    this.dataSource = new MatTableDataSource<any>();
-  }
-
   ngOnInit(): void {
-    this.complaints();
-  }
-
-  complaints() {
-    this.service.getComplaints().subscribe((value) => {
-      if (value) {
-        this.dataSource = new MatTableDataSource(value.complaints);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
+    this.service.getComplaints().subscribe({
+      next: ({ complaints }) => {
+        this.dataSource = createTableSource(
+          complaints,
+          (c) => [c.clientId?.firstName, c.clientId?.lastName, c.clientId?.email, c.workerId?.firstName, c.issue],
+          this.paginator,
+          this.sort,
+        );
+      },
+      error: (err: unknown) => showError(err),
     });
   }
 
-  showDetails(worker:any, client:any) {    
-    this.route.navigate(['/adminHome/viewComplaint',worker._id, client._id])
+  showDetails(worker: Complaint['workerId'], client: Complaint['clientId']): void {
+    void this.route.navigate(['/adminHome/viewComplaint', worker._id, client._id]);
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  applyFilter(event: Event): void {
+    applyTableFilter(this.dataSource, event);
   }
 }

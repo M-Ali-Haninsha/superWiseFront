@@ -1,79 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { showError } from 'src/app/core/notify';
+import { WorkerSelf } from 'src/app/models/api.models';
 import { WorkerService } from 'src/app/services/worker.service';
-import { WokerDialogComponent } from '../woker-dialog/woker-dialog.component'
-import { Router } from '@angular/router';
+import { WokerDialogComponent, WorkerDialogData } from '../woker-dialog/woker-dialog.component';
 
 @Component({
-    selector: 'app-worker-profile',
-    templateUrl: './worker-profile.component.html',
-    styleUrls: ['./worker-profile.component.css'],
-    standalone: false
+  selector: 'app-worker-profile',
+  templateUrl: './worker-profile.component.html',
+  styleUrls: ['./worker-profile.component.css'],
+  standalone: false,
 })
-export class WorkerProfileComponent implements OnInit{
+export class WorkerProfileComponent implements OnInit {
+  private service = inject(WorkerService);
+  private dialog = inject(MatDialog);
 
-  workerData: any
-
-  constructor(private service: WorkerService, private dialog: MatDialog, private route: Router) {}
+  workerData?: WorkerSelf;
 
   ngOnInit(): void {
-      this.getWorkerDetails()
+    this.getWorkerDetails();
   }
 
-  getWorkerDetails() {
+  getWorkerDetails(): void {
+    // An expired session is handled (and redirected) by the interceptor.
     this.service.fetchWorkerData().subscribe({
-      next:(value)=>{      
-      this.workerData = value.data                  
-    },
-    error:(value)=>{
-      if(value.error.message == 'session has expired') {
-        alert('session expired')
-        this.route.navigate(['/workerLogin'])
-      }
-    }})
-  }
-  editButton(){
-    const dialogRef = this.dialog.open(WokerDialogComponent, {
-      width:'30%',
-      data: {mode: 'photo'}
-    })
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result == 'photoUpdated'){
-        this.getWorkerDetails()
-      }
+      next: ({ data }) => (this.workerData = data),
+      error: (err: unknown) => showError(err),
     });
   }
 
-  editDetails(){
-    const dialogRef = this.dialog.open(WokerDialogComponent, {
-      width:'20%',
-      data: {
-        mode: 'details',
-        workerData: this.workerData 
-      }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if(result == 'detailsUpdated') {
-        this.getWorkerDetails()
-      }
-    });
+  editButton(): void {
+    this.openDialog({ mode: 'photo' }, '30%', 'photoUpdated');
   }
 
-  editDescription() {
-    const dialogRef = this.dialog.open(WokerDialogComponent, {
-      width:'30%',
-      data: {
-        mode: 'description',
-        workerData: this.workerData 
-      }
-    })
+  editDetails(): void {
+    if (this.workerData) this.openDialog({ mode: 'details', workerData: this.workerData }, '20%', 'detailsUpdated');
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if(result == 'descriptionUpdated') {
-        this.getWorkerDetails()
-      }
-    });
+  editDescription(): void {
+    if (this.workerData) {
+      this.openDialog({ mode: 'description', workerData: this.workerData }, '30%', 'descriptionUpdated');
+    }
+  }
+
+  private openDialog(data: WorkerDialogData, width: string, refreshOn: string): void {
+    this.dialog
+      .open<WokerDialogComponent, WorkerDialogData, string>(WokerDialogComponent, { width, data })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result === refreshOn) this.getWorkerDetails();
+      });
   }
 }

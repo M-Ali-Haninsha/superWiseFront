@@ -63,10 +63,10 @@
         <h4 class="text-xl text-gray-200 font-bold">Requirements :</h4>
       </div>
       <p class="mt-2 text-gray-300">
-        {{ details.requirement.requirement}}
+        {{ details?.requirement?.requirement}}
       </p>
       <div>
-        <img [src]="details.requirement.file" alt="">
+        <img [src]="details?.requirement?.file" alt="">
       </div>
     </div>
   </div>
@@ -129,7 +129,7 @@
                 />
               </div>
               <div class="w-full" (click)="selectClient(mClientData)">
-                <div class="text-lg font-semibold">{{mClientData.firstName}}</div>
+                <div class="text-lg font-semibold">{{mClientData?.firstName}}</div>
                 <span class="text-gray-500">Pick me at 9:00 Am</span>
               </div>
             </div>
@@ -138,14 +138,14 @@
             @for (message of sendedMessageByWorker; track message) {
               <div class="flex flex-col mt-5">
                 <div class="flex justify-end mb-4" >
-                  @if (message.senderId == mWorkerData._id) {
+                  @if (message.senderId == mWorkerData?._id) {
                     <div
                       class="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white"
                       >
                       {{message.content}}
                     </div>
                   }
-                  @if (message.senderId == mWorkerData._id) {
+                  @if (message.senderId == mWorkerData?._id) {
                     <img
                       src="assets/images/avatar.svg"
                       class="object-cover h-8 w-8 rounded-full"
@@ -153,16 +153,16 @@
                       />
                   }
                 </div>
-                @if (message.senderId != mWorkerData._id) {
+                @if (message.senderId != mWorkerData?._id) {
                   <div class="flex justify-start mb-4">
-                    @if (message.senderId != mWorkerData._id) {
+                    @if (message.senderId != mWorkerData?._id) {
                       <img
                         src="assets/images/avatar.svg"
                         class="object-cover h-8 w-8 rounded-full"
                         alt=""
                         />
                     }
-                    @if (message.senderId != mWorkerData._id) {
+                    @if (message.senderId != mWorkerData?._id) {
                       <div
                         class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white"
                         >

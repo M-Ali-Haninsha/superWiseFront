@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { showError } from 'src/app/core/notify';
+import { Category } from 'src/app/models/api.models';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,7 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ListCategoryComponent implements OnInit {
 
-  category:any[] = []
+  category: Category[] = [];
 
   currentPage: number = 1;
   itemsPerPage: number = 6; 
@@ -30,12 +32,15 @@ export class ListCategoryComponent implements OnInit {
   }
 
   listCategory() {
-    this.service.fetchCategory().subscribe((value)=>{
-      this.category = value.result
-      if (this.category.length <= this.itemsPerPage) {
-        this.itemsPerPage = this.category.length;
-      }
-    })
+    this.service.fetchCategory().subscribe({
+      next: ({ result }) => {
+        this.category = result;
+        if (this.category.length <= this.itemsPerPage) {
+          this.itemsPerPage = this.category.length;
+        }
+      },
+      error: (err: unknown) => showError(err),
+    });
   }
 
   view(id:string) {

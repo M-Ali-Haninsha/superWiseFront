@@ -8,7 +8,7 @@
     </div>
 </div>
   
-  <div class="container mb-5" #printMe>
+  <div class="container mb-5 print-area">
     <div class="flex justify-center">
       <div class="w-10/12">
         <div class="receipt bg-white p-3">
@@ -25,7 +25,7 @@
                         <p class="text-base dark:text-white leading-4 text-gray-800">Name : {{workerData?.firstName}} {{workerData?.lastName}}</p>
                     </div>
                     <div class="flex justify-between items-center w-full">
-                        <p class="text-base dark:text-white leading-4 text-gray-800">Category : {{workerData?.department.name}}</p>
+                        <p class="text-base dark:text-white leading-4 text-gray-800">Category : {{workerData?.department?.name}}</p>
                     </div>
                     <div class="flex justify-between items-center w-full">
                         <p class="text-base dark:text-white leading-4 text-gray-800">location : {{workerData?.district}}</p>

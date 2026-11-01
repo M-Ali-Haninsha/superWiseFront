@@ -1,45 +1,36 @@
-import { Component, OnInit, Renderer2, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { showError } from 'src/app/core/notify';
+import { Client, Payment, Worker } from 'src/app/models/api.models';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-    selector: 'app-single-view-history',
-    templateUrl: './single-view-history.component.html',
-    styleUrls: ['./single-view-history.component.css'],
-    standalone: false
+  selector: 'app-single-view-history',
+  templateUrl: './single-view-history.component.html',
+  styleUrls: ['./single-view-history.component.css'],
+  standalone: false,
 })
-export class SingleViewHistoryComponent implements OnInit{
-  @ViewChild('printMe', { static: false }) printMe!: ElementRef;
+export class SingleViewHistoryComponent implements OnInit {
+  private service = inject(UserService);
 
-  id:string
-  paymentDetails:any
-  clientData:any
-  workerData:any
-
-  constructor(private activateRoute: ActivatedRoute, private renderer: Renderer2, private service: UserService) {
-    this.id = this.activateRoute.snapshot.paramMap.get('id') || '' 
-  }
+  id = inject(ActivatedRoute).snapshot.paramMap.get('id') ?? '';
+  paymentDetails?: Payment;
+  clientData?: Client;
+  workerData?: Worker;
 
   ngOnInit(): void {
-      this.getDetails()
+    this.service.historyDetails(this.id).subscribe({
+      next: ({ payments, clientData, workerData }) => {
+        this.paymentDetails = payments[0];
+        this.clientData = clientData;
+        this.workerData = workerData;
+      },
+      error: (err: unknown) => showError(err),
+    });
   }
 
-  getDetails() {
-    this.service.historyDetails(this.id).subscribe((value)=> {
-      console.log(value);
-      this.paymentDetails = value.payments[0]
-      this.clientData = value.clientData
-      this.workerData = value.workerData
-      
-    })
-  }
-
-  downloadPdf(){
-    const printContents = this.printMe.nativeElement.innerHTML;
-    const originalContents = document.body.innerHTML;
-
-    this.renderer.setProperty(document.body, 'innerHTML', printContents);
+  /** Prints only the receipt (see the .print-area rules in styles.css). */
+  downloadPdf(): void {
     window.print();
-    this.renderer.setProperty(document.body, 'innerHTML', originalContents);
   }
 }

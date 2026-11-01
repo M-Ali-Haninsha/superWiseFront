@@ -82,7 +82,7 @@
         <tr class="border-b border-gray-700">
           <td class="py-3 px-2 font-bold">
             <div class="inline-flex space-x-3 items-center">
-              <span><img class="rounded-full w-8 h-8" [src]="client?.userInfo.image" ></span>
+              <span><img class="rounded-full w-8 h-8" [src]="client.userInfo.image || 'assets/images/avatar.svg'" ></span>
               <span>{{client.userInfo.firstName}} {{client.userInfo.lastName}}</span>
             </div>
           </td>

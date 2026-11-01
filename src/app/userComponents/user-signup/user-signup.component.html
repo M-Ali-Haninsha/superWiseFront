@@ -47,8 +47,8 @@
             @if (userSignupForm.controls['email'].errors?.['email']) {
               <small class="text-red-500">* invalid email</small>
             }
-            @if (userExists) {
-              <small class="text-red-500">! user already exists</small>
+            @if (signupError) {
+              <small class="text-red-500">{{ signupError }}</small>
             }
 
             <div class="mt-6">

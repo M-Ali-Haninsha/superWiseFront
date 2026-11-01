@@ -1,47 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth.service';
+import { errorMessage } from 'src/app/core/http';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-    selector: 'app-user-signup',
-    templateUrl: './user-signup.component.html',
-    styleUrls: ['./user-signup.component.css'],
-    standalone: false
+  selector: 'app-user-signup',
+  templateUrl: './user-signup.component.html',
+  styleUrls: ['./user-signup.component.css'],
+  standalone: false,
 })
-export class UserSignupComponent implements OnInit{
+export class UserSignupComponent {
+  private service = inject(UserService);
+  private auth = inject(AuthService);
+  private route = inject(Router);
 
-  userSignupForm!: FormGroup
-  formData:any
-  userExists:boolean = false
+  signupError = '';
+  userSignupForm = inject(FormBuilder).nonNullable.group({
+    firstName: ['', [Validators.required, Validators.minLength(3)]],
+    lastName: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    phoneNo: ['', [Validators.required, Validators.minLength(10)]],
+    location: ['', Validators.required],
+  });
 
-  constructor(private formBuilder:FormBuilder, private service: UserService, private route: Router) {}
-
-  ngOnInit(): void {
-      this.userSignupForm = this.formBuilder.group({
-        firstName:['', [Validators.required, Validators.minLength(3)]],
-        lastName:['', Validators.required],
-        email:['', Validators.required],
-        password:['', [Validators.required, Validators.minLength(8)]],
-        phoneNo:['', [Validators.required, Validators.minLength(10)]],
-        location:['', Validators.required]
-      })
-  }
-
-  onSignup() {
-    if(this.userSignupForm.valid) {
-      this.formData= this.userSignupForm.value;
-      this.service.userSignupPost(this.formData).subscribe((value:any)=>{      
-        if(value.otpGen){          
-          this.route.navigate(['/userOtp'])
-        }
-        if(value.checked){
-          this.userExists = true
-        }
-        
-          
-        
-      })      
-    }
+  onSignup(): void {
+    if (this.userSignupForm.invalid) return;
+    this.signupError = '';
+    const data = this.userSignupForm.getRawValue();
+    this.service.userSignupPost(data).subscribe({
+      next: () => {
+        this.auth.setPendingSignup(data.email);
+        void this.route.navigate(['/userOtp']);
+      },
+      error: (err: unknown) => (this.signupError = errorMessage(err)),
+    });
   }
 }

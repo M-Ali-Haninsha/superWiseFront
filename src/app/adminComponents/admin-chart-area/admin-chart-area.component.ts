@@ -1,86 +1,59 @@
-import { Component, OnInit } from '@angular/core';
-import { Chart, ChartOptions, ChartData, ChartTypeRegistry } from 'chart.js';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, inject } from '@angular/core';
+// chart.js/auto registers every chart type; plain 'chart.js' would need
+// Chart.register(...) before a doughnut chart can be created.
+import Chart from 'chart.js/auto';
+import { showError } from 'src/app/core/notify';
+import { WorkerWithIncome } from 'src/app/models/api.models';
 import { AdminServiceService } from 'src/app/services/admin-service.service';
 
+const PALETTE = ['#2563eb', '#16a34a', '#f59e0b', '#dc2626', '#7c3aed', '#0891b2', '#db2777', '#65a30d'];
+
 @Component({
-    selector: 'app-admin-chart-area',
-    templateUrl: './admin-chart-area.component.html',
-    styleUrls: ['./admin-chart-area.component.css'],
-    standalone: false
+  selector: 'app-admin-chart-area',
+  templateUrl: './admin-chart-area.component.html',
+  styleUrls: ['./admin-chart-area.component.css'],
+  standalone: false,
 })
-export class AdminChartAreaComponent implements OnInit{
+export class AdminChartAreaComponent implements AfterViewInit, OnDestroy {
+  private service = inject(AdminServiceService);
 
-  chart!:any
-  incomeValue!: number
-  workerCount: number = 0
-  clientCount!:number
-  workerData:any
+  @ViewChild('myChart') canvas!: ElementRef<HTMLCanvasElement>;
+  private chart?: Chart<'doughnut', number[], string>;
+  incomeValue = 0;
+  workerCount = 0;
+  clientCount = 0;
+  workerData: WorkerWithIncome[] = [];
 
-  constructor(private service: AdminServiceService) {}
-
-  ngOnInit(): void {
-    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-
-    this.chart = new Chart(ctx, {
+  ngAfterViewInit(): void {
+    this.chart = new Chart(this.canvas.nativeElement, {
       type: 'doughnut',
-      data: {
-        labels: ['Label 1', 'Label 2', 'Label 3'],
-        datasets: [
-          {
-            label: 'Workers',
-            data: [10, 20, 30],
-            backgroundColor: ['red', 'blue', 'green','orange','yellow','pink'],
-          }
-        ]
-      },
-      options: {
-      }
+      data: { labels: [], datasets: [{ label: 'Workers', data: [], backgroundColor: PALETTE }] },
     });
 
-
-    this.getIncome()
-    this.counts()
-    this.getChartValue()
+    this.service.getIncomeData().subscribe({
+      next: ({ income }) => (this.incomeValue = income),
+      error: (err: unknown) => showError(err),
+    });
+    this.service.countDetails().subscribe({
+      next: ({ workerCount, clientCount, workerData }) => {
+        this.workerCount = workerCount;
+        this.clientCount = clientCount;
+        this.workerData = workerData;
+      },
+      error: (err: unknown) => showError(err),
+    });
+    this.service.chartValue().subscribe({
+      next: (rows) => {
+        if (!this.chart) return;
+        this.chart.data.labels = rows.map((r) => r.departmentName);
+        this.chart.data.datasets[0].data = rows.map((r) => r.workerCount);
+        this.chart.update();
+      },
+      error: (err: unknown) => showError(err),
+    });
   }
 
-  getIncome() {
-    this.service.getIncomeData().subscribe((value)=> {
-      this.incomeValue = value.income   
-    })
-  }
-
-  counts() {
-    this.service.countDetails().subscribe((value)=> {
-      this.workerCount = value.workerCount
-      this.clientCount = value.clientCount
-      this.workerData = value.workerData
-    })
-  }
-
-  getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-  
-
-  getChartValue() {
-    this.service.chartValue().subscribe((value)=> {
-      console.log(value);
-      const departmentNames = value.map((item:any) => item.departmentName);
-      const workerCounts = value.map((item:any) => item.workerCount);
-
-      const backgroundColors: string[] = departmentNames.map(() => this.getRandomColor());
-  
-      this.chart.data.labels = departmentNames;
-      this.chart.data.datasets[0].data = workerCounts;
-      this.chart.data.datasets[0].backgroundColor = backgroundColors;
-  
-      this.chart.update();
-      
-    })
+  ngOnDestroy(): void {
+    this.chart?.destroy();
   }
 }

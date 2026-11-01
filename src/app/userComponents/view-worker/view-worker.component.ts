@@ -1,119 +1,89 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth.service';
+import { errorMessage } from 'src/app/core/http';
+import { showError } from 'src/app/core/notify';
+import { Rating, Worker } from 'src/app/models/api.models';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-    selector: 'app-view-worker',
-    templateUrl: './view-worker.component.html',
-    styleUrls: ['./view-worker.component.css'],
-    standalone: false
+  selector: 'app-view-worker',
+  templateUrl: './view-worker.component.html',
+  styleUrls: ['./view-worker.component.css'],
+  standalone: false,
 })
-export class ViewWorkerComponent implements OnInit{
+export class ViewWorkerComponent implements OnInit {
+  private service = inject(UserService);
+  private auth = inject(AuthService);
+  private route = inject(Router);
+  private snackBar = inject(MatSnackBar);
 
-  // workerBookedDates: Date[] = [];
-  workerData:any
-  id:string
-  hireForm!: FormGroup
-  rating:any
-  selectedPhoto: File | undefined;
+  id = inject(ActivatedRoute).snapshot.paramMap.get('id') ?? '';
+  workerData?: Worker;
+  rating: Rating[] = [];
+  selectedPhoto?: File;
   step = 0;
+  hireForm = inject(FormBuilder).nonNullable.group({
+    description: ['', Validators.required],
+    date: ['', Validators.required],
+    file: [''],
+  });
 
-  setStep(index: number) {
+  setStep(index: number): void {
     this.step = index;
   }
 
-  nextStep() {
+  nextStep(): void {
     this.step++;
   }
 
-  prevStep() {
+  prevStep(): void {
     this.step--;
   }
 
-
-
-  constructor(private activateRoute: ActivatedRoute, private service: UserService, private formBuilder: FormBuilder, private route: Router, private snackBar: MatSnackBar) {
-    this.id = this.activateRoute.snapshot.paramMap.get('id') || ''            
-  }
-
   ngOnInit(): void {
-      this.viewWorkerDetails(this.id)
-      this.viewRating()
-      this.hireForm = this.formBuilder.group({
-        description:['', Validators.required],
-        date:['', Validators.required],
-        file: ['']
-      })
+    this.service.userViewWorkerDetails(this.id).subscribe({
+      next: ({ data }) => (this.workerData = data),
+      error: (err: unknown) => showError(err),
+    });
+    this.service.showRating(this.id).subscribe({
+      next: ({ rating }) => (this.rating = rating),
+      error: (err: unknown) => showError(err),
+    });
   }
 
-  viewWorkerDetails(id:string){
-    this.service.userViewWorkerDetails(id).subscribe((value)=> {
-      this.workerData = value.data
-    })
+  onPhotoSelected(event: Event): void {
+    this.selectedPhoto = (event.target as HTMLInputElement).files?.[0];
   }
-  onPhotoSelected(event: any) {
-    if (event.target.files && event.target.files.length > 0) {
-      this.selectedPhoto = event.target.files[0];
+
+  hire(id: string | undefined): void {
+    if (!id) return;
+    if (!this.auth.isLoggedIn('user')) {
+      this.showSnackbar('Please log in to hire a worker');
+      void this.route.navigate(['/userLogin']);
+      return;
     }
+    if (this.hireForm.invalid) return;
+
+    const { description, date } = this.hireForm.getRawValue();
+    const formData = new FormData();
+    formData.append('description', description);
+    formData.append('date', date);
+    if (this.selectedPhoto) formData.append('file', this.selectedPhoto);
+
+    this.service.workerHire(formData, id).subscribe({
+      next: () => this.showSnackbar('Request sent successfully'),
+      error: (err: unknown) => this.showSnackbar(errorMessage(err)),
+    });
   }
 
-  hire(id:string) {
-    if(sessionStorage.getItem('userValue')) {
-if(this.hireForm.valid ) {
-    let formData = new FormData()
-    if (this.selectedPhoto) {
-      formData.append('file', this.selectedPhoto);
-    }
-
-    formData.append('description', this.hireForm.get('description')?.value);
-    formData.append('date', this.hireForm.get('date')?.value)
-
-    this.service.workerHire(formData, id).subscribe((value)=>{
-      if(value.error){
-        this.showSnackbar('request already sended');
-      }
-      if(value.done) {
-        this.showSnackbar('Request sended successfully');
-      }
-    })
-    }
-    } else {
-      alert('plz login')
-      this.route.navigate(['/userLogin'])
-    }
-  }
-
-  viewRating() {
-    this.service.showRating(this.id).subscribe((value)=> {
-      this.rating = value.rating
-    })
-  }
-
-  // dateFilter = (date: Date | null): boolean => {
-  //   if (!date) {
-  //     return false;
-  //   }
-    
-  //   return !this.workerBookedDates.some(bookedDate =>
-  //     new Date(bookedDate).toDateString() === date.toDateString()
-  //   );
-  // };
-
-  // getDates() {
-  //   this.service.bookedDates(this.id).subscribe((value)=> {
-  //     console.log(value);
-  //     this.workerBookedDates = value.bookedDates
-  //   })
-  // }
-
-  showSnackbar(message: string) {
+  showSnackbar(message: string): void {
     this.snackBar.open(message, 'Dismiss', {
       duration: 3000,
       horizontalPosition: 'center',
-      verticalPosition: 'top'
+      verticalPosition: 'top',
     });
   }
 }
-

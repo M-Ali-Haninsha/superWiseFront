@@ -1,179 +1,100 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { asRole } from '../core/http';
 import {
-  adminLogin,
-  returnedDataLogin,
-} from '../adminComponents/interface/adminInterface';
-// import { Worker } from '../interface/interface'
-import { environment } from 'src/environments/environment'
+  AdminWorker,
+  Category,
+  Client,
+  Complaint,
+  DoneResponse,
+  LoginRequest,
+  LoginResponse,
+  WorkerWithIncome,
+  WorkersPerCategory,
+} from '../models/api.models';
 
-@Injectable({
-  providedIn: 'root',
-})
+const asAdmin = asRole('admin');
+
+@Injectable({ providedIn: 'root' })
 export class AdminServiceService {
+  private http = inject(HttpClient);
   private url = environment.ADMIN_URL;
 
-  constructor(private http: HttpClient) {}
-
-  adminSignup(data: adminLogin): Observable<returnedDataLogin> {
-    return this.http.post<returnedDataLogin>(this.url + 'adminLogin', data);
+  adminLogin(data: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.url + 'adminLogin', data);
   }
 
-  getWorkers(): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any>(this.url + 'adminGetWorker', requestOptions);
+  getWorkers(): Observable<{ workers: AdminWorker[] }> {
+    return this.http.get<{ workers: AdminWorker[] }>(this.url + 'adminGetWorker', asAdmin);
   }
 
-  getVerifiedWorkers(): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any>(
-      this.url + 'adminVerifiedGetWorker',
-      requestOptions
+  getVerifiedWorkers(): Observable<{ workers: AdminWorker[] }> {
+    return this.http.get<{ workers: AdminWorker[] }>(this.url + 'adminVerifiedGetWorker', asAdmin);
+  }
+
+  /** A short-lived link to the worker's private ID proof. */
+  viewProof(workerId: string): Observable<{ url: string }> {
+    return this.http.get<{ url: string }>(this.url + 'adminViewProof/' + workerId, asAdmin);
+  }
+
+  fetchCategory(): Observable<{ recievedCat: Category[] }> {
+    return this.http.get<{ recievedCat: Category[] }>(this.url + 'adminFetchCategory', asAdmin);
+  }
+
+  addCategory(data: FormData): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'adminAddCategory', data, asAdmin);
+  }
+
+  editCategory(data: FormData, id: string): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'editCategory/' + id, data, asAdmin);
+  }
+
+  acceptWorker(email: string): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'adminAccept', { email }, asAdmin);
+  }
+
+  rejectWorker(email: string): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'adminReject', { email }, asAdmin);
+  }
+
+  blockWorker(id: string): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'adminBlockWorker', { id }, asAdmin);
+  }
+
+  unBlockWorker(id: string): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'adminUnblockWorker', { id }, asAdmin);
+  }
+
+  fetchUser(): Observable<{ user: Client[] }> {
+    return this.http.get<{ user: Client[] }>(this.url + 'adminFetchUsers', asAdmin);
+  }
+
+  blockUser(id: string): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'adminBlockUser', { id }, asAdmin);
+  }
+
+  unBlockUser(id: string): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'adminUnblockUser', { id }, asAdmin);
+  }
+
+  getIncomeData(): Observable<{ income: number }> {
+    return this.http.get<{ income: number }>(this.url + 'getIncome', asAdmin);
+  }
+
+  countDetails(): Observable<{ workerCount: number; clientCount: number; workerData: WorkerWithIncome[] }> {
+    return this.http.get<{ workerCount: number; clientCount: number; workerData: WorkerWithIncome[] }>(
+      this.url + 'countDetails',
+      asAdmin,
     );
   }
 
-  viewProof(proof: string, options: any): Observable<any> {
-    return this.http.get<any>(this.url + 'adminViewProof/' + proof, options);
+  chartValue(): Observable<WorkersPerCategory[]> {
+    return this.http.get<WorkersPerCategory[]>(this.url + 'getChartValue', asAdmin);
   }
 
-  fetchCategory(): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any>(this.url + 'adminFetchCategory', requestOptions);
+  getComplaints(): Observable<{ complaints: Complaint[] }> {
+    return this.http.get<{ complaints: Complaint[] }>(this.url + 'getComplaints', asAdmin);
   }
-
-  addCategory(data: any): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any>(
-      this.url + 'adminAddCategory',
-      data,
-      requestOptions
-    );
-  }
-
-  editCategory(data: any, id: number): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any>(
-      this.url + 'editCategory/' + id,
-      data,
-      requestOptions
-    );
-  }
-
-  acceptWorker(data: any): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any>(this.url + 'adminAccept', data, requestOptions);
-  }
-
-  rejectWorker(data: any): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any>(this.url + 'adminReject', data, requestOptions);
-  }
-
-  blockWorker(data: any): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any>(
-      this.url + 'adminBlockWorker',
-      data,
-      requestOptions
-    );
-  }
-
-  unBlockWorker(data: any): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any>(
-      this.url + 'adminUnblockWorker',
-      data,
-      requestOptions
-    );
-  }
-
-  fetchUser(): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any>(this.url + 'adminFetchUsers', requestOptions);
-  }
-
-  blockUser(data: any): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any>(
-      this.url + 'adminBlockUser',
-      data,
-      requestOptions
-    );
-  }
-
-  unBlockUser(data: any): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any>(
-      this.url + 'adminUnblockUser',
-      data,
-      requestOptions
-    );
-  }
-
-  getIncomeData(): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any>(this.url + 'getIncome', requestOptions);
-  }
-
-  countDetails(): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any>(this.url + 'countDetails', requestOptions);
-  }
-
-  chartValue(): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any>(this.url + 'getChartValue', requestOptions);
-  }
-
-  getComplaints(): Observable<any> {
-    const item = 'adminValue';
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'getComplaints', requestOptions)
-  }
-
-  // getReportedWorker(workerId: string, clientId: string): Observable<any> {
-  //   console.log(workerId, clientId);
-    
-  //   const item = 'adminValue';
-  //   const headers = new HttpHeaders().set('usertype', item);
-  //   const params = new HttpParams()
-  //     .set('workerId', workerId)
-  //     .set('clientId', clientId);
-  //   const requestOptions = { headers: headers, params: params };
-  
-  //   return this.http.get<any>(`${this.url}getReportedWorker`, requestOptions);
-  // }
-  
 }

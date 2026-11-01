@@ -1,53 +1,47 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { showError } from 'src/app/core/notify';
+import { applyTableFilter, createTableSource } from 'src/app/core/table';
+import { WorkRequest } from 'src/app/models/api.models';
 import { WorkerService } from 'src/app/services/worker.service';
 
 @Component({
-    selector: 'app-accepted-works',
-    templateUrl: './accepted-works.component.html',
-    styleUrls: ['./accepted-works.component.css'],
-    standalone: false
+  selector: 'app-accepted-works',
+  templateUrl: './accepted-works.component.html',
+  styleUrls: ['./accepted-works.component.css'],
+  standalone: false,
 })
-export class AcceptedWorksComponent implements OnInit{
-  displayedColumns: string[] = ['rowNumber','firstName', 'email', 'phone', 'details'];
-  dataSource: MatTableDataSource<any>;
+export class AcceptedWorksComponent implements OnInit {
+  private service = inject(WorkerService);
+  private route = inject(Router);
 
-  result:any
-
+  displayedColumns = ['rowNumber', 'firstName', 'email', 'phone', 'details'];
+  dataSource = new MatTableDataSource<WorkRequest>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private service: WorkerService, private route: Router) {
-    this.dataSource = new MatTableDataSource<any>;
-  }
-
   ngOnInit(): void {
-      this.showWorks()
+    this.service.fetchAcceptedWorks().subscribe({
+      next: ({ accepted }) => {
+        this.dataSource = createTableSource(
+          accepted,
+          (r) => [r.userInfo?.firstName, r.userInfo?.lastName, r.userInfo?.email, r.userInfo?.phone],
+          this.paginator,
+          this.sort,
+        );
+      },
+      error: (err: unknown) => showError(err),
+    });
   }
 
-  showWorks() {
-    this.service.fetchAcceptedWorks().subscribe((value)=> {
-      console.log(value);
-      this.result = value.accepted
-      this.dataSource = new MatTableDataSource(value.accepted)
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort
-    })
+  viewWorkStatus(clientId: string): void {
+    void this.route.navigate(['/workerHome/updateWorks', clientId]);
   }
 
-  viewWorkStatus(id:string) {    
-    this.route.navigate(['/workerHome/updateWorks',id])
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  applyFilter(event: Event): void {
+    applyTableFilter(this.dataSource, event);
   }
 }

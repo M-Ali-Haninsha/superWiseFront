@@ -7,10 +7,10 @@
       <input formControlName="categoryName" matInput placeholder="Placeholder">
       <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
     </mat-form-field>
-    @if (editData?.Image) {
+    @if (editData?.Image; as existingImage) {
       <div>
         <!-- <p>Existing File: {{ editData.Image }}</p> -->
-        <img [src]="editData.Image" alt="Existing Image">
+        <img [src]="existingImage" alt="Existing Image">
       </div>
     }
     <div>

@@ -1,171 +1,147 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog'
-import { UserService } from 'src/app/services/user.service';
-import { MatDialogRef } from '@angular/material/dialog';
-import { ChatService } from 'src/app/services/chat.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { showError, showSuccess } from 'src/app/core/notify';
+import { ChatMessage, Client, ProgressImage, Worker, WorkStatus } from 'src/app/models/api.models';
+import { ChatService } from 'src/app/services/chat.service';
+import { UserService } from 'src/app/services/user.service';
 
+export type UserDialogData =
+  | { mode: 'userDetails'; data: Client }
+  | { mode: 'rating'; data: string }
+  | { mode: 'message'; data: Worker }
+  | { mode: 'progressImage'; data: string }
+  | { mode: 'reportWorker'; data: string }
+  | { mode: 'userViewHistory' };
 
 @Component({
-    selector: 'app-user-dialog',
-    templateUrl: './user-dialog.component.html',
-    styleUrls: ['./user-dialog.component.css'],
-    standalone: false
+  selector: 'app-user-dialog',
+  templateUrl: './user-dialog.component.html',
+  styleUrls: ['./user-dialog.component.css'],
+  standalone: false,
 })
-export class UserDialogComponent implements OnInit{
+export class UserDialogComponent implements OnInit {
+  private service = inject(UserService);
+  private chatService = inject(ChatService);
+  private ref = inject<MatDialogRef<UserDialogComponent, string>>(MatDialogRef);
+  private route = inject(Router);
+  private destroyRef = inject(DestroyRef);
+  private fb = inject(FormBuilder).nonNullable;
+  editData = inject<UserDialogData>(MAT_DIALOG_DATA);
 
-  userDetailsForm:any
-  ratingForm: any
-  formData:any
-  formData2:any
+  // Every form exists up front: the template binds some of them outside the
+  // mode checks, and a missing FormGroup throws NG01052.
+  userDetailsForm = this.fb.group({ firstName: '', lastName: '', phoneNo: '', location: '' });
+  ratingForm = this.fb.group({ comment: ['', Validators.required] });
+  messageForm = this.fb.group({ typedMessage: '' });
+  reportForm = this.fb.group({ reason: ['', Validators.required] });
+
   selectedRating: number | null = null;
-  typedMessage: string = '';
-  messageForm:any
-  progressImages:any
-  mClientData:any
-  mWorkerData:any
-  sendedMessageByClient:any
-  sendData:any
-  historyWorkStatus:any
-  reportForm:any
-  reportedWorkerId!:string
-  reportReason:any
+  progressImages: ProgressImage[] = [];
+  mClientData?: Client;
+  mWorkerData?: Worker;
+  sendedMessageByClient: ChatMessage[] = [];
+  historyWorkStatus: WorkStatus<Worker>[] = [];
 
-  constructor(private formBuilder: FormBuilder,private ref: MatDialogRef<UserDialogComponent>, @Inject(MAT_DIALOG_DATA) public editData:any, private service: UserService, private chatService: ChatService, private route:Router) {
-    this.messageForm = this.formBuilder.group({
-      typedMessage: [''], 
+  ngOnInit(): void {
+    const data = this.editData;
+    switch (data.mode) {
+      case 'userDetails':
+        this.userDetailsForm.setValue({
+          firstName: data.data.firstName,
+          lastName: data.data.lastName,
+          phoneNo: String(data.data.phone ?? ''),
+          location: data.data.location ?? '',
+        });
+        break;
+      case 'message':
+        this.startChat(data.data._id);
+        break;
+      case 'progressImage':
+        this.service.getprogressPhotos(data.data).subscribe({
+          next: ({ progressImages }) => (this.progressImages = progressImages),
+          error: (err: unknown) => showError(err),
+        });
+        break;
+      case 'userViewHistory':
+        this.service.userViewHistory().subscribe({
+          next: ({ user }) => (this.historyWorkStatus = user.workStatus),
+          error: (err: unknown) => showError(err),
+        });
+        break;
+    }
+  }
+
+  private startChat(workerId: string): void {
+    this.chatService.connect('user');
+    this.chatService
+      .conversation()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((messages) => (this.sendedMessageByClient = messages));
+    this.service.clientDetails().subscribe({
+      next: ({ clientDataMessage }) => (this.mClientData = clientDataMessage),
+      error: (err: unknown) => showError(err),
+    });
+    this.service.workerDetails(workerId).subscribe({
+      next: ({ workerDataMessage }) => (this.mWorkerData = workerDataMessage),
+      error: (err: unknown) => showError(err),
     });
   }
 
-  ngOnInit(): void {
-     if (this.editData.mode === 'userDetails') {
-        this.userDetailsForm = this.formBuilder.group({
-          firstName: [this.editData.data.firstName],
-          lastName: [this.editData.data.lastName],
-          phoneNo: [this.editData.data.phone],
-          location: [this.editData.data.location]
-        });
-      }
-
-      if(this.editData.mode == 'rating') {        
-        this.ratingForm = this.formBuilder.group({
-          comment: ['', Validators.required]
-        })
-      }    
-
-      if(this.editData.mode == 'reportWorker') {    
-        this.reportedWorkerId = this.editData.data
-            
-        this.reportForm = this.formBuilder.group({
-          reason: ['', Validators.required]
-        })
-      }  
-
-      this.chatService.test().subscribe((value)=>{
-        this.sendedMessageByClient = value
-      })
-
-      this.chatService.clientMessage().subscribe((value)=> {
-        this.sendedMessageByClient = value
-      })
-      if(this.editData.mode == 'userViewHistory') {
-        this.viewHistory()
-      }
-      this.getClient()
-      this.getWorker()
-      this.getProgressImages()
+  updateUserData(): void {
+    this.service.editUserDetails(this.userDetailsForm.getRawValue()).subscribe({
+      next: () => this.ref.close('detailsUpdated'),
+      error: (err: unknown) => showError(err),
+    });
   }
 
-  updateUserData() {
-    this.formData = this.userDetailsForm.value
-    this.service.editUserDetails(this.formData).subscribe((value)=> {
-      this.ref.close('detailsUpdated')
-    })
-  }
-
-
-  rate(rating: number) {
+  rate(rating: number): void {
     this.selectedRating = rating;
   }
 
   getStarClass(starNumber: number): string {
-    if (this.selectedRating !== null && starNumber <= this.selectedRating) {
-      return 'w-12 h-12 text-yellow-500 cursor-pointer';
-    } else {
-      return 'w-12 h-12 text-gray-500 cursor-pointer';
-    }
+    const selected = this.selectedRating !== null && starNumber <= this.selectedRating;
+    return `w-12 h-12 cursor-pointer ${selected ? 'text-yellow-500' : 'text-gray-500'}`;
   }
 
-  subnitRating() {
-    console.log('submit',this.selectedRating);
-    this.formData2 = this.ratingForm.value
-    this.service.rating(this.formData2, this.editData.data, this.selectedRating).subscribe((value)=> {
-      this.ref.close('ratingSubmitted')
-    })
+  subnitRating(): void {
+    if (this.editData.mode !== 'rating' || this.selectedRating === null) return;
+    const { comment } = this.ratingForm.getRawValue();
+    this.service.rating(comment, this.editData.data, this.selectedRating).subscribe({
+      next: () => this.ref.close('ratingSubmitted'),
+      error: (err: unknown) => showError(err),
+    });
   }
 
-  sendMessageToWorker(){
-    const message = this.messageForm.value.typedMessage;
-    console.log(this.editData.data._id);
-    const chatMessage = {
-      sender: this.mClientData.firstName, 
-      senderId: this.mClientData._id,
-      timestamp: new Date(),
-      content: message,
-      recieverId: this.sendData.recieverId
-    };
-    this.chatService.sendMessage(chatMessage).subscribe()
+  selectWorker(worker?: Worker): void {
+    if (!worker) return;
+    this.chatService.openConversation(worker._id).subscribe({ error: (err: unknown) => showError(err) });
+  }
+
+  sendMessageToWorker(): void {
+    const content = this.messageForm.getRawValue().typedMessage.trim();
+    if (!content || !this.mClientData || !this.mWorkerData) return;
+    this.chatService
+      .sendMessage({ sender: this.mClientData.firstName, recieverId: this.mWorkerData._id, content })
+      .subscribe({ error: (err: unknown) => showError(err) });
     this.messageForm.reset();
   }
 
-  getClient() {
-    this.service.clientDetails().subscribe((value)=>{
-      this.mClientData = value.clientDataMessage
-    })
+  viewMoreHistory(workerId: string): void {
+    this.ref.close();
+    void this.route.navigate(['singleViewHistory', workerId]);
   }
 
-  getWorker() {
-    this.service.workerDetails(this.editData.data._id).subscribe((value)=> {
-      this.mWorkerData = value.workerDataMessage
-      
-    })
-  }
-
-  selectWorker(data:any) {
-    this.sendData = {
-      senderId:this.mClientData._id,
-      recieverId: data._id
-    }
-    console.log(this.sendData);
-    this.chatService.selectWorker(this.sendData).subscribe()
-  }
-
-  getProgressImages() {
-    this.service.getprogressPhotos(this.editData.data).subscribe((value)=> {
-      this.progressImages = value.progressImages
-    })
-  }
-
-  viewHistory() {
-    this.service.userViewHistory().subscribe((value)=> {
-      console.log('mm',value.user); 
-      this.historyWorkStatus = value.user.workStatus
-      console.log(this.historyWorkStatus);
-    })
-  }
-
-  viewMoreHistory(workerId:string) {
-    this.route.navigate(['singleViewHistory',workerId])
-  }
-
-  reportWorkerPost(){
-    this.reportReason = this.reportForm.value
-    console.log(this.reportForm);
-    
-    this.service.reportWorkerCall(this.reportedWorkerId, this.reportReason).subscribe((value)=> {
-      console.log(value);
-    })
+  reportWorkerPost(): void {
+    if (this.editData.mode !== 'reportWorker' || this.reportForm.invalid) return;
+    this.service.reportWorkerCall(this.editData.data, this.reportForm.getRawValue().reason).subscribe({
+      next: () => {
+        this.ref.close('reported');
+        void showSuccess('Report sent', 'Thank you, an admin will review it.');
+      },
+      error: (err: unknown) => showError(err),
+    });
   }
 }
-

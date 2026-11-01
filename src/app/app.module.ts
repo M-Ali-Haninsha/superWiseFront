@@ -16,8 +16,10 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminDashboardComponent } from './adminComponents/admin-dashboard/admin-dashboard.component';
 import { WorkerDashboardComponent } from './workerComponents/worker-dashboard/worker-dashboard.component'
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { MyInterceptor } from '../app/interceptor/interceptor'
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './core/auth.interceptor';
+import { adminWorkersFeature } from './state/admin-workers/admin-workers.reducer';
+import * as adminWorkersEffects from './state/admin-workers/admin-workers.effects';
 import { AdminHeaderComponent } from './adminComponents/admin-header/admin-header.component';
 import { AdminSideNavComponent } from './adminComponents/admin-side-nav/admin-side-nav.component';
 import { AdminChartAreaComponent } from './adminComponents/admin-chart-area/admin-chart-area.component';
@@ -116,8 +118,8 @@ import { ViewComplaintComponent } from './adminComponents/view-complaint/view-co
         MatStepperModule,
         FormsModule,
         MatTableModule,
-        StoreModule.forRoot({}, {}),
-        EffectsModule.forRoot([]),
+        StoreModule.forRoot({ [adminWorkersFeature.name]: adminWorkersFeature.reducer }),
+        EffectsModule.forRoot([adminWorkersEffects]),
         MatPaginatorModule,
         MatToolbarModule,
         MatDialogModule,
@@ -133,13 +135,8 @@ import { ViewComplaintComponent } from './adminComponents/view-complaint/view-co
             useValue: { showError: true },
         },
         {
-            provide: HTTP_INTERCEPTORS,
-            useClass: MyInterceptor,
-            multi: true,
-        },
-        {
             provide: MatSnackBar
         },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withInterceptors([authInterceptor])),
     ] })
 export class AppModule { }

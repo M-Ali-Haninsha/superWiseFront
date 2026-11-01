@@ -1,71 +1,74 @@
-import { Injectable } from '@angular/core';
-import { Socket, io } from 'socket.io-client';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Socket, io } from 'socket.io-client';
+import { environment } from 'src/environments/environment';
+import { AuthService } from '../core/auth.service';
+import { ChatMessage, Role } from '../models/api.models';
 
-interface ChatMessage {
-  sender: string,
-  senderId: string,
-  timestamp: Date,
-  content: string,
-  reciever?:string
-}
+type Ack = { success: boolean };
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ChatService {
+@Injectable({ providedIn: 'root' })
+export class ChatService implements OnDestroy {
+  private auth = inject(AuthService);
+  private socket?: Socket;
+  private connectedAs?: Role;
 
-  private socket: Socket;
+  /** Opens (or reuses) a socket authenticated as the given role. */
+  connect(role: Role): void {
+    if (this.socket?.connected && this.connectedAs === role) return;
+    this.socket?.disconnect();
+    this.socket = io(environment.API_URL, { auth: { token: this.auth.getToken(role) } });
+    this.connectedAs = role;
+  }
 
-  constructor() {
-    this.socket = io('https://superwise-back.onrender.com')
-   }
+  disconnect(): void {
+    this.socket?.disconnect();
+    this.socket = undefined;
+    this.connectedAs = undefined;
+  }
 
-   public selectWorker(message:any):Observable<void> {
-    return new Observable<void>((observer)=> {
-      this.socket.emit('selected worker', message,(ack: {success: boolean})=>{
-        console.log(ack.success);
-        
-        if(ack.success){
-          observer.next()
-          observer.complete()
+  ngOnDestroy(): void {
+    this.disconnect();
+  }
+
+  /** Loads the conversation with the given person; it arrives on conversation(). */
+  openConversation(recieverId: string): Observable<void> {
+    return this.emit('selected worker', { recieverId });
+  }
+
+  sendMessage(message: Pick<ChatMessage, 'sender' | 'recieverId' | 'content'>): Observable<void> {
+    return this.emit('sendMessageClient', message);
+  }
+
+  /** The full conversation, each time it is loaded or a message is sent/received. */
+  conversation(): Observable<ChatMessage[]> {
+    return new Observable<ChatMessage[]>((observer) => {
+      const socket = this.requireSocket();
+      const handler = (messages: ChatMessage[]) => observer.next(messages);
+      socket.on('select-message', handler);
+      socket.on('clientMessage', handler);
+      return () => {
+        socket.off('select-message', handler);
+        socket.off('clientMessage', handler);
+      };
+    });
+  }
+
+  private emit(event: string, payload: object): Observable<void> {
+    return new Observable<void>((observer) => {
+      this.requireSocket().emit(event, payload, (ack: Ack) => {
+        if (ack?.success) {
+          observer.next();
+          observer.complete();
         } else {
-          observer.error('error')
-        
+          observer.error(new Error('Message could not be delivered'));
         }
-      })
-    })
-   }
+      });
+    });
+  }
 
-   public test():Observable<void> {
-    return new Observable<void>((observer)=> {
-      this.socket.on('select-message',(data: any)=>{
-        observer.next(data)
-      })
-    })
-   }
-
-   public sendMessage(message:any):Observable<void> {
-    return new Observable<void>((observer)=> {
-      this.socket.emit('sendMessageClient', message,(ack: {success: boolean})=>{
-        console.log(ack.success);
-        
-        if(ack.success){
-          observer.next()
-          observer.complete()
-        } else {
-          observer.error('error')
-        
-        }
-      })
-    })
-   }
-
-   public clientMessage():Observable<void> {
-    return new Observable<void>((observer)=> {
-      this.socket.on('clientMessage',(data: any)=>{
-        observer.next(data)
-      })
-    })
-   }
+  private requireSocket(): Socket {
+    if (!this.socket) throw new Error('ChatService.connect() must be called first');
+    return this.socket;
+  }
 }

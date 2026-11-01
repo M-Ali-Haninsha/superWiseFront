@@ -1,179 +1,132 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs'
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { asRole } from '../core/http';
+import {
+  Category,
+  Client,
+  CreateOrderResponse,
+  DoneResponse,
+  HiredWorker,
+  LoginRequest,
+  LoginResponse,
+  OtpRequest,
+  Payment,
+  ProgressImage,
+  RazorpayResult,
+  Rating,
+  UserProfileUpdate,
+  UserSignupRequest,
+  Worker,
+  WorkStatus,
+} from '../models/api.models';
 
-@Injectable({
-  providedIn: 'root'
-})
+const asUser = asRole('user');
+
+@Injectable({ providedIn: 'root' })
 export class UserService {
+  private http = inject(HttpClient);
+  private url = environment.USER_URL;
 
-  url = environment.USER_URL
- 
-  constructor(private http: HttpClient) { }
-
-  fetchCategory(): Observable<any> {
-    return this.http.get<any>(this.url+'fetchCategories')
+  fetchCategory(): Observable<{ result: Category[] }> {
+    return this.http.get<{ result: Category[] }>(this.url + 'fetchCategories');
   }
 
-  userSignupPost(data:any):Observable<any> {
-    return this.http.post<any>(this.url+'userSignup', data)
+  userSignupPost(data: UserSignupRequest): Observable<{ otpGen: true }> {
+    return this.http.post<{ otpGen: true }>(this.url + 'userSignup', data);
   }
 
-  userOtp(datas:any):Observable<any> {    
-    return this.http.post<any> (this.url+ 'userOtp', {datas})
+  userOtp(data: OtpRequest): Observable<{ otpDone: true }> {
+    return this.http.post<{ otpDone: true }>(this.url + 'userOtp', data);
   }
 
-  userLogin(data:any):Observable<any> {
-    console.log(data);
-    
-    return this.http.post<any> (this.url+'userLogin', data)
+  userLogin(data: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.url + 'userLogin', data);
   }
 
-  fetchWorkers(id:any):Observable<any> {
-    return this.http.get<any> (this.url+ 'fetchWorkers/'+ id)
+  fetchWorkers(categoryId: string): Observable<{ data: Worker[] }> {
+    return this.http.get<{ data: Worker[] }>(this.url + 'fetchWorkers/' + categoryId);
   }
 
-  userViewWorkerDetails(id:string): Observable<any> {    
-    return this.http.get<any> (this.url+ 'fetchWorkerDetails/'+ id)
+  userViewWorkerDetails(id: string): Observable<{ data: Worker }> {
+    return this.http.get<{ data: Worker }>(this.url + 'fetchWorkerDetails/' + id);
   }
 
-  workerHire(data: any, id:string): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any> (this.url+ 'hireWorker/'+id, data, requestOptions)
+  workerHire(data: FormData, workerId: string): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'hireWorker/' + workerId, data, asUser);
   }
 
-  fetchUserData(): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'fetchUserData', requestOptions)
+  fetchUserData(): Observable<{ fetchedData: Client }> {
+    return this.http.get<{ fetchedData: Client }>(this.url + 'fetchUserData', asUser);
   }
 
-  uploadFile(file:any): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.put<any> (this.url+'updatePhoto', file, requestOptions)
+  uploadFile(file: FormData): Observable<DoneResponse> {
+    return this.http.put<DoneResponse>(this.url + 'updatePhoto', file, asUser);
   }
 
-  listHiredWorkers(): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'hiredWorkers', requestOptions)
+  listHiredWorkers(): Observable<{ worker: HiredWorker[] }> {
+    return this.http.get<{ worker: HiredWorker[] }>(this.url + 'hiredWorkers', asUser);
   }
 
-  editUserDetails(data:any): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.put<any> (this.url+'updateUserData', data, requestOptions)
+  editUserDetails(data: UserProfileUpdate): Observable<DoneResponse> {
+    return this.http.put<DoneResponse>(this.url + 'updateUserData', data, asUser);
   }
 
-  getProgressData(id:string): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'getProgressValue/'+id, requestOptions)
+  getProgressData(workerId: string): Observable<{ data?: number }> {
+    return this.http.get<{ data?: number }>(this.url + 'getProgressValue/' + workerId, asUser);
   }
 
-  showAmount(workerId:string): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'getAmount/'+workerId, requestOptions)
+  showAmount(workerId: string): Observable<{ amount?: number }> {
+    return this.http.get<{ amount?: number }>(this.url + 'getAmount/' + workerId, asUser);
   }
 
-  razorpay(data:any, workerId:string):Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any>(this.url+'razorpay', { data,workerId }, requestOptions)
+  /** Creates a Razorpay order for the amount the worker requested. */
+  razorpay(workerId: string): Observable<CreateOrderResponse> {
+    return this.http.post<CreateOrderResponse>(this.url + 'razorpay', { workerId }, asUser);
   }
 
-  rating(comment:string, workerId:any, starValue:any):Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-
-    const requestBody = {
-      comment: comment,
-      starValue: starValue 
-    };
-    return this.http.post<any> (this.url+'rating/'+workerId, requestBody, requestOptions)
+  /** Confirms a completed Razorpay checkout with the server. */
+  verifyPayment(workerId: string, result: RazorpayResult): Observable<{ success: true }> {
+    return this.http.post<{ success: true }>(this.url + 'razorpay/verify', { workerId, ...result }, asUser);
   }
 
-  showRating(workerId:string):Observable<any> {
-    return this.http.get<any> (this.url+ 'showRating/'+ workerId)
+  rating(comment: string, workerId: string, starValue: number): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'rating/' + workerId, { comment, starValue }, asUser);
   }
 
-  clientDetails():Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'clientDataMessage', requestOptions)
+  showRating(workerId: string): Observable<{ rating: Rating[] }> {
+    return this.http.get<{ rating: Rating[] }>(this.url + 'showRating/' + workerId);
   }
 
-  workerDetails(workerId:string):Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'workerDataMessage/'+workerId, requestOptions)
+  clientDetails(): Observable<{ clientDataMessage: Client }> {
+    return this.http.get<{ clientDataMessage: Client }>(this.url + 'clientDataMessage', asUser);
   }
 
-  
-
-  getprogressPhotos(workerId:string):Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any>(this.url+'getProgressImages/'+workerId, requestOptions)
+  workerDetails(workerId: string): Observable<{ workerDataMessage: Worker }> {
+    return this.http.get<{ workerDataMessage: Worker }>(this.url + 'workerDataMessage/' + workerId, asUser);
   }
 
-  workCompleteData(workerId:string): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any>(this.url+'workCompleteData/'+workerId, requestOptions)
+  getprogressPhotos(workerId: string): Observable<{ progressImages: ProgressImage[] }> {
+    return this.http.get<{ progressImages: ProgressImage[] }>(this.url + 'getProgressImages/' + workerId, asUser);
   }
 
-  getPaymentData(workerId:string):Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'getPaymentData/'+ workerId, requestOptions)
+  getPaymentData(workerId: string): Observable<{ paymentData: Client; details?: Payment }> {
+    return this.http.get<{ paymentData: Client; details?: Payment }>(this.url + 'getPaymentData/' + workerId, asUser);
   }
 
-  userViewHistory(): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'viewWorkHistory', requestOptions)
+  userViewHistory(): Observable<{ user: Client & { workStatus: WorkStatus<Worker>[] } }> {
+    return this.http.get<{ user: Client & { workStatus: WorkStatus<Worker>[] } }>(this.url + 'viewWorkHistory', asUser);
   }
 
-  historyDetails(workerId:string): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'historyData/'+workerId, requestOptions)
+  historyDetails(workerId: string): Observable<{ payments: Payment[]; clientData: Client; workerData: Worker }> {
+    return this.http.get<{ payments: Payment[]; clientData: Client; workerData: Worker }>(
+      this.url + 'historyData/' + workerId,
+      asUser,
+    );
   }
 
-  reportWorkerCall(workerId:string, reason:FormData): Observable<any> {
-    const item = 'userValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any> (this.url+'reportWorker/'+ workerId, reason, requestOptions)
+  reportWorkerCall(workerId: string, reason: string): Observable<{ reportUpdated: true }> {
+    return this.http.post<{ reportUpdated: true }>(this.url + 'reportWorker/' + workerId, { reason }, asUser);
   }
-
-  // bookedDates(workerId: string): Observable<any> {
-  //   const item = 'userValue'
-  //   const headers = new HttpHeaders().set('usertype', item);
-  //   const requestOptions = { headers: headers };
-  //   return this.http.get<any> (this.url+'bookedDates/'+ workerId, requestOptions)
-  // }
- }
-
-
+}

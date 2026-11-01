@@ -12,6 +12,9 @@
       @if (adminLoginForm.controls['password'].touched && adminLoginForm.hasError('required', 'password')) {
         <small class="text-red-600">*password required</small>
       }
+      @if (loginError) {
+        <small class="text-red-600">{{ loginError }}</small>
+      }
       <button class="login-button" >Sign In</button>
     </form>
   </div>

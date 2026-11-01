@@ -1,121 +1,96 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs'
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-@Injectable({
-  providedIn: 'root'
-})
+import { asRole } from '../core/http';
+import {
+  AmountRequest,
+  Category,
+  ClientForWorker,
+  DoneResponse,
+  LoginRequest,
+  LoginResponse,
+  OtpRequest,
+  WorkerProfileUpdate,
+  WorkerSelf,
+  WorkRequest,
+} from '../models/api.models';
+
+const asWorker = asRole('worker');
+
+@Injectable({ providedIn: 'root' })
 export class WorkerService {
+  private http = inject(HttpClient);
+  private url = environment.USER_URL;
 
-  private url = environment.USER_URL
-
-  constructor(private http: HttpClient) { }
-
-  workerSignup(data:any): Observable<any> {
-    return this.http.post<any>(this.url+'workerSignup', data)
+  workerSignup(data: FormData): Observable<{ otpGen: true }> {
+    return this.http.post<{ otpGen: true }>(this.url + 'workerSignup', data);
   }
 
-  otpVerify(otp:any): Observable<any> { 
-    return this.http.post<any>(this.url+'workerOtpProcess', {otp})
+  otpVerify(data: OtpRequest): Observable<{ otpDone: true }> {
+    return this.http.post<{ otpDone: true }>(this.url + 'workerOtpProcess', data);
   }
 
-  fetchCategory(): Observable<any> {
-    return this.http.get<any> (this.url+'FetchCategory')
+  fetchCategory(): Observable<{ recievedCat: Category[] }> {
+    return this.http.get<{ recievedCat: Category[] }>(this.url + 'FetchCategory');
   }
 
-  workerLogin(loginData: any): Observable<any>{    
-    return this.http.post<any>(this.url+'workerLogin', loginData)
+  workerLogin(data: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.url + 'workerLogin', data);
   }
 
-  fetchWorkerData(): Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any>(this.url+'fetchWorkerData', requestOptions)
+  fetchWorkerData(): Observable<{ data: WorkerSelf }> {
+    return this.http.get<{ data: WorkerSelf }>(this.url + 'fetchWorkerData', asWorker);
   }
 
-  editPhoto(data:FormData): Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.put<any>(this.url+'workerEditProfilePhoto', data, requestOptions)
+  editPhoto(data: FormData): Observable<DoneResponse> {
+    return this.http.put<DoneResponse>(this.url + 'workerEditProfilePhoto', data, asWorker);
   }
 
-  editDetails(data:any): Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.put<any>(this.url+'workerEditProfileData', data, requestOptions)
+  editDetails(data: WorkerProfileUpdate): Observable<{ updated: string }> {
+    return this.http.put<{ updated: string }>(this.url + 'workerEditProfileData', data, asWorker);
   }
 
-  fetchRequests(): Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'fetchUserRequest', requestOptions)
+  fetchRequests(): Observable<{ requests: WorkRequest[] }> {
+    return this.http.get<{ requests: WorkRequest[] }>(this.url + 'fetchUserRequest', asWorker);
   }
 
-  requestAccept(id:any): Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.put<any>(this.url+'workAccept', id, requestOptions)
+  requestAccept(requestId: string): Observable<DoneResponse> {
+    return this.http.put<DoneResponse>(this.url + 'workAccept', { id: requestId }, asWorker);
   }
 
-  requestReject(id:any): Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.put<any>(this.url+'workReject', id, requestOptions)
+  requestReject(requestId: string): Observable<DoneResponse> {
+    return this.http.put<DoneResponse>(this.url + 'workReject', { id: requestId }, asWorker);
   }
 
-  fetchAcceptedWorks(): Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'fetchAcceptedWorks', requestOptions)
+  fetchAcceptedWorks(): Observable<{ accepted: WorkRequest[]; completed: WorkRequest[] }> {
+    return this.http.get<{ accepted: WorkRequest[]; completed: WorkRequest[] }>(this.url + 'fetchAcceptedWorks', asWorker);
   }
 
-  editDescription(data:any): Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.put<any> (this.url+'updateDescription', data, requestOptions)
+  editDescription(description: string): Observable<DoneResponse> {
+    return this.http.put<DoneResponse>(this.url + 'updateDescription', { description }, asWorker);
   }
 
-  showProgress(id:string) {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'viewProgress/'+id, requestOptions)
+  showProgress(clientId: string): Observable<{ data: ClientForWorker; newData?: number }> {
+    return this.http.get<{ data: ClientForWorker; newData?: number }>(this.url + 'viewProgress/' + clientId, asWorker);
   }
 
-  updateProgress(clientId:string, progress:number): Observable<any> {    
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.put<any> (this.url+'updateWorkProgress/'+ clientId, {progress}, requestOptions)
+  updateProgress(clientId: string, progress: number): Observable<{ updated: string }> {
+    return this.http.put<{ updated: string }>(this.url + 'updateWorkProgress/' + clientId, { progress }, asWorker);
   }
 
-  postAmount(clientId:string, data:FormData): Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any> (this.url+'postAmount/'+ clientId, data, requestOptions)
+  postAmount(clientId: string, data: AmountRequest): Observable<DoneResponse> {
+    return this.http.post<DoneResponse>(this.url + 'postAmount/' + clientId, data, asWorker);
   }
 
-  pushImage(clientId:string, images:any):Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.post<any> (this.url+'pushImages/'+ clientId, images ,requestOptions)
+  pushImage(clientId: string, images: FormData): Observable<{ success: true }> {
+    return this.http.post<{ success: true }>(this.url + 'pushImages/' + clientId, images, asWorker);
   }
 
-  countData():Observable<any> {
-    const item = 'workerValue'
-    const headers = new HttpHeaders().set('usertype', item);
-    const requestOptions = { headers: headers };
-    return this.http.get<any> (this.url+'getCount', requestOptions)
+  countData(): Observable<{ data: WorkerSelf; count: number; avg: number; lengthOfReq: number }> {
+    return this.http.get<{ data: WorkerSelf; count: number; avg: number; lengthOfReq: number }>(
+      this.url + 'getCount',
+      asWorker,
+    );
   }
-
 }

@@ -8,7 +8,7 @@
     </div>
     <div class="flex flex-col items-center -mt-20 bg-black">
       <img
-        [src]="workerData?.image"
+        [src]="workerData?.image || 'assets/images/avatar.svg'"
         class="w-40 border-4 border-white rounded-full"
       />
       <div class="flex items-center space-x-2 mt-2">
@@ -30,7 +30,7 @@
           </svg>
         </span>
       </div>
-      <p class="text-gray-700">{{workerData?.department.name}}</p>
+      <p class="text-gray-700">{{workerData?.department?.name}}</p>
       <p class="text-sm text-gray-500">{{workerData?.district}}</p>
     </div>
     <div
@@ -69,7 +69,7 @@
           </li>
           <li class="flex border-b py-2">
             <span class="font-bold w-24">Department:</span>
-            <span class="text-gray-300">{{workerData?.department.name}}</span>
+            <span class="text-gray-300">{{workerData?.department?.name}}</span>
           </li>
           <li class="flex border-b py-2">
             <span class="font-bold w-24">Mobile:</span>
